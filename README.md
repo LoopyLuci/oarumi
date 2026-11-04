@@ -45,12 +45,15 @@ Oarumi is three things in one repository:
 ```bash
 git clone https://github.com/<org>/oarumi.git
 cd oarumi
-./scripts/bootstrap.sh          # installs deps, downloads models, seeds DB
+./scripts/bootstrap.sh          # venv, deps, language DB, audio assets, dev stubs
 python -m desktop.app           # launches the GUI
 ```
 
-The bootstrap downloads ~200 MB of language packs and model weights.
-After it completes, the app runs fully offline.
+The bootstrap is idempotent. It installs dependencies, seeds the language
+database, generates the audio assets and fetches **development model stubs**.
+Real neural model weights are not shipped yet, so neural components currently
+fall back to their deterministic counterparts. The engine reports this as
+`degraded` with a failover trace rather than hiding it.
 
 ### Android
 
@@ -68,10 +71,13 @@ ML Kit models (~30 MB each). After that, everything is on-device.
 ### CLI (for scripting and testing)
 
 ```bash
-./tools/cli translate --from es --to oarumi --modality spoken "Hola, mundo"
-./tools/cli decompose "Hello, world"          # NSM structure
-./tools/cli validate --all                    # run all schema validators
+python -m tools.cli translate --from es --to oarumi --modality spoken "hola"
+python -m tools.cli decompose "hello"         # NSM structure for an English pivot
+python -m tools.cli validate                  # run schema and prime validators
 ```
+
+Translation currently covers a seed phrasebook for Arabic, German, Spanish,
+French and Chinese. Phrases outside it come back `degraded` with the reason.
 
 ---
 

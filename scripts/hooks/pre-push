@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Full local gate before every push: everything CI runs on pull requests.
+# Skip once with: git push --no-verify
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+PY="python"
+for candidate in .venv/bin/python .venv/Scripts/python.exe; do
+  if [ -x "$candidate" ]; then PY="$candidate"; break; fi
+done
+exec "$PY" -m tools.ci --mode full

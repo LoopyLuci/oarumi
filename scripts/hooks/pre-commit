@@ -1,21 +1,11 @@
 #!/usr/bin/env bash
+# Fast local gate before every commit: preflight checks, lint and schemas.
+# The full gate runs on pre-push. Skip once with: git commit --no-verify
 set -euo pipefail
-
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
-
-if [ -d .venv ]; then
-  # shellcheck disable=SC1091
-  source .venv/bin/activate
-fi
-
-echo "[pre-commit] ruff"
-ruff check .
-
-echo "[pre-commit] black --check"
-black --check .
-
-echo "[pre-commit] schema validation"
-python tools/validate_schemas.py --all
-
-echo "[pre-commit] ok"
+PY="python"
+for candidate in .venv/bin/python .venv/Scripts/python.exe; do
+  if [ -x "$candidate" ]; then PY="$candidate"; break; fi
+done
+exec "$PY" -m tools.ci --mode fast

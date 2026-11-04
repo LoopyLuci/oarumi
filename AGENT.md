@@ -41,7 +41,7 @@ Every agent change follows this loop:
    tasks.
 3. **Branch**: `agent/<short-id>/<slug>` (e.g., `agent/claude-4/nsm-validator-tests`).
 4. **Change small**: one logical change per PR. Do not bundle fixes.
-5. **Test locally**: `./scripts/verify_all.sh` must pass. For model changes,
+5. **Test locally**: `python -m tools.ci --mode full` must pass. For model changes,
    run parity suites with `OARUMI_STRICT_PARITY=1`.
 6. **Document**: update the relevant doc *in the same PR*. If you changed a
    language file, update `LANGUAGE_SPEC.md` and add a changelog entry.
@@ -80,8 +80,8 @@ be merged after standard review.
 
 ```bash
 ./scripts/bootstrap.sh              # first time only
-./scripts/verify_all.sh             # all validators + tests
-./tools/cli --help                  # CLI surface
+python -m tools.ci --mode full     # preflight, validators, tests, parity, Android
+python -m tools.cli --help            # CLI surface
 python -m desktop.app               # desktop
 cd android && ./gradlew :app:test   # android unit tests
 ```

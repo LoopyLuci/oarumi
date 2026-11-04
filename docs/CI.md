@@ -6,6 +6,43 @@ to reproduce a failure locally.
 
 ---
 
+## Local CI
+
+The same gates run on your machine through `tools/ci.py`, with no hosted
+runner needed. It works the same on Windows, macOS and Linux.
+
+| Mode | When it runs | What it does |
+|---|---|---|
+| `fast` | `pre-commit` hook, every commit | Preflight checks, `ruff`, `black`, schema validation |
+| `full` | `pre-push` hook, and before opening a PR | Everything in `fast`, plus `mypy --strict`, primes, schema drift, unit tests with the 85% coverage floor, parity (basic strict and complex), fault, offline, docs links, and the Android unit suites |
+| `all` | Nightly on a workstation | Everything in `full`, plus chaos tests and the benchmark regression gate |
+
+```bash
+python -m tools.ci --install-hooks   # once per clone
+python -m tools.ci --mode full       # what a pull request must pass
+python -m tools.ci --only unit       # one step, with its dependencies
+python -m tools.ci --list            # every step and the modes that run it
+python -m tools.ci --no-cache        # ignore the cache and rerun everything
+```
+
+**Preflight** checks run first and fail fast: Python version, required tools,
+a secret scan of tracked and unignored files, a 5 MiB file-size limit, LF line
+endings in committed text, and valid workflow YAML.
+
+**Caching.** Each step is fingerprinted from its input files, its command and
+the Python version. A step that passed with the same fingerprint is reported as
+`CACHE` and skipped. Failures are never cached.
+
+**Parallelism.** Independent steps run concurrently (`--jobs`, default half the
+CPU cores). A step whose dependency failed is reported as `SKIP`.
+
+**Reports.** Each run writes `.oarumi/ci/report.json` and one log per step under
+`.oarumi/ci/logs/`. The directory is git-ignored.
+
+`scripts/verify_all.sh` is kept as a wrapper around `--mode full`.
+
+---
+
 ## § 1. Job overview
 
 ### PR jobs (`ci.yml`)

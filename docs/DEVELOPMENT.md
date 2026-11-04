@@ -18,17 +18,18 @@ This will:
 2. Install Python deps from `pyproject.toml`.
 3. Seed `language/oarumi.db` from `language/schema.sql` + data files.
 4. Download dev-time model stubs to `models/dev-stubs/` (small, not the full stack).
-5. Install git hooks (`ruff`, `mypy`, schema validators).
+5. Install git hooks (`python -m tools.ci --install-hooks`).
 6. Install Android SDK components if `ANDROID_HOME` is set.
 
 ## Daily commands
 
 ```bash
-./scripts/verify_all.sh            # lint + type-check + tests + parity + offline
+python -m tools.ci --mode full        # preflight, lint, types, tests, parity, Android
+python -m tools.ci --list          # every step and the modes that run it
 python -m desktop.app              # desktop app
 python -m pytest tests/unit -q     # fast unit tests only
 cd android && ./gradlew :app:test  # Android unit tests
-./tools/cli --help                 # CLI surface
+python -m tools.cli --help            # CLI surface
 ```
 
 ## Environment variables

@@ -22,7 +22,8 @@ cd oarumi
 
 `bootstrap.sh` is idempotent. It installs Python deps, seeds the SQLite
 language DB, downloads small dev-time model stubs (not the full model stack),
-and sets up git hooks that run validators on commit.
+and installs git hooks: `pre-commit` runs the fast gate and `pre-push` runs the
+full gate (see [Local CI](docs/CI.md#local-ci)).
 
 Manual setup: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
@@ -40,7 +41,8 @@ Manual setup: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
    can go straight to PR.
 2. **Branch**: `feat/<slug>`, `fix/<slug>`, or `agent/<id>/<slug>`.
 3. **Change small**: one logical change per PR.
-4. **Test**: `./scripts/verify_all.sh` must pass locally.
+4. **Test**: `python -m tools.ci --mode full` must pass locally. The fast gate runs
+   automatically on every commit.
 5. **Document**: update the relevant docs in the same PR. If you changed a
    language file, update `docs/LANGUAGE_SPEC.md` and `CHANGELOG.md`.
 6. **PR**: fill out the template. Include what/why/how-verified.
