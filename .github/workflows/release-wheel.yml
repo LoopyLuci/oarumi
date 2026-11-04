@@ -1,0 +1,32 @@
+name: release-wheel
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  wheel:
+    name: desktop wheel
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+      - name: Check the wheel installs and imports
+        run: |
+          python -m venv "$RUNNER_TEMP/whl"
+          "$RUNNER_TEMP/whl/bin/pip" install dist/*.whl
+          "$RUNNER_TEMP/whl/bin/python" -c "import oarumi, desktop; print(oarumi.__version__)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oarumi-wheel
+          path: dist/
+          retention-days: 30

@@ -9,14 +9,14 @@
 
 ---
 
-## 1. Project state (last updated: YYYY-MM-DD, by <name>)
+## 1. Project state (last updated: 2026-11-04, by Claude agent)
 
 | Dimension | State |
 |---|---|
 | **Name** | Oarumi (original coinage; see docs/NAME.md) |
 | **Lifecycle** | Pre-alpha → Alpha → Beta → Stable |
 | **Current phase** | Pre-alpha: language spec v0.3 stable; engine interfaces frozen; app UIs in development |
-| **Latest release** | v0.1.0-alpha.3 (rename release — see CHANGELOG.md) |
+| **Latest release** | v0.1.0-alpha.4 is tagged when the release-wheel and android-release workflows pass; see CHANGELOG.md. Last tagged: v0.1.0-alpha.3 |
 | **Next milestone** | M2: offline translation pipeline end-to-end (see PLAN.md) |
 | **Known blockers** | (list any active blockers with issue links) |
 

@@ -4,6 +4,30 @@ All notable changes to this project are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning: [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-alpha.4] - 2026-11-04
+
+### Added
+- Dual license: MIT OR Apache-2.0 (`LICENSE`, `LICENSE-MIT`, `LICENSE-APACHE`).
+- Local CI/CD runner `tools/ci.py` with preflight checks, a dependency DAG,
+  a fingerprint cache and reports; git hooks in `scripts/hooks/`.
+- Parity web GUI (`tools/parity_web`) with unit and e2e tests.
+- ADR-0006 (parity web GUI) and ADR-0007 (Kotlin parity policy).
+- `release-wheel` workflow: builds the sdist and desktop wheel on each `v*` tag.
+- Drift test that checks `docs/PARITY_API.md` against the Python engine.
+- Post-build name re-check in `docs/NAME.md` (§ 4.1).
+
+### Changed
+- Python package version is `0.1.0a4`.
+- The unit, parity and nightly android jobs run on Ubuntu.
+
+### Fixed
+- `ci_setup.sh` regenerates audio WAVs in fresh clones and no longer hides
+  golden-freeze errors.
+- `android/gradlew` is executable in the git index.
+- `tests/` is a package, so `tests.parity` imports resolve in CI.
+- Qt runtime libraries are installed for the unit job.
+- The local gate skips the Android step with a reason when no JDK is present.
+
 ## [Unreleased]
 
 ### Added

@@ -84,6 +84,17 @@ recovery.
 | Glottolog / Ethnologue | No natural language named Oarumi |
 | Google exact-phrase | Only incidental personal-name and fashion-listing matches; no brand |
 
+### 4.1 Post-build re-check (2026-11-04)
+
+- **Web search** ("Oarumi language name trademark conflict"): no record of a
+  registered mark, product, or language using the name Oarumi. Results covered
+  analogous disputes over Yoruba, Ainu and Māori names, which do not involve
+  Oarumi.
+- **Not yet done:** a search of the official registers (USPTO, EUIPO, JPO
+  J-PlatPat, WIPO Global Brand Database). The agent that wrote this entry
+  cannot run those searches. A maintainer must do it and record the result here
+  before the first public release.
+
 ## 5. If a conflict appears later
 
 1. **Do not rename unilaterally.** Open an issue tagged `name-conflict`.
