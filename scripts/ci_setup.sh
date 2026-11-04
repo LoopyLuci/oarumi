@@ -16,8 +16,12 @@ pip install -e ".[dev]"
 
 echo "[ci-setup] bootstrapping language DB and audio assets"
 ./scripts/bootstrap.sh
-if [ ! -f assets/audio/manifest.json ] || \
-   [ "$(python -c 'import json; print(sum(1 for a in json.load(open("assets/audio/manifest.json"))["assets"] if a["sha256"]))')" = "0" ]; then
+# WAVs are gitignored while manifest.json is committed, so a fresh clone can
+# have hashes but no files. Regenerate unless every listed asset is on disk.
+if ! python -c 'import json, pathlib, sys
+m = json.load(open("assets/audio/manifest.json"))
+d = pathlib.Path("assets/audio")
+sys.exit(0 if all(a["sha256"] and (d / a["path"]).exists() for a in m["assets"]) else 1)'; then
   python tools/generate_audio_assets.py
 fi
 
@@ -33,8 +37,8 @@ if [ ! -d tests/parity/data/parity-complex ]; then
 fi
 
 echo "[ci-setup] freezing gold (idempotent)"
-python tools/freeze_gold.py --corpus parity-basic || true
-python tools/freeze_gold.py --corpus parity-complex || true
-python tools/freeze_renderer_gold.py || true
+python tools/freeze_gold.py --corpus parity-basic
+python tools/freeze_gold.py --corpus parity-complex
+python tools/freeze_renderer_gold.py
 
 echo "[ci-setup] done"
