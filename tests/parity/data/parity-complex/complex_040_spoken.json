@@ -1,0 +1,68 @@
+{
+  "request": {
+    "text": "نعم",
+    "lang": "ar",
+    "modality": "spoken"
+  },
+  "expected": {
+    "input": {
+      "text": "نعم",
+      "lang": "ar",
+      "modality": "spoken"
+    },
+    "pivot": {
+      "text": "yes",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "TRUE",
+          "role": "predicate"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "TRUE",
+          "args": []
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "true"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "spoken"
+    },
+    "modalities": {
+      "spoken": {
+        "modality": "spoken",
+        "ssml": null,
+        "phoneme_stream": [
+          "true"
+        ],
+        "backend": "asset",
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

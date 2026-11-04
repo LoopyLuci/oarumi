@@ -1,0 +1,213 @@
+name: nightly
+
+on:
+  schedule:
+    - cron: "0 3 * * *"   # 03:00 UTC daily
+  workflow_dispatch:
+
+concurrency:
+  group: nightly
+  cancel-in-progress: true
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+jobs:
+  complex-corpus:
+    name: parity complex
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - run: |
+          source .venv/bin/activate
+          OARUMI_STRICT_PARITY=1 pytest tests/parity -q \
+            --parity-corpus=parity-complex \
+            --timeout=120
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: parity-complex-results
+          path: tests/parity/reports/
+          retention-days: 14
+
+  chaos:
+    name: chaos recovery
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - run: |
+          source .venv/bin/activate
+          pytest tests/chaos -q --timeout=300 -p no:cacheprovider
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: chaos-failure-artifacts
+          path: |
+            tests/chaos/reports/
+            .oarumi-audit.jsonl
+          retention-days: 14
+
+  bench:
+    name: benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - run: |
+          source .venv/bin/activate
+          pytest tests/bench -q --benchmark-only \
+            --benchmark-json=bench-report.json \
+            --timeout=300
+      - name: Compare to baseline
+        run: |
+          source .venv/bin/activate
+          python tools/bench_compare.py \
+            --current bench-report.json \
+            --baseline tests/bench/baseline.json \
+            --tolerance 1.20
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bench-report
+          path: bench-report.json
+          retention-days: 30
+
+  android-instrumented:
+    name: android instrumented
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run instrumented tests on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          script: |
+            cd android
+            ./gradlew --no-daemon :app:connectedMlkitDebugAndroidTest
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-instrumented-reports
+          path: android/app/build/reports/androidTests/
+          retention-days: 14
+
+  parity-web-e2e:
+    name: parity web e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - name: Start server
+        run: |
+          source .venv/bin/activate
+          nohup python -m tools.parity_web.server > /tmp/parity-web.log 2>&1 &
+          echo $! > /tmp/parity-web.pid
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:8090/api/health >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          echo "server did not start"
+          cat /tmp/parity-web.log
+          exit 1
+      - name: Smoke test
+        run: |
+          source .venv/bin/activate
+          curl -sf http://127.0.0.1:8090/ | grep -q "Oarumi Parity"
+          curl -sf http://127.0.0.1:8090/static/app.js | grep -q "window.Oarumi"
+          curl -sf http://127.0.0.1:8090/static/diff.js | grep -q "render"
+          curl -sf http://127.0.0.1:8090/static/failover.js | grep -q "render"
+          echo "shell + assets OK"
+      - name: Trigger a small run and poll it
+        run: |
+          source .venv/bin/activate
+          RUN=$(curl -sf -X POST http://127.0.0.1:8090/api/runs \
+            -H 'Content-Type: application/json' \
+            -d '{"corpus":"parity-basic","targets":["python"]}')
+          RUN_ID=$(echo "$RUN" | python -c "import json,sys; print(json.load(sys.stdin)['run_id'])")
+          for i in $(seq 1 120); do
+            STATUS=$(curl -sf http://127.0.0.1:8090/api/runs/$RUN_ID | python -c "import json,sys; print(json.load(sys.stdin)['status'])")
+            if [ "$STATUS" = "done" ] || [ "$STATUS" = "failed" ] || [ "$STATUS" = "partial" ]; then
+              echo "run $RUN_ID finished with status=$STATUS"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "run did not finish within 120s"
+          curl -sf http://127.0.0.1:8090/api/runs/$RUN_ID | python -m json.tool
+          exit 1
+      - name: Fetch diff
+        run: |
+          source .venv/bin/activate
+          curl -sf http://127.0.0.1:8090/api/diff/$RUN_ID | python -m json.tool | head -40
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f /tmp/parity-web.pid ]; then
+            kill "$(cat /tmp/parity-web.pid)" || true
+            cat /tmp/parity-web.log | tail -100
+          fi
+
+  nightly-pass:
+    name: nightly-pass
+    needs: [complex-corpus, chaos, bench, android-instrumented, parity-web-e2e]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check all jobs
+        run: |
+          failed=""
+          for result in \
+            "${{ needs.complex-corpus.result }}" \
+            "${{ needs.chaos.result }}" \
+            "${{ needs.bench.result }}" \
+            "${{ needs.android-instrumented.result }}" \
+            "${{ needs.parity-web-e2e.result }}"; do
+            if [[ "$result" != "success" ]]; then failed="yes"; fi
+          done
+          if [ -n "$failed" ]; then
+            echo "One or more nightly jobs failed"
+            exit 1
+          fi
+          echo "All nightly jobs passed"

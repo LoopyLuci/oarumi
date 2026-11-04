@@ -1,0 +1,7 @@
+{
+  "modality": "signed",
+  "sigml": "<sigml xmlns=\"https://vhg.cmp.uea.ac.uk/tech/jas/sigml\">\n  <hns_sign gloss=\"test\">\n    <hamnosys_manual>\n      <hamfinger2 />\n      <hamchest />\n      <hammoveo />\n    </hamnosys_manual>\n  </hns_sign>\n</sigml>",
+  "avatar_ok": true,
+  "gloss": "test",
+  "valid": true
+}

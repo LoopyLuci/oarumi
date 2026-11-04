@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oarumi.com/schemas/sigml.schema.json",
+  "title": "Oarumi SiGML (structural contract)",
+  "description": "Structural rules enforced by validate_sigml(). The full SiGML DTD lives upstream; this is the subset the renderer guarantees.",
+  "type": "object",
+  "required": ["root", "hns_sign_count"],
+  "properties": {
+    "root": { "const": "sigml" },
+    "hns_sign_count": { "const": 1 },
+    "hns_sign_has_gloss": { "const": true },
+    "allowed_elements": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^ham[a-z0-9_]+$" }
+    }
+  }
+}

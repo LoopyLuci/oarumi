@@ -1,0 +1,45 @@
+{
+  "request": {
+    "text": "我叫安娜",
+    "lang": "zh",
+    "modality": "signed"
+  },
+  "expected": {
+    "input": {
+      "text": "我叫安娜",
+      "lang": "zh",
+      "modality": "signed"
+    },
+    "pivot": {
+      "text": "",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [],
+      "combinators": [],
+      "valid": false
+    },
+    "surface": {
+      "phonemes": [],
+      "clitics": [],
+      "mood": "DECL",
+      "modality": "signed"
+    },
+    "modalities": {},
+    "trace": [
+      {
+        "step": "intent",
+        "path": "deterministic",
+        "reason": "no_pivot_path"
+      }
+    ],
+    "failover_events": [
+      {
+        "component": "intent_router",
+        "trigger": "no_pivot_path"
+      }
+    ],
+    "degraded": true
+  }
+}

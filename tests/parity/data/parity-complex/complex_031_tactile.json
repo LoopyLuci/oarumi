@@ -1,0 +1,85 @@
+{
+  "request": {
+    "text": "gracias",
+    "lang": "es",
+    "modality": "tactile"
+  },
+  "expected": {
+    "input": {
+      "text": "gracias",
+      "lang": "es",
+      "modality": "tactile"
+    },
+    "pivot": {
+      "text": "thank you",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "I",
+          "role": "agent"
+        },
+        {
+          "id": "FEEL",
+          "role": "predicate"
+        },
+        {
+          "id": "GOOD",
+          "role": "argument"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "FEEL",
+          "args": [
+            "I",
+            "GOOD"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "feel",
+        "i",
+        "good"
+      ],
+      "clitics": [
+        {
+          "form": "=hu",
+          "type": "mood_interrogative"
+        }
+      ],
+      "mood": "INTERR",
+      "modality": "tactile"
+    },
+    "modalities": {
+      "tactile": {
+        "modality": "tactile",
+        "protocol": {
+          "construction_id": "T005",
+          "conveyer_hand": "left",
+          "receiver_location": "right_shoulder",
+          "movement": "press",
+          "contact": "firm",
+          "referent_id": "r8bd3abd7",
+          "gloss": "attention_request"
+        },
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

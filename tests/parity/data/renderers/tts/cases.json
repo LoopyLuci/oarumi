@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "_note": "All cases force the asset backend on both platforms (clicks/hums present). Native-backend cases are exercised only in per-platform tests.",
+  "cases": [
+    { "id": "click_ʘ", "surface": { "phonemes": ["ʘ", "a"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } },
+    { "id": "click_ǀ", "surface": { "phonemes": ["ǀ", "a"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } },
+    { "id": "click_ǃ", "surface": { "phonemes": ["ǃ", "a"], "clitics": [{"form": "=hu", "type": "mood_interrogative"}], "mood": "INTERR", "modality": "spoken" } },
+    { "id": "click_ǁ", "surface": { "phonemes": ["ǁ", "a"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } },
+    { "id": "click_ǂ", "surface": { "phonemes": ["ǂ", "a"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } },
+    { "id": "click_nasal_ʘ", "surface": { "phonemes": ["ʘ̃", "a"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } },
+    { "id": "click_asp_ǀ", "surface": { "phonemes": ["ǀʰ", "a"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } },
+    { "id": "hum_steady", "surface": { "phonemes": ["hum_steady", "hello"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } },
+    { "id": "hum_pulsed", "surface": { "phonemes": ["hum_pulsed", "hello"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } },
+    { "id": "hum_rising", "surface": { "phonemes": ["hum_rising", "hello"], "clitics": [{"form": "=hu", "type": "mood_interrogative"}], "mood": "INTERR", "modality": "spoken" } },
+    { "id": "hum_falling", "surface": { "phonemes": ["hum_falling", "hello"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } },
+    { "id": "click_hum", "surface": { "phonemes": ["ǁ", "hum_pulsed"], "clitics": [{"form": "=ha", "type": "mood_declarative"}], "mood": "DECL", "modality": "spoken" } }
+  ]
+}

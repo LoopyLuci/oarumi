@@ -1,0 +1,45 @@
+{
+  "request": {
+    "text": "s'il vous plaît",
+    "lang": "fr",
+    "modality": "spoken"
+  },
+  "expected": {
+    "input": {
+      "text": "s'il vous plaît",
+      "lang": "fr",
+      "modality": "spoken"
+    },
+    "pivot": {
+      "text": "please",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [],
+      "combinators": [],
+      "valid": false
+    },
+    "surface": {
+      "phonemes": [],
+      "clitics": [],
+      "mood": "DECL",
+      "modality": "spoken"
+    },
+    "modalities": {},
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [
+      {
+        "component": "nsm_decompose",
+        "trigger": "validation"
+      }
+    ],
+    "degraded": true
+  }
+}

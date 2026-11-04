@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Oarumi — SiGML viewer</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #17181b;
+    color: #e6e7ea;
+    font-family: "Inter", "Segoe UI", sans-serif;
+    height: 100%;
+  }
+  #stage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 14px;
+    min-height: 80px;
+    align-content: flex-start;
+  }
+  .symbol {
+    display: inline-block;
+    padding: 6px 10px;
+    background: #2a2d33;
+    border: 1px solid #3b3e45;
+    border-radius: 6px;
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    font-size: 12px;
+    animation: pop 320ms ease-out;
+  }
+  .symbol.unknown {
+    background: #402323;
+    border-color: #6a2f2f;
+    color: #ffbcbc;
+  }
+  #empty {
+    color: #6c6f76;
+    padding: 14px;
+    font-size: 12px;
+  }
+  @keyframes pop {
+    from { transform: scale(0.7); opacity: 0.3; }
+    to   { transform: scale(1);   opacity: 1;   }
+  }
+</style>
+</head>
+<body>
+  <div id="empty">No sign loaded. Run a translation with the “signed” modality.</div>
+  <div id="stage"></div>
+  <script>
+    window.playSigML = function (xml) {
+      const stage = document.getElementById('stage');
+      const empty = document.getElementById('empty');
+      stage.innerHTML = '';
+
+      try {
+        const doc = new DOMParser().parseFromString(xml, 'text/xml');
+        const err = doc.getElementsByTagName('parsererror');
+        if (err.length > 0) {
+          empty.textContent = 'SiGML parse error.';
+          return;
+        }
+        const manual = doc.getElementsByTagName('hamnosys_manual')[0];
+        if (!manual) {
+          empty.textContent = 'No hamnosys_manual element.';
+          return;
+        }
+        empty.textContent = '';
+        for (const child of Array.from(manual.children)) {
+          const tag = child.tagName;
+          if (tag.toLowerCase() === 'hamunknown') {
+            const div = document.createElement('div');
+            div.className = 'symbol unknown';
+            div.textContent = '?' + (child.getAttribute('sym') || '');
+            stage.appendChild(div);
+          } else {
+            const div = document.createElement('div');
+            div.className = 'symbol';
+            div.textContent = tag;
+            stage.appendChild(div);
+          }
+        }
+      } catch (e) {
+        empty.textContent = 'Error: ' + e;
+      }
+    };
+  </script>
+</body>
+</html>

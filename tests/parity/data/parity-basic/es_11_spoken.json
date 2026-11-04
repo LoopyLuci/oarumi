@@ -1,0 +1,83 @@
+{
+  "request": {
+    "text": "¿dónde está el baño?",
+    "lang": "es",
+    "modality": "spoken"
+  },
+  "expected": {
+    "input": {
+      "text": "¿dónde está el baño?",
+      "lang": "es",
+      "modality": "spoken"
+    },
+    "pivot": {
+      "text": "where is the bathroom",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "SOMETHING",
+          "role": "patient"
+        },
+        {
+          "id": "BE_SOMEWHERE",
+          "role": "predicate"
+        },
+        {
+          "id": "WHERE",
+          "role": "modifier"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "BE_SOMEWHERE",
+          "args": [
+            "SOMETHING",
+            "WHERE"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "be-somewhere",
+        "something",
+        "where"
+      ],
+      "clitics": [
+        {
+          "form": "=hu",
+          "type": "mood_interrogative"
+        }
+      ],
+      "mood": "INTERR",
+      "modality": "spoken"
+    },
+    "modalities": {
+      "spoken": {
+        "modality": "spoken",
+        "ssml": null,
+        "phoneme_stream": [
+          "be-somewhere",
+          "something",
+          "where"
+        ],
+        "backend": "asset",
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

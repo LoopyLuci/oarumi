@@ -1,0 +1,9 @@
+# Tactile (Protactile-informed) constructions. Normative (LANGUAGE_SPEC § 7).
+# 50 reciprocal constructions required; these are the seed set.
+
+constructions:
+  - { id: T001, conveyer_hand: right, receiver_location: left_forearm, movement: linear,   contact: light, gloss: referent_established }
+  - { id: T002, conveyer_hand: left,  receiver_location: right_forearm, movement: circular, contact: firm,  gloss: location_here }
+  - { id: T003, conveyer_hand: both,  receiver_location: chest,         movement: tap,     contact: light, gloss: self_reference }
+  - { id: T004, conveyer_hand: right, receiver_location: left_palm,     movement: hold,    contact: firm,  gloss: object_given }
+  - { id: T005, conveyer_hand: left,  receiver_location: right_shoulder, movement: press,  contact: firm,  gloss: attention_request }

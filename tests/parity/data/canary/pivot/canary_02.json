@@ -1,0 +1,8 @@
+{
+  "input": {
+    "text": "مرحبا",
+    "lang": "ar",
+    "modality": "tactile"
+  },
+  "expected": {}
+}

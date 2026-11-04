@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <!-- Mirrors backup_rules.xml for Android 12+ (API 31+) data extraction. -->
+    <cloud-backup>
+        <exclude domain="database" path="oarumi.db" />
+        <exclude domain="file" path="oarumi/audit.jsonl" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="database" path="oarumi.db" />
+        <exclude domain="file" path="oarumi/audit.jsonl" />
+    </device-transfer>
+</data-extraction-rules>

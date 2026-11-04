@@ -1,0 +1,58 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Database (schema + seeds are tracked; generated DB is not)
+language/*.db
+language/*.db-journal
+language/*.db-wal
+
+# Model artifacts (manifests are tracked; weights are not)
+models/dev-stubs/
+models/**/*.tflite
+models/**/*.onnx
+models/**/*.gguf
+models/**/*.bin
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+*.jks
+*.keystore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+tests/parity/.cache/
+assets/audio/**/*.wav
+!assets/audio/manifest.json
+desktop/*.log
+desktop/resources/avatar/cwasa/
+models/dev-stubs.manifest.local.json
+*.partial
+android/app/src/main/assets/oarumi.db
+android/key.properties
+tests/parity/reports/
+.oarumi/
+
+tests/bench/.benchmarks/
+.pytest_cache/
+coverage.xml
+coverage.json
+*.coverage
+htmlcov/

@@ -1,0 +1,228 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+jobs:
+  # --- Fast PR gates ---------------------------------------------------
+
+  lint:
+    name: lint (python)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: ruff check .
+      - run: black --check .
+      - run: mypy --strict engine/python desktop tools
+
+  docs:
+    name: docs links
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: python -m pytest tools/tests/test_docs_links.py -q
+
+  schema:
+    name: schema drift
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: python tools/schema_export.py --check
+      - run: python tools/validate_schemas.py --all
+      - run: python tools/validate_primes.py
+
+  # --- Python test matrix ----------------------------------------------
+
+  unit:
+    name: unit (py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - run: |
+          source .venv/bin/activate
+          pytest engine/python/tests desktop/tests tools/tests tools/parity_web/tests -q \
+            --cov=oarumi --cov=desktop --cov=tools \
+            --cov-report=term-missing \
+            --cov-report=xml \
+            --cov-fail-under=85
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-py${{ matrix.python }}
+          path: coverage.xml
+          retention-days: 7
+
+  parity:
+    name: parity (python)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - run: |
+          source .venv/bin/activate
+          OARUMI_STRICT_PARITY=1 pytest tests/parity -q \
+            --parity-corpus=parity-basic \
+            --timeout=60
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: parity-py-failure
+          path: tests/parity/reports/
+          retention-days: 7
+
+  fault:
+    name: fault injection
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - run: |
+          source .venv/bin/activate
+          pytest tests/fault -q --timeout=60
+
+  offline:
+    name: offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - run: |
+          source .venv/bin/activate
+          pytest tests/offline -q --timeout=60
+
+  # --- Kotlin engine + Android unit ------------------------------------
+
+  android-unit:
+    name: android unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - name: Kotlin engine + app unit tests
+        run: |
+          cd android
+          ./gradlew --no-daemon \
+            :engine:test \
+            :app:testMlkitDebugUnitTest \
+            :app:testArgosDebugUnitTest
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-test-results
+          path: |
+            android/engine/build/test-results/
+            android/app/build/test-results/
+            android/build/parity-report.json
+          retention-days: 7
+
+  # --- Parity web ------------------------------------------------------
+
+  parity-web:
+    name: parity web
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: ./scripts/ci_setup.sh
+      - run: |
+          source .venv/bin/activate
+          pytest tools/parity_web/tests -q \
+            --cov=tools.parity_web \
+            --cov-report=term-missing \
+            --cov-fail-under=85 \
+            --timeout=60
+
+  # --- Aggregate gate --------------------------------------------------
+
+  ci-pass:
+    name: ci-pass
+    needs: [lint, docs, schema, unit, parity, fault, offline, android-unit, parity-web]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check all jobs
+        run: |
+          if [[ "${{ needs.lint.result }}" != "success" ]] || \
+             [[ "${{ needs.docs.result }}" != "success" ]] || \
+             [[ "${{ needs.schema.result }}" != "success" ]] || \
+             [[ "${{ needs.unit.result }}" != "success" ]] || \
+             [[ "${{ needs.parity.result }}" != "success" ]] || \
+             [[ "${{ needs.fault.result }}" != "success" ]] || \
+             [[ "${{ needs.offline.result }}" != "success" ]] || \
+             [[ "${{ needs.android-unit.result }}" != "success" ]] || \
+             [[ "${{ needs.parity-web.result }}" != "success" ]]; then
+            echo "One or more required jobs failed"
+            exit 1
+          fi
+          echo "All required jobs passed"

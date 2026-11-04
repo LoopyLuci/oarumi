@@ -1,0 +1,10 @@
+{
+  "modality": "signed",
+  "sigml": "<sigml xmlns=\"https://vhg.cmp.uea.ac.uk/tech/jas/sigml\">\n  <hns_sign gloss=\"test\">\n    <hamnosys_manual>\n      <hamunknown sym=\"hamnotarealsymbol\" />\n    </hamnosys_manual>\n  </hns_sign>\n</sigml>",
+  "avatar_ok": false,
+  "gloss": "test",
+  "valid": false,
+  "errors": [
+    "unknown_symbol:hamnotarealsymbol"
+  ]
+}

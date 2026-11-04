@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Oarumi prosody (structural, generated from the YAML baseline)",
+  "type": "object",
+  "properties": {
+    "hum_contours": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "shape": {
+            "type": "string"
+          },
+          "function": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "shape",
+          "function"
+        ]
+      }
+    },
+    "hum_interjections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "form": {
+            "type": "string"
+          },
+          "function": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "form",
+          "function"
+        ]
+      }
+    },
+    "attitudinal_particles": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "form": {
+                "type": "string"
+              },
+              "gloss": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "form",
+              "gloss"
+            ]
+          }
+        },
+        "intensity": {
+          "type": "object",
+          "properties": {
+            "strong": {
+              "type": "string"
+            },
+            "mild": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "strong",
+            "mild"
+          ]
+        }
+      },
+      "required": [
+        "count",
+        "members",
+        "intensity"
+      ]
+    },
+    "repair": {
+      "type": "object",
+      "properties": {
+        "open_class": {
+          "type": "object",
+          "properties": {
+            "spoken": {
+              "type": "string"
+            },
+            "hum": {
+              "type": "string"
+            },
+            "gloss": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "spoken",
+            "hum",
+            "gloss"
+          ]
+        },
+        "restricted": {
+          "type": "object",
+          "properties": {
+            "spoken": {
+              "type": "string"
+            },
+            "hum": {
+              "type": "string"
+            },
+            "gloss": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "spoken",
+            "hum",
+            "gloss"
+          ]
+        },
+        "specific": {
+          "type": "object",
+          "properties": {
+            "spoken": {
+              "type": "string"
+            },
+            "hum": {
+              "type": "string"
+            },
+            "gloss": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "spoken",
+            "hum",
+            "gloss"
+          ]
+        },
+        "self_repair": {
+          "type": "object",
+          "properties": {
+            "spoken": {
+              "type": "string"
+            },
+            "hum": {
+              "type": "string"
+            },
+            "gloss": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "spoken",
+            "hum",
+            "gloss"
+          ]
+        },
+        "acceptance": {
+          "type": "object",
+          "properties": {
+            "spoken": {
+              "type": "string"
+            },
+            "hum": {
+              "type": "string"
+            },
+            "gloss": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "spoken",
+            "hum",
+            "gloss"
+          ]
+        }
+      },
+      "required": [
+        "open_class",
+        "restricted",
+        "specific",
+        "self_repair",
+        "acceptance"
+      ]
+    }
+  },
+  "required": [
+    "hum_contours",
+    "hum_interjections",
+    "attitudinal_particles",
+    "repair"
+  ]
+}

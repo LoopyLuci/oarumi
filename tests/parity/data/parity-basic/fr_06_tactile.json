@@ -1,0 +1,85 @@
+{
+  "request": {
+    "text": "je vois le livre",
+    "lang": "fr",
+    "modality": "tactile"
+  },
+  "expected": {
+    "input": {
+      "text": "je vois le livre",
+      "lang": "fr",
+      "modality": "tactile"
+    },
+    "pivot": {
+      "text": "I see the book",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "I",
+          "role": "agent"
+        },
+        {
+          "id": "SEE",
+          "role": "predicate"
+        },
+        {
+          "id": "SOMETHING",
+          "role": "patient"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "clause",
+          "head": "SEE",
+          "args": [
+            "I",
+            "SOMETHING"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "see",
+        "i",
+        "something"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "tactile"
+    },
+    "modalities": {
+      "tactile": {
+        "modality": "tactile",
+        "protocol": {
+          "construction_id": "T001",
+          "conveyer_hand": "right",
+          "receiver_location": "left_forearm",
+          "movement": "linear",
+          "contact": "light",
+          "referent_id": "rdbfe2ffb",
+          "gloss": "referent_established"
+        },
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

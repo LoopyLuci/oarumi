@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oarumi.com/schemas/primes.schema.json",
+  "title": "Oarumi NSM primes",
+  "type": "object",
+  "required": ["nsm_version", "primes"],
+  "properties": {
+    "nsm_version": { "type": "string" },
+    "needs_linguist_signoff": { "type": "boolean" },
+    "primes": {
+      "type": "array",
+      "minItems": 60,
+      "maxItems": 70,
+      "items": {
+        "type": "object",
+        "required": ["id", "category", "gloss", "combinators"],
+        "properties": {
+          "id":           { "type": "string", "pattern": "^[A-Z][A-Z_]*$" },
+          "category":     { "type": "string" },
+          "gloss":        { "type": "string", "minLength": 1 },
+          "combinators":  { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

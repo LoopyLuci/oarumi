@@ -1,0 +1,24 @@
+# Closed classifier inventory for signed modality. Normative (LANGUAGE_SPEC § 6.2).
+count: 14
+
+classifiers:
+  - { id: semantic_whole, handshape: "flat_open",      gloss: whole entity }
+  - { id: semantic_person, handshape: "index_up",      gloss: person referent }
+  - { id: semantic_vehicle, handshape: "three_finger",  gloss: vehicle }
+  - { id: surface_flat,   handshape: "flat_palm_down", gloss: flat surface }
+  - { id: surface_curved, handshape: "cupped",         gloss: curved surface }
+  - { id: surface_cyl,    handshape: "c_grip",         gloss: cylindrical object }
+  - { id: tracing_path,   handshape: "index_trace",    gloss: path tracing }
+  - { id: tracing_line,   handshape: "two_finger_trace", gloss: line tracing }
+  - { id: holding_small,  handshape: "pinch",          gloss: holding small object }
+  - { id: holding_large,  handshape: "wide_grip",      gloss: holding large object }
+  - { id: quant_many,     handshape: "spread_multi",   gloss: many referents }
+  - { id: quant_few,      handshape: "two_up",         gloss: few referents }
+  - { id: quant_pair,     handshape: "v_shape",        gloss: pair }
+  - { id: quant_mass,     handshape: "rounded_both",   gloss: mass/collective }
+
+spatial_operations:
+  - { id: place,   gloss: place at location }
+  - { id: path,    gloss: move along path }
+  - { id: orient,  gloss: change orientation }
+  - { id: contact, gloss: make contact }

@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule: { interval: "weekly", day: "monday" }
+    open-pull-requests-limit: 10
+    labels: ["deps", "python"]
+    ignore:
+      - dependency-name: "pyside6"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: "gradle"
+    directory: "/android"
+    schedule: { interval: "weekly", day: "monday" }
+    open-pull-requests-limit: 10
+    labels: ["deps", "android"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule: { interval: "weekly", day: "monday" }
+    open-pull-requests-limit: 5
+    labels: ["deps", "ci"]

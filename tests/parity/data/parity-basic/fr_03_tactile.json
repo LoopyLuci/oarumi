@@ -1,0 +1,72 @@
+{
+  "request": {
+    "text": "oui",
+    "lang": "fr",
+    "modality": "tactile"
+  },
+  "expected": {
+    "input": {
+      "text": "oui",
+      "lang": "fr",
+      "modality": "tactile"
+    },
+    "pivot": {
+      "text": "yes",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "TRUE",
+          "role": "predicate"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "TRUE",
+          "args": []
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "true"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "tactile"
+    },
+    "modalities": {
+      "tactile": {
+        "modality": "tactile",
+        "protocol": {
+          "construction_id": "T001",
+          "conveyer_hand": "right",
+          "receiver_location": "left_forearm",
+          "movement": "linear",
+          "contact": "light",
+          "referent_id": "rb5bea41b",
+          "gloss": "referent_established"
+        },
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

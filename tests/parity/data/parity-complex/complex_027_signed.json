@@ -1,0 +1,79 @@
+{
+  "request": {
+    "text": "bonjour",
+    "lang": "fr",
+    "modality": "signed"
+  },
+  "expected": {
+    "input": {
+      "text": "bonjour",
+      "lang": "fr",
+      "modality": "signed"
+    },
+    "pivot": {
+      "text": "hello",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "I",
+          "role": "agent"
+        },
+        {
+          "id": "SAY",
+          "role": "predicate"
+        },
+        {
+          "id": "WORDS",
+          "role": "patient"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "clause",
+          "head": "SAY",
+          "args": [
+            "I",
+            "WORDS"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "say",
+        "i",
+        "words"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "signed"
+    },
+    "modalities": {
+      "signed": {
+        "modality": "signed",
+        "sigml": "<sigml xmlns=\"https://vhg.cmp.uea.ac.uk/tech/jas/sigml\">\n  <hns_sign gloss=\"say\">\n    <hamnosys_manual>\n      <hamfinger2 />\n      <hamthumbout />\n      <hamnohandchange />\n      <hamarcsym />\n      <hamextfingeru />\n    </hamnosys_manual>\n  </hns_sign>\n</sigml>",
+        "avatar_ok": true,
+        "gloss": "say",
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

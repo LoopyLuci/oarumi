@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Oarumi signs/classifiers (structural, generated from the YAML baseline)",
+  "type": "object",
+  "properties": {
+    "count": {
+      "type": "integer"
+    },
+    "classifiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "handshape": {
+            "type": "string"
+          },
+          "gloss": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "handshape",
+          "gloss"
+        ]
+      }
+    },
+    "spatial_operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "gloss": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "gloss"
+        ]
+      }
+    }
+  },
+  "required": [
+    "count",
+    "classifiers",
+    "spatial_operations"
+  ]
+}

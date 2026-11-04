@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Oarumi morphology (structural, generated from the YAML baseline)",
+  "type": "object",
+  "properties": {
+    "number": {
+      "type": "object",
+      "properties": {
+        "plural": {
+          "type": "object",
+          "properties": {
+            "form": {
+              "type": "string"
+            },
+            "gloss": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "form",
+            "gloss"
+          ]
+        },
+        "unmarked_means": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "plural",
+        "unmarked_means"
+      ]
+    },
+    "case_clitics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "form": {
+            "type": "string"
+          },
+          "gloss": {
+            "type": "string"
+          },
+          "alignment": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "form",
+          "gloss",
+          "alignment"
+        ]
+      }
+    },
+    "ergative_module": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "marker": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "usage": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "enabled",
+        "marker",
+        "scope",
+        "usage"
+      ]
+    },
+    "aspect": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "form": {
+            "type": "string"
+          },
+          "gloss": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "form",
+          "gloss"
+        ]
+      }
+    },
+    "valency": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "form": {
+            "type": "string"
+          },
+          "gloss": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "form",
+          "gloss"
+        ]
+      }
+    },
+    "derivation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "form": {
+            "type": "string"
+          },
+          "gloss": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "form",
+          "gloss"
+        ]
+      }
+    },
+    "classifiers": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "gloss": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "gloss"
+            ]
+          }
+        }
+      },
+      "required": [
+        "count",
+        "members"
+      ]
+    }
+  },
+  "required": [
+    "number",
+    "case_clitics",
+    "ergative_module",
+    "aspect",
+    "valency",
+    "derivation",
+    "classifiers"
+  ]
+}

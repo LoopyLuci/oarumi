@@ -1,0 +1,79 @@
+{
+  "request": {
+    "text": "他想去",
+    "lang": "zh",
+    "modality": "signed"
+  },
+  "expected": {
+    "input": {
+      "text": "他想去",
+      "lang": "zh",
+      "modality": "signed"
+    },
+    "pivot": {
+      "text": "he wants to go",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "SOMEONE",
+          "role": "agent"
+        },
+        {
+          "id": "WANT",
+          "role": "predicate"
+        },
+        {
+          "id": "SOMETHING",
+          "role": "patient"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "clause",
+          "head": "WANT",
+          "args": [
+            "SOMEONE",
+            "SOMETHING"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "want",
+        "someone",
+        "something"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "signed"
+    },
+    "modalities": {
+      "signed": {
+        "modality": "signed",
+        "sigml": "<sigml xmlns=\"https://vhg.cmp.uea.ac.uk/tech/jas/sigml\">\n  <hns_sign gloss=\"want\">\n    <hamnosys_manual>\n      <hamfinger2 />\n      <hamthumbout />\n      <hamnohandchange />\n      <hamarcsym />\n      <hamextfingeru />\n    </hamnosys_manual>\n  </hns_sign>\n</sigml>",
+        "avatar_ok": true,
+        "gloss": "want",
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

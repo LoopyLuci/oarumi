@@ -1,0 +1,79 @@
+{
+  "request": {
+    "text": "不",
+    "lang": "zh",
+    "modality": "tactile"
+  },
+  "expected": {
+    "input": {
+      "text": "不",
+      "lang": "zh",
+      "modality": "tactile"
+    },
+    "pivot": {
+      "text": "no",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "NOT",
+          "role": "operator"
+        },
+        {
+          "id": "TRUE",
+          "role": "predicate"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "NOT",
+          "args": [
+            "TRUE"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "not",
+        "true"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "tactile"
+    },
+    "modalities": {
+      "tactile": {
+        "modality": "tactile",
+        "protocol": {
+          "construction_id": "T001",
+          "conveyer_hand": "right",
+          "receiver_location": "left_forearm",
+          "movement": "linear",
+          "contact": "light",
+          "referent_id": "raea9a824",
+          "gloss": "referent_established"
+        },
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

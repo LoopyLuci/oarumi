@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Oarumi tactile/protactile (structural, generated from the YAML baseline)",
+  "type": "object",
+  "properties": {
+    "constructions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "conveyer_hand": {
+            "type": "string"
+          },
+          "receiver_location": {
+            "type": "string"
+          },
+          "movement": {
+            "type": "string"
+          },
+          "contact": {
+            "type": "string"
+          },
+          "gloss": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "conveyer_hand",
+          "receiver_location",
+          "movement",
+          "contact",
+          "gloss"
+        ]
+      }
+    }
+  },
+  "required": [
+    "constructions"
+  ]
+}

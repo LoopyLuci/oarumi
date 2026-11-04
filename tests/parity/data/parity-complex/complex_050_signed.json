@@ -1,0 +1,73 @@
+{
+  "request": {
+    "text": "كيف حالك",
+    "lang": "ar",
+    "modality": "signed"
+  },
+  "expected": {
+    "input": {
+      "text": "كيف حالك",
+      "lang": "ar",
+      "modality": "signed"
+    },
+    "pivot": {
+      "text": "how are you",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "YOU",
+          "role": "agent"
+        },
+        {
+          "id": "FEEL",
+          "role": "predicate"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "FEEL",
+          "args": [
+            "YOU"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "feel",
+        "you"
+      ],
+      "clitics": [
+        {
+          "form": "=hu",
+          "type": "mood_interrogative"
+        }
+      ],
+      "mood": "INTERR",
+      "modality": "signed"
+    },
+    "modalities": {
+      "signed": {
+        "modality": "signed",
+        "sigml": "<sigml xmlns=\"https://vhg.cmp.uea.ac.uk/tech/jas/sigml\">\n  <hns_sign gloss=\"feel\">\n    <hamnosys_manual>\n      <hamfinger2 />\n      <hamthumbout />\n      <hamnohandchange />\n      <hamarcsym />\n      <hamextfingeru />\n    </hamnosys_manual>\n  </hns_sign>\n</sigml>",
+        "avatar_ok": true,
+        "gloss": "feel",
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

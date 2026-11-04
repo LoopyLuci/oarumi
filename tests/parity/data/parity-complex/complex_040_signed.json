@@ -1,0 +1,66 @@
+{
+  "request": {
+    "text": "نعم",
+    "lang": "ar",
+    "modality": "signed"
+  },
+  "expected": {
+    "input": {
+      "text": "نعم",
+      "lang": "ar",
+      "modality": "signed"
+    },
+    "pivot": {
+      "text": "yes",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "TRUE",
+          "role": "predicate"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "TRUE",
+          "args": []
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "true"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "signed"
+    },
+    "modalities": {
+      "signed": {
+        "modality": "signed",
+        "sigml": "<sigml xmlns=\"https://vhg.cmp.uea.ac.uk/tech/jas/sigml\">\n  <hns_sign gloss=\"true\">\n    <hamnosys_manual>\n      <hamfinger2 />\n      <hamthumbout />\n      <hamnohandchange />\n      <hamarcsym />\n      <hamextfingeru />\n    </hamnosys_manual>\n  </hns_sign>\n</sigml>",
+        "avatar_ok": true,
+        "gloss": "true",
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

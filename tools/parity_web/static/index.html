@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oarumi Parity</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark">O</span>
+      <span class="brand-name">Oarumi Parity</span>
+    </div>
+    <nav class="app-nav" id="nav">
+      <a href="#/" data-route="overview">Overview</a>
+      <a href="#/runs" data-route="runs">Runs</a>
+    </nav>
+    <div class="health" id="health">
+      <span class="dot dot-pending"></span>
+      <span class="health-label">checking…</span>
+    </div>
+  </header>
+
+  <main id="app" class="app-main">
+    <div class="placeholder">
+      <p>Loading…</p>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <span id="footer-status">Ready</span>
+    <span class="footer-links">
+      <a href="/api/health" target="_blank" rel="noopener">/api/health</a>
+      <a href="/api/runs" target="_blank" rel="noopener">/api/runs</a>
+    </span>
+  </footer>
+
+  <script src="/static/diff.js"></script>
+  <script src="/static/failover.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

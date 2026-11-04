@@ -1,0 +1,85 @@
+{
+  "request": {
+    "text": "¿dónde está el baño?",
+    "lang": "es",
+    "modality": "tactile"
+  },
+  "expected": {
+    "input": {
+      "text": "¿dónde está el baño?",
+      "lang": "es",
+      "modality": "tactile"
+    },
+    "pivot": {
+      "text": "where is the bathroom",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "SOMETHING",
+          "role": "patient"
+        },
+        {
+          "id": "BE_SOMEWHERE",
+          "role": "predicate"
+        },
+        {
+          "id": "WHERE",
+          "role": "modifier"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "BE_SOMEWHERE",
+          "args": [
+            "SOMETHING",
+            "WHERE"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "be-somewhere",
+        "something",
+        "where"
+      ],
+      "clitics": [
+        {
+          "form": "=hu",
+          "type": "mood_interrogative"
+        }
+      ],
+      "mood": "INTERR",
+      "modality": "tactile"
+    },
+    "modalities": {
+      "tactile": {
+        "modality": "tactile",
+        "protocol": {
+          "construction_id": "T002",
+          "conveyer_hand": "left",
+          "receiver_location": "right_forearm",
+          "movement": "circular",
+          "contact": "firm",
+          "referent_id": "r196a6cf5",
+          "gloss": "location_here"
+        },
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

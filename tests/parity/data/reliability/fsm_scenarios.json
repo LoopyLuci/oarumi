@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "scenarios": [
+    { "name": "healthy_to_degraded", "ops": ["trigger"], "expected_state": "DEGRADED", "expected_attempt": 0 },
+    { "name": "degraded_to_failed",  "ops": ["trigger", "trigger"], "expected_state": "FAILED", "expected_attempt": 0 },
+    { "name": "canary_pass_from_degraded", "ops": ["trigger", "canary_pass"], "expected_state": "HEALTHY", "expected_attempt": 0 },
+    { "name": "canary_fail_from_recovering", "ops": ["trigger", "canary_fail"], "expected_state": "FAILED", "expected_attempt": 1 }
+  ]
+}

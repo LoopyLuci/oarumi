@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- The language DB and audio assets are read-only; no need to back them up. -->
+    <exclude domain="database" path="oarumi.db" />
+    <exclude domain="file" path="oarumi/audit.jsonl" />
+</full-backup-content>

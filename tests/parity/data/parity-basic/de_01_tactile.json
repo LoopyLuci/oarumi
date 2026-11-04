@@ -1,0 +1,85 @@
+{
+  "request": {
+    "text": "hallo",
+    "lang": "de",
+    "modality": "tactile"
+  },
+  "expected": {
+    "input": {
+      "text": "hallo",
+      "lang": "de",
+      "modality": "tactile"
+    },
+    "pivot": {
+      "text": "hello",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "I",
+          "role": "agent"
+        },
+        {
+          "id": "SAY",
+          "role": "predicate"
+        },
+        {
+          "id": "WORDS",
+          "role": "patient"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "clause",
+          "head": "SAY",
+          "args": [
+            "I",
+            "WORDS"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "say",
+        "i",
+        "words"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "tactile"
+    },
+    "modalities": {
+      "tactile": {
+        "modality": "tactile",
+        "protocol": {
+          "construction_id": "T001",
+          "conveyer_hand": "right",
+          "receiver_location": "left_forearm",
+          "movement": "linear",
+          "contact": "light",
+          "referent_id": "r63089b36",
+          "gloss": "referent_established"
+        },
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

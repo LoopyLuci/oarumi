@@ -1,0 +1,8 @@
+{
+  "input": {
+    "text": "إنه جيد",
+    "lang": "ar",
+    "modality": "tactile"
+  },
+  "expected": {}
+}

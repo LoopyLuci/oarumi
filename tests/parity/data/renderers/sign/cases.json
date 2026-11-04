@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "cases": [
+    { "id": "default", "gloss": "manu", "annotation": null },
+    { "id": "basic", "gloss": "test", "annotation": "sym:hamfinger2 sym:hamchest sym:hammoveo" },
+    { "id": "unknown_symbol", "gloss": "test", "annotation": "sym:hamnotarealsymbol" },
+    { "id": "mixed", "gloss": "test", "annotation": "sym:hamfinger2 sym:hamnotreal sym:hamchest" },
+    { "id": "empty_annotation", "gloss": "test", "annotation": "" },
+    { "id": "all_valid_1", "gloss": "test", "annotation": "sym:hamfinger2 sym:hamthumbout sym:hamnohandchange sym:hamarcsym sym:hamextfingeru" },
+    { "id": "all_valid_2", "gloss": "test", "annotation": "sym:hamshoulders sym:hamchest sym:hamrepeat" },
+    { "id": "all_valid_3", "gloss": "test", "annotation": "sym:hampalmup sym:hammoveu" }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "modality": "spoken",
+  "ssml": null,
+  "phoneme_stream": [
+    "hum_pulsed",
+    "hello"
+  ],
+  "backend": "asset",
+  "valid": true
+}

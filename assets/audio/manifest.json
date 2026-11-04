@@ -1,0 +1,121 @@
+{
+  "version": "0.1.0",
+  "sample_rate": 22050,
+  "generated_by": "tools/generate_audio_assets.py",
+  "assets": [
+    {
+      "id": "click_bilabial_plain",
+      "path": "clicks/click_bilabial_plain.wav",
+      "sha256": "b9615ed2d53f55207de5e68bc675bcad54039f3ba856afcae6cc4cb62f36a73b",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_bilabial_nasal",
+      "path": "clicks/click_bilabial_nasal.wav",
+      "sha256": "3feb17402eb33ad57f77548c31abb455bfa83f6f2b8190615b6a92181a239ef3",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_bilabial_aspirated",
+      "path": "clicks/click_bilabial_aspirated.wav",
+      "sha256": "dd671bcce8fe6af027ca15f5375f9556c17821e486c0dd5e12bc514feed4ef84",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_dental_plain",
+      "path": "clicks/click_dental_plain.wav",
+      "sha256": "9a5b929c53466effdaa7143ce8eb25760ed78369010b278a9fe478a72ef47e7c",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_dental_nasal",
+      "path": "clicks/click_dental_nasal.wav",
+      "sha256": "1e1c7fe6fc0ef88fa7bc6552725313d5d5ddb59a82265c178a4ad7b392d55580",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_dental_aspirated",
+      "path": "clicks/click_dental_aspirated.wav",
+      "sha256": "1e0511a8204306547c943ab66d6c3e00ad330e1ab2d7efb6da5b826ac59d3958",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_alveolar_plain",
+      "path": "clicks/click_alveolar_plain.wav",
+      "sha256": "679e1e3f6aac09daa2dcdbd16f68b5fbed0ab4df192712f73fe882fd0cb5b3f5",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_alveolar_nasal",
+      "path": "clicks/click_alveolar_nasal.wav",
+      "sha256": "2829f0fef51d56c356197a207f22cda4c6bb89bcfd633785bcb097873311c394",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_alveolar_aspirated",
+      "path": "clicks/click_alveolar_aspirated.wav",
+      "sha256": "f31d356c93e58c24181423b9773273e5fd3977b45e2fbe9000cf9cf4fba6e4e7",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_lateral_plain",
+      "path": "clicks/click_lateral_plain.wav",
+      "sha256": "3d6bed94178f71503e814e2b67f1df1234745f9ba6e147ca315af4223cc42178",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_lateral_nasal",
+      "path": "clicks/click_lateral_nasal.wav",
+      "sha256": "5057138eefe9050b51b5877ad7d387b58f827573e56b10c824fc84cfd3b76e70",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_lateral_aspirated",
+      "path": "clicks/click_lateral_aspirated.wav",
+      "sha256": "b67ca95d7e983cc4dcfc1c08528c4b956bcdc7565fbed477747b48b27d27df6c",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_palatal_plain",
+      "path": "clicks/click_palatal_plain.wav",
+      "sha256": "133fbb2cbfd720d1338f47e67f1c9a142c2e326084cb557e9a28ce86dee46cce",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_palatal_nasal",
+      "path": "clicks/click_palatal_nasal.wav",
+      "sha256": "f46301bb83e59184fc791fa8a6da6534c079c7166775f27e03ff6ac41ae30944",
+      "sample_rate": 22050
+    },
+    {
+      "id": "click_palatal_aspirated",
+      "path": "clicks/click_palatal_aspirated.wav",
+      "sha256": "322c3a78633dc7f6bb0245f18f58226f82abc411e33023ca28b3569d7a33936b",
+      "sample_rate": 22050
+    },
+    {
+      "id": "hum_steady",
+      "path": "hums/hum_steady.wav",
+      "sha256": "6a8ba247e83dbd5d3e5b6fd6144d49272d848bc7e194fe2435928daf696394b3",
+      "sample_rate": 22050
+    },
+    {
+      "id": "hum_pulsed",
+      "path": "hums/hum_pulsed.wav",
+      "sha256": "9e8e638c93d7b2c919d60e7463b0166b78213eca5c74b7977061f2f7080b2b58",
+      "sample_rate": 22050
+    },
+    {
+      "id": "hum_rising",
+      "path": "hums/hum_rising.wav",
+      "sha256": "966af53eccab43755afa362db3a11fede4cec79fb316a13ea6cc92a0d0d46b20",
+      "sample_rate": 22050
+    },
+    {
+      "id": "hum_falling",
+      "path": "hums/hum_falling.wav",
+      "sha256": "14c48db129663c6692ee4dda805cccdf63d61ac3f142592320f99e8e29a665a5",
+      "sample_rate": 22050
+    }
+  ]
+}

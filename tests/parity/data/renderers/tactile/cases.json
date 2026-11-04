@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "cases": [
+    { "id": "decl_hello",     "surface": { "phonemes": ["hello"],        "clitics": [{"form": "=ha", "type": "mood_declarative"}],   "mood": "DECL",    "modality": "tactile" } },
+    { "id": "interr_where",   "surface": { "phonemes": ["lonu", "bath"], "clitics": [{"form": "=hu", "type": "mood_interrogative"}], "mood": "INTERR",  "modality": "tactile" } },
+    { "id": "interr_who",     "surface": { "phonemes": ["who"],          "clitics": [{"form": "=hu", "type": "mood_interrogative"}], "mood": "INTERR",  "modality": "tactile" } },
+    { "id": "imper",          "surface": { "phonemes": ["come"],         "clitics": [{"form": "=hi", "type": "mood_imperative"}],    "mood": "IMPER",   "modality": "tactile" } },
+    { "id": "prom",           "surface": { "phonemes": ["i", "will"],    "clitics": [{"form": "=ho", "type": "mood_promissive"}],    "mood": "PROM",    "modality": "tactile" } },
+    { "id": "express_thanks", "surface": { "phonemes": ["thanks"],       "clitics": [{"form": "=he", "type": "mood_expressive"}],    "mood": "EXPRESS", "modality": "tactile" } },
+    { "id": "voc",            "surface": { "phonemes": ["you"],          "clitics": [{"form": "=ha", "type": "mood_vocative"}],      "mood": "VOC",     "modality": "tactile" } }
+  ]
+}

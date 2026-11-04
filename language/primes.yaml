@@ -1,0 +1,107 @@
+# Oarumi NSM prime inventory.
+#
+# VERSION-PINNED. The count of "the primes" varies across publications
+# (60–66 depending on edition). This file pins the Goddard & Wierzbicka (2014)
+# inventory as the project's normative set. Final count is subject to
+# linguist sign-off (TODO FOUND-001).
+nsm_version: goddard-wierzbicka-2014
+needs_linguist_signoff: true
+
+primes:
+  # Substantives
+  - { id: I,              category: substantives, gloss: "I",              combinators: [substance] }
+  - { id: YOU,            category: substantives, gloss: "you",            combinators: [substance] }
+  - { id: SOMEONE,        category: substantives, gloss: "someone",        combinators: [substance] }
+  - { id: PEOPLE,         category: substantives, gloss: "people",         combinators: [substance] }
+  - { id: SOMETHING,      category: substantives, gloss: "something/thing",combinators: [substance] }
+  - { id: BODY,           category: substantives, gloss: "body",           combinators: [substance] }
+
+  # Determiners
+  - { id: THIS,           category: determiners,  gloss: "this",           combinators: [determiner] }
+  - { id: THE_SAME,       category: determiners,  gloss: "the same",       combinators: [determiner] }
+  - { id: OTHER,          category: determiners,  gloss: "other/else",     combinators: [determiner] }
+
+  # Quantifiers
+  - { id: ONE,            category: quantifiers,  gloss: "one",            combinators: [quantifier] }
+  - { id: TWO,            category: quantifiers,  gloss: "two",            combinators: [quantifier] }
+  - { id: SOME,           category: quantifiers,  gloss: "some",           combinators: [quantifier] }
+  - { id: ALL,            category: quantifiers,  gloss: "all",            combinators: [quantifier] }
+  - { id: MANY,           category: quantifiers,  gloss: "many/much",      combinators: [quantifier] }
+  - { id: FEW,            category: quantifiers,  gloss: "little/few",     combinators: [quantifier] }
+
+  # Evaluators
+  - { id: GOOD,           category: evaluators,   gloss: "good",           combinators: [predicate] }
+  - { id: BAD,            category: evaluators,   gloss: "bad",            combinators: [predicate] }
+
+  # Descriptors
+  - { id: BIG,            category: descriptors,  gloss: "big",            combinators: [predicate] }
+  - { id: SMALL,          category: descriptors,  gloss: "small",          combinators: [predicate] }
+
+  # Mental predicates
+  - { id: THINK,          category: mental,       gloss: "think",          combinators: [predicate] }
+  - { id: KNOW,           category: mental,       gloss: "know",           combinators: [predicate] }
+  - { id: WANT,           category: mental,       gloss: "want",           combinators: [predicate] }
+  - { id: DONT_WANT,      category: mental,       gloss: "don't want",     combinators: [predicate] }
+  - { id: FEEL,           category: mental,       gloss: "feel",           combinators: [predicate] }
+  - { id: SEE,            category: mental,       gloss: "see",            combinators: [predicate] }
+  - { id: HEAR,           category: mental,       gloss: "hear",           combinators: [predicate] }
+
+  # Speech
+  - { id: SAY,            category: speech,       gloss: "say",            combinators: [predicate] }
+  - { id: WORDS,          category: speech,       gloss: "words",          combinators: [substance] }
+  - { id: "TRUE",           category: speech,       gloss: "true",           combinators: [predicate] }
+
+  # Actions, events, movement, contact
+  - { id: DO,             category: action,       gloss: "do",             combinators: [predicate] }
+  - { id: HAPPEN,         category: action,       gloss: "happen",         combinators: [predicate] }
+  - { id: MOVE,           category: action,       gloss: "move",           combinators: [predicate] }
+  - { id: TOUCH,          category: action,       gloss: "touch",          combinators: [predicate] }
+
+  # Location, existence, possession, specification
+  - { id: BE_SOMEWHERE,   category: existence,    gloss: "be somewhere",   combinators: [predicate] }
+  - { id: THERE_IS,       category: existence,    gloss: "there is",       combinators: [predicate] }
+  - { id: HAVE,           category: possession,   gloss: "have",           combinators: [predicate] }
+  - { id: BE_SPEC,        category: specification,gloss: "be (someone/something)", combinators: [predicate] }
+  - { id: BE_MINE,        category: possession,   gloss: "be mine",        combinators: [predicate] }
+
+  # Life and death
+  - { id: LIVE,           category: life,         gloss: "live",           combinators: [predicate] }
+  - { id: DIE,            category: life,         gloss: "die",            combinators: [predicate] }
+
+  # Time
+  - { id: TIME,           category: time,         gloss: "when/time",      combinators: [substance, modifier] }
+  - { id: NOW,            category: time,         gloss: "now",            combinators: [modifier] }
+  - { id: BEFORE,         category: time,         gloss: "before",         combinators: [modifier, relational] }
+  - { id: AFTER,          category: time,         gloss: "after",          combinators: [modifier, relational] }
+  - { id: LONG_TIME,      category: time,         gloss: "a long time",    combinators: [modifier] }
+  - { id: SHORT_TIME,     category: time,         gloss: "a short time",   combinators: [modifier] }
+  - { id: FOR_SOME_TIME,  category: time,         gloss: "for some time",  combinators: [modifier] }
+  - { id: MOMENT,         category: time,         gloss: "moment",         combinators: [substance] }
+
+  # Space
+  - { id: WHERE,          category: space,        gloss: "where/place",    combinators: [substance, relational] }
+  - { id: HERE,           category: space,        gloss: "here",           combinators: [modifier] }
+  - { id: ABOVE,          category: space,        gloss: "above",          combinators: [relational] }
+  - { id: BELOW,          category: space,        gloss: "below",          combinators: [relational] }
+  - { id: FAR,            category: space,        gloss: "far",            combinators: [modifier] }
+  - { id: NEAR,           category: space,        gloss: "near",           combinators: [modifier] }
+  - { id: SIDE,           category: space,        gloss: "side",           combinators: [substance] }
+  - { id: INSIDE,         category: space,        gloss: "inside",         combinators: [relational] }
+
+  # Logical concepts
+  - { id: NOT,            category: logic,        gloss: "not",            combinators: [operator] }
+  - { id: MAYBE,          category: logic,        gloss: "maybe",          combinators: [operator] }
+  - { id: CAN,            category: logic,        gloss: "can",            combinators: [operator] }
+  - { id: BECAUSE,        category: logic,        gloss: "because",        combinators: [operator] }
+  - { id: IF,             category: logic,        gloss: "if",             combinators: [operator] }
+
+  # Intensifier, augmentor
+  - { id: VERY,           category: intensifier,  gloss: "very",           combinators: [modifier] }
+  - { id: MORE,           category: augmentor,    gloss: "more",           combinators: [modifier] }
+
+  # Similarity
+  - { id: LIKE,           category: similarity,   gloss: "like/as",        combinators: [relational] }
+
+  # Taxonomy, partonomy
+  - { id: KIND_OF,        category: taxonomy,     gloss: "kind of",        combinators: [relational] }
+  - { id: PART_OF,        category: partonomy,    gloss: "part of",        combinators: [relational] }

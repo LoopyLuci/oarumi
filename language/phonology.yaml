@@ -1,0 +1,53 @@
+# Oarumi phonology. Normative (LANGUAGE_SPEC § 2).
+
+vowels:
+  inventory: [a, e, i, o, u]
+  length_contrast: false
+  nasal_contrast: false
+
+pulmonic_consonants:
+  - { symbol: p,  place: bilabial, manner: plosive,     voiced: false }
+  - { symbol: b,  place: bilabial, manner: plosive,     voiced: true  }
+  - { symbol: t,  place: alveolar, manner: plosive,     voiced: false }
+  - { symbol: d,  place: alveolar, manner: plosive,     voiced: true  }
+  - { symbol: k,  place: velar,    manner: plosive,     voiced: false }
+  - { symbol: g,  place: velar,    manner: plosive,     voiced: true  }
+  - { symbol: m,  place: bilabial, manner: nasal,       voiced: true  }
+  - { symbol: n,  place: alveolar, manner: nasal,       voiced: true  }
+  - { symbol: f,  place: bilabial, manner: fricative,   voiced: false }
+  - { symbol: v,  place: bilabial, manner: fricative,   voiced: true  }
+  - { symbol: s,  place: alveolar, manner: fricative,   voiced: false }
+  - { symbol: z,  place: alveolar, manner: fricative,   voiced: true  }
+  - { symbol: l,  place: alveolar, manner: liquid,      voiced: true  }
+  - { symbol: r,  place: alveolar, manner: liquid,      voiced: true  }
+  - { symbol: w,  place: labiovelar, manner: approximant, voiced: true }
+  - { symbol: j,  place: palatal,  manner: approximant, voiced: true  }
+
+clicks:
+  # Five click types x three accompaniments = 15 click phonemes.
+  types:
+    - { id: bilabial,  symbol: "ʘ" }
+    - { id: dental,    symbol: "ǀ" }
+    - { id: alveolar,  symbol: "ǃ" }
+    - { id: lateral,   symbol: "ǁ" }
+    - { id: palatal,   symbol: "ǂ" }
+  accompaniments:
+    - { id: plain,     diacritic: ""   }
+    - { id: nasal,     diacritic: "~"  }
+    - { id: aspirated, diacritic: "ʰ"  }
+  constraint: word_initial_only
+
+syllable_structure:
+  canonical: [CV, CVV, CVC]
+  final_consonants: [n, s, l, r]
+  click_syllable: [CV, CVV]
+  onset_clusters: false
+  epenthesis_for_loans: true
+
+tone:
+  lexical: false
+  note: "Pitch is reserved for the affective and discourse channel (LANGUAGE_SPEC § 5)."
+
+stress:
+  position: penultimate
+  contrastive: false

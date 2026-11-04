@@ -1,0 +1,45 @@
+# Oarumi affective and prosodic channel. Normative (LANGUAGE_SPEC § 5).
+
+hum_contours:
+  - { id: steady,  shape: level_low,       function: neutral_calm }
+  - { id: pulsed,  shape: rhythmic_amplitude, function: engagement_emphasis }
+  - { id: rising,  shape: upward_glide,    function: question_uncertainty }
+  - { id: falling, shape: downward_glide,  function: closure_certainty }
+
+hum_interjections:
+  - { form: hm,    function: backchannel }
+  - { form: hmm,   function: turn_claim }
+  - { form: hm-hm, function: repair_marker }
+
+attitudinal_particles:
+  # Closed set of 18. Intensity suffix -pa (strong) or -pi (mild).
+  count: 18
+  members:
+    - { form: ala, gloss: approval }
+    - { form: ulu, gloss: disapproval }
+    - { form: imi, gloss: surprise }
+    - { form: omo, gloss: comfort }
+    - { form: eki, gloss: discomfort }
+    - { form: avi, gloss: interest }
+    - { form: otu, gloss: boredom }
+    - { form: isi, gloss: certainty }
+    - { form: ena, gloss: uncertainty }
+    - { form: aro, gloss: amusement }
+    - { form: muo, gloss: sympathy }
+    - { form: kai, gloss: relief }
+    - { form: sep, gloss: hope }
+    - { form: dol, gloss: regret }
+    - { form: tsu, gloss: impatience }
+    - { form: vin, gloss: affection }
+    - { form: ora, gloss: respect }
+    - { form: nea, gloss: neutrality }
+  intensity:
+    strong: "-pa"
+    mild:   "-pi"
+
+repair:
+  open_class:    { spoken: "ha?", hum: rising,  gloss: did_not_understand }
+  restricted:    { spoken: "<proform>=hu", hum: rising, gloss: target_missing_constituent }
+  specific:      { spoken: "<repeat>=hu",  hum: rising, gloss: repeat_suspect_element }
+  self_repair:   { spoken: "na", hum: falling, gloss: restart }
+  acceptance:    { spoken: "si", hum: steady,  gloss: confirmed }

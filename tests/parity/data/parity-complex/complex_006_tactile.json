@@ -1,0 +1,85 @@
+{
+  "request": {
+    "text": "quiero comer",
+    "lang": "es",
+    "modality": "tactile"
+  },
+  "expected": {
+    "input": {
+      "text": "quiero comer",
+      "lang": "es",
+      "modality": "tactile"
+    },
+    "pivot": {
+      "text": "I want to eat",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "I",
+          "role": "agent"
+        },
+        {
+          "id": "WANT",
+          "role": "predicate"
+        },
+        {
+          "id": "SOMETHING",
+          "role": "patient"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "clause",
+          "head": "WANT",
+          "args": [
+            "I",
+            "SOMETHING"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "want",
+        "i",
+        "something"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "tactile"
+    },
+    "modalities": {
+      "tactile": {
+        "modality": "tactile",
+        "protocol": {
+          "construction_id": "T001",
+          "conveyer_hand": "right",
+          "receiver_location": "left_forearm",
+          "movement": "linear",
+          "contact": "light",
+          "referent_id": "rfdd04b94",
+          "gloss": "referent_established"
+        },
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

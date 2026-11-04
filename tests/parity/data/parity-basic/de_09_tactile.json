@@ -1,0 +1,85 @@
+{
+  "request": {
+    "text": "es ist gut",
+    "lang": "de",
+    "modality": "tactile"
+  },
+  "expected": {
+    "input": {
+      "text": "es ist gut",
+      "lang": "de",
+      "modality": "tactile"
+    },
+    "pivot": {
+      "text": "it is good",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "SOMETHING",
+          "role": "patient"
+        },
+        {
+          "id": "BE_SPEC",
+          "role": "predicate"
+        },
+        {
+          "id": "GOOD",
+          "role": "argument"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "BE_SPEC",
+          "args": [
+            "SOMETHING",
+            "GOOD"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "be-spec",
+        "something",
+        "good"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "tactile"
+    },
+    "modalities": {
+      "tactile": {
+        "modality": "tactile",
+        "protocol": {
+          "construction_id": "T001",
+          "conveyer_hand": "right",
+          "receiver_location": "left_forearm",
+          "movement": "linear",
+          "contact": "light",
+          "referent_id": "reaae2c89",
+          "gloss": "referent_established"
+        },
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

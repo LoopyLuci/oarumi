@@ -1,0 +1,83 @@
+{
+  "request": {
+    "text": "il veut partir",
+    "lang": "fr",
+    "modality": "spoken"
+  },
+  "expected": {
+    "input": {
+      "text": "il veut partir",
+      "lang": "fr",
+      "modality": "spoken"
+    },
+    "pivot": {
+      "text": "he wants to go",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "SOMEONE",
+          "role": "agent"
+        },
+        {
+          "id": "WANT",
+          "role": "predicate"
+        },
+        {
+          "id": "SOMETHING",
+          "role": "patient"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "clause",
+          "head": "WANT",
+          "args": [
+            "SOMEONE",
+            "SOMETHING"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "want",
+        "someone",
+        "something"
+      ],
+      "clitics": [
+        {
+          "form": "=ha",
+          "type": "mood_declarative"
+        }
+      ],
+      "mood": "DECL",
+      "modality": "spoken"
+    },
+    "modalities": {
+      "spoken": {
+        "modality": "spoken",
+        "ssml": null,
+        "phoneme_stream": [
+          "want",
+          "someone",
+          "something"
+        ],
+        "backend": "asset",
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

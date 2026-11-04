@@ -1,0 +1,8 @@
+{
+  "input": {
+    "text": "洗手间在哪里",
+    "lang": "zh",
+    "modality": "tactile"
+  },
+  "expected": {}
+}

@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "name": "valid_neural_used",
+      "neural": { "returns": "valid" },
+      "fallback": { "returns": "valid" },
+      "contract": { "validity_required": true, "latency_ceiling_ms": 500 },
+      "expected_decision": "use_neural"
+    },
+    {
+      "name": "invalid_neural_falls_back",
+      "neural": { "returns": "invalid" },
+      "fallback": { "returns": "valid" },
+      "contract": { "validity_required": true, "latency_ceiling_ms": 500 },
+      "expected_decision": "use_fallback",
+      "expected_reason": "invalid"
+    },
+    {
+      "name": "neural_raises_falls_back",
+      "neural": { "raises": "RuntimeException" },
+      "fallback": { "returns": "valid" },
+      "contract": { "validity_required": true, "latency_ceiling_ms": 500 },
+      "expected_decision": "use_fallback",
+      "expected_reason": "exception:RuntimeException"
+    },
+    {
+      "name": "both_fail_refuses",
+      "neural": { "returns": "invalid" },
+      "fallback": { "raises": "RuntimeException" },
+      "contract": { "validity_required": true, "latency_ceiling_ms": 500 },
+      "expected_decision": "refuse"
+    },
+    {
+      "name": "validity_not_required_accepts_invalid",
+      "neural": { "returns": "invalid" },
+      "fallback": { "returns": "valid" },
+      "contract": { "validity_required": false, "latency_ceiling_ms": 500 },
+      "expected_decision": "use_neural"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "request": {
+    "text": "hello",
+    "lang": "en",
+    "modality": "spoken"
+  },
+  "expected": {
+    "input": {
+      "text": "hello",
+      "lang": "en",
+      "modality": "spoken"
+    },
+    "pivot": {
+      "text": "",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [],
+      "combinators": [],
+      "valid": false
+    },
+    "surface": {
+      "phonemes": [],
+      "clitics": [],
+      "mood": "DECL",
+      "modality": "spoken"
+    },
+    "modalities": {},
+    "trace": [
+      {
+        "step": "intent",
+        "path": "deterministic",
+        "reason": "unsupported_language"
+      }
+    ],
+    "failover_events": [
+      {
+        "component": "intent_router",
+        "trigger": "unsupported_language"
+      }
+    ],
+    "degraded": true
+  }
+}

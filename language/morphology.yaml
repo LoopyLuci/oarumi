@@ -1,0 +1,53 @@
+# Oarumi morphology. Normative (LANGUAGE_SPEC § 3).
+# Agglutinative, bounded, closed inventories.
+
+number:
+  plural: { form: "-mu", gloss: plural }
+  unmarked_means: unspecified
+
+case_clitics:
+  - { form: "=ka", gloss: agent,     alignment: accusative_default }
+  - { form: "=ta", gloss: patient,   alignment: accusative_default }
+  - { form: "=na", gloss: dative,    alignment: neutral }
+  - { form: "=lo", gloss: locative,  alignment: neutral }
+  - { form: "=vo", gloss: instrumental, alignment: neutral }
+
+ergative_module:
+  enabled: true
+  marker: "=ka"
+  scope: transitive_agent_only
+  usage: optional_patient_focus
+
+aspect:
+  - { form: "-pa", gloss: perfective }
+  - { form: "-ri", gloss: progressive }
+  - { form: "-nu", gloss: habitual }
+
+valency:
+  - { form: "-he", gloss: causative }
+  - { form: "-su", gloss: reciprocal }
+  - { form: "-am", gloss: passive_patient_focus }
+
+derivation:
+  - { form: "-ki", gloss: diminutive }
+  - { form: "-vo", gloss: augmentative }
+  - { form: "-na", gloss: place }
+  - { form: "-mi", gloss: person_who_does }
+  - { form: "-lu", gloss: abstract_noun }
+
+classifiers:
+  # Closed set used with numerals.
+  count: 12
+  members:
+    - { id: human,    gloss: human referent }
+    - { id: animal,   gloss: animal }
+    - { id: plant,    gloss: plant }
+    - { id: long,     gloss: long rigid object }
+    - { id: flat,     gloss: flat flexible object }
+    - { id: round,    gloss: round object }
+    - { id: liquid,   gloss: liquid/mass }
+    - { id: vehicle,  gloss: vehicle }
+    - { id: building, gloss: building }
+    - { id: abstract, gloss: abstract concept }
+    - { id: event,    gloss: event }
+    - { id: speech,   gloss: utterance }

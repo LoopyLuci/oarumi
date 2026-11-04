@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "generated_at": "2026-11-02T00:00:00Z",
+  "note": "Initial baselines are 10 ms for pipeline paths; replace with a nightly-generated baseline after the first successful run.",
+  "benchmarks": [
+    { "name": "test_translate_phrasebook_hit", "mean_ms": 10.0 },
+    { "name": "test_translate_signed_modality", "mean_ms": 10.0 },
+    { "name": "test_translate_tactile_modality", "mean_ms": 10.0 },
+    { "name": "test_translate_degraded_path", "mean_ms": 2.0 },
+    { "name": "test_decompose_tier_a", "mean_ms": 1.0 },
+    { "name": "test_realize", "mean_ms": 1.0 },
+    { "name": "test_shield_valid_path", "mean_ms": 0.5 },
+    { "name": "test_shield_fallback_path", "mean_ms": 0.5 }
+  ]
+}

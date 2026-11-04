@@ -1,0 +1,70 @@
+name: android-release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        flavor: [mlkit, argos]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Setup Python (for bootstrap)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Bootstrap repo (DB + audio assets)
+        run: |
+          pip install -e ".[dev]"
+          ./scripts/bootstrap.sh
+          python tools/generate_audio_assets.py
+
+      - name: Stage keystore
+        env:
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_B64" ]; then
+            echo "::error::ANDROID_KEYSTORE_B64 secret is not set"
+            exit 1
+          fi
+          # The gradle script decodes the base64 into build/release.keystore.
+
+      - name: Build release APK (${{ matrix.flavor }})
+        env:
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          cd android
+          ./gradlew :app:assemble${{ matrix.flavor }}Release --no-daemon
+
+      - name: Verify signature
+        run: |
+          APK=$(find android/app/build/outputs/apk/${{ matrix.flavor }}/release -name '*.apk' | head -1)
+          $ANDROID_HOME/build-tools/34.0.0/apksigner verify --verbose "$APK"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: oarumi-${{ matrix.flavor }}-release
+          path: android/app/build/outputs/apk/${{ matrix.flavor }}/release/*.apk
+          retention-days: 30

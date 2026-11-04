@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Oarumi phonology (structural, generated from the YAML baseline)",
+  "type": "object",
+  "properties": {
+    "vowels": {
+      "type": "object",
+      "properties": {
+        "inventory": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "length_contrast": {
+          "type": "boolean"
+        },
+        "nasal_contrast": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "inventory",
+        "length_contrast",
+        "nasal_contrast"
+      ]
+    },
+    "pulmonic_consonants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string"
+          },
+          "place": {
+            "type": "string"
+          },
+          "manner": {
+            "type": "string"
+          },
+          "voiced": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "symbol",
+          "place",
+          "manner",
+          "voiced"
+        ]
+      }
+    },
+    "clicks": {
+      "type": "object",
+      "properties": {
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "symbol": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "symbol"
+            ]
+          }
+        },
+        "accompaniments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "diacritic": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "diacritic"
+            ]
+          }
+        },
+        "constraint": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "types",
+        "accompaniments",
+        "constraint"
+      ]
+    },
+    "syllable_structure": {
+      "type": "object",
+      "properties": {
+        "canonical": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "final_consonants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "click_syllable": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "onset_clusters": {
+          "type": "boolean"
+        },
+        "epenthesis_for_loans": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "canonical",
+        "final_consonants",
+        "click_syllable",
+        "onset_clusters",
+        "epenthesis_for_loans"
+      ]
+    },
+    "tone": {
+      "type": "object",
+      "properties": {
+        "lexical": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "lexical",
+        "note"
+      ]
+    },
+    "stress": {
+      "type": "object",
+      "properties": {
+        "position": {
+          "type": "string"
+        },
+        "contrastive": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "position",
+        "contrastive"
+      ]
+    }
+  },
+  "required": [
+    "vowels",
+    "pulmonic_consonants",
+    "clicks",
+    "syllable_structure",
+    "tone",
+    "stress"
+  ]
+}

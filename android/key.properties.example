@@ -1,0 +1,4 @@
+storeFile=/absolute/path/to/release.keystore
+storePassword=CHANGEME
+keyAlias=oarumi
+keyPassword=CHANGEME

@@ -1,0 +1,8 @@
+{
+  "input": {
+    "text": "لا",
+    "lang": "ar",
+    "modality": "signed"
+  },
+  "expected": {}
+}

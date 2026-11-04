@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Oarumi</string>
+    <string name="nav_translate">Translate</string>
+    <string name="nav_sign">Sign</string>
+    <string name="nav_learn">Learn</string>
+    <string name="nav_dictionary">Dictionary</string>
+    <string name="badge_offline">Offline</string>
+    <string name="badge_online">Online</string>
+    <string name="badge_degraded">Degraded</string>
+    <string name="button_translate">Translate to Oarumi</string>
+    <string name="button_play_sign">Play sign</string>
+    <string name="button_next">Next →</string>
+    <string name="button_previous">← Previous</string>
+    <string name="label_source_language">Source language</string>
+    <string name="label_target_modality">Target modality</string>
+    <string name="label_input">Input</string>
+    <string name="label_output">Output</string>
+    <string name="label_trace">Trace</string>
+    <string name="label_search">Search lexemes</string>
+    <string name="placeholder_input">Type a phrase, e.g. «hola»</string>
+    <string name="status_ready">Ready</string>
+    <string name="status_translating">Translating…</string>
+    <string name="status_done">Translated</string>
+    <string name="status_degraded">Translated (degraded)</string>
+    <string name="status_failed">Translation failed</string>
+    <string name="status_avatar_unavailable">3D avatar unavailable in this build</string>
+    <string name="hint_sign_ready">Last result ready. Press Play.</string>
+    <string name="hint_sign_empty">Run a translation with target modality = signed.</string>
+</resources>

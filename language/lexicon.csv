@@ -1,0 +1,16 @@
+id,phon_form,click,tone,gloss,root_class,frequency,sense_gloss
+1,manu,,,who,noun,900,interrogative person
+2,tinu,,,what,noun,900,interrogative thing
+3,lonu,,,where,modifier,850,interrogative place
+4,kinu,,,when,modifier,800,interrogative time
+5,sonu,,,how many,modifier,700,interrogative quantity
+6,hinu,,,how,modifier,650,interrogative manner
+7,ke,,,complementizer,particle,1200,clause linker
+8,pira,,,before,particle,600,temporal conjunction
+9,pora,,,after,particle,600,temporal conjunction
+10,kasa,,,because,particle,700,causal conjunction
+11,tisa,,,if,particle,650,conditional conjunction
+12,hu,,,relativizer,particle,1100,relative clause marker
+13,si,,,yes,particle,1400,acceptance
+14,na,,,self repair,particle,900,restart marker
+15,ʘa,ʘ,,here,modifier,500,deictic near

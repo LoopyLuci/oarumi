@@ -1,0 +1,8 @@
+{
+  "input": {
+    "text": "quiero agua",
+    "lang": "es",
+    "modality": "spoken"
+  },
+  "expected": {}
+}

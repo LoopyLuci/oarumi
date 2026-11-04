@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oarumi — SiGML</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #17181b; color: #e6e7ea;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  #stage {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 12px; align-content: flex-start;
+    min-height: 60px;
+  }
+  .symbol {
+    padding: 6px 10px;
+    background: #2a2d33; border: 1px solid #3b3e45;
+    border-radius: 6px;
+    font-family: ui-monospace, monospace; font-size: 12px;
+    animation: pop 300ms ease-out;
+  }
+  .symbol.unknown { background: #402323; border-color: #6a2f2f; color: #ffbcbc; }
+  #empty { padding: 12px; color: #6c6f76; font-size: 12px; }
+  @keyframes pop { from { transform: scale(0.7); opacity: 0.3; } to { transform: scale(1); opacity: 1; } }
+</style>
+</head>
+<body>
+  <div id="empty">No sign loaded.</div>
+  <div id="stage"></div>
+  <script>
+    window.playSigML = function (xml) {
+      const stage = document.getElementById('stage');
+      const empty = document.getElementById('empty');
+      stage.innerHTML = '';
+      if (!xml) { empty.textContent = 'No sign loaded.'; return; }
+      try {
+        const doc = new DOMParser().parseFromString(xml, 'text/xml');
+        if (doc.getElementsByTagName('parsererror').length > 0) {
+          empty.textContent = 'SiGML parse error.'; return;
+        }
+        const manual = doc.getElementsByTagName('hamnosys_manual')[0];
+        if (!manual) { empty.textContent = 'No hamnosys_manual element.'; return; }
+        empty.textContent = '';
+        for (const child of Array.from(manual.children)) {
+          const div = document.createElement('div');
+          if (child.tagName.toLowerCase() === 'hamunknown') {
+            div.className = 'symbol unknown';
+            div.textContent = '?' + (child.getAttribute('sym') || '');
+          } else {
+            div.className = 'symbol';
+            div.textContent = child.tagName;
+          }
+          stage.appendChild(div);
+        }
+      } catch (e) {
+        empty.textContent = 'Error: ' + e;
+      }
+    };
+  </script>
+</body>
+</html>

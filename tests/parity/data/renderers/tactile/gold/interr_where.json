@@ -1,0 +1,13 @@
+{
+  "modality": "tactile",
+  "protocol": {
+    "construction_id": "T002",
+    "conveyer_hand": "left",
+    "receiver_location": "right_forearm",
+    "movement": "circular",
+    "contact": "firm",
+    "referent_id": "ra14546c2",
+    "gloss": "location_here"
+  },
+  "valid": true
+}

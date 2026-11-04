@@ -1,0 +1,76 @@
+{
+  "request": {
+    "text": "comment ça va",
+    "lang": "fr",
+    "modality": "spoken"
+  },
+  "expected": {
+    "input": {
+      "text": "comment ça va",
+      "lang": "fr",
+      "modality": "spoken"
+    },
+    "pivot": {
+      "text": "how are you",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "YOU",
+          "role": "agent"
+        },
+        {
+          "id": "FEEL",
+          "role": "predicate"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "FEEL",
+          "args": [
+            "YOU"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "feel",
+        "you"
+      ],
+      "clitics": [
+        {
+          "form": "=hu",
+          "type": "mood_interrogative"
+        }
+      ],
+      "mood": "INTERR",
+      "modality": "spoken"
+    },
+    "modalities": {
+      "spoken": {
+        "modality": "spoken",
+        "ssml": null,
+        "phoneme_stream": [
+          "feel",
+          "you"
+        ],
+        "backend": "asset",
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

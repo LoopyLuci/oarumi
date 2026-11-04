@@ -1,0 +1,79 @@
+{
+  "request": {
+    "text": "أين الحمام",
+    "lang": "ar",
+    "modality": "signed"
+  },
+  "expected": {
+    "input": {
+      "text": "أين الحمام",
+      "lang": "ar",
+      "modality": "signed"
+    },
+    "pivot": {
+      "text": "where is the bathroom",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [
+        {
+          "id": "SOMETHING",
+          "role": "patient"
+        },
+        {
+          "id": "BE_SOMEWHERE",
+          "role": "predicate"
+        },
+        {
+          "id": "WHERE",
+          "role": "modifier"
+        }
+      ],
+      "combinators": [
+        {
+          "type": "predicate",
+          "head": "BE_SOMEWHERE",
+          "args": [
+            "SOMETHING",
+            "WHERE"
+          ]
+        }
+      ],
+      "valid": true
+    },
+    "surface": {
+      "phonemes": [
+        "be-somewhere",
+        "something",
+        "where"
+      ],
+      "clitics": [
+        {
+          "form": "=hu",
+          "type": "mood_interrogative"
+        }
+      ],
+      "mood": "INTERR",
+      "modality": "signed"
+    },
+    "modalities": {
+      "signed": {
+        "modality": "signed",
+        "sigml": "<sigml xmlns=\"https://vhg.cmp.uea.ac.uk/tech/jas/sigml\">\n  <hns_sign gloss=\"be-somewhere\">\n    <hamnosys_manual>\n      <hamfinger2 />\n      <hamthumbout />\n      <hamnohandchange />\n      <hamarcsym />\n      <hamextfingeru />\n    </hamnosys_manual>\n  </hns_sign>\n</sigml>",
+        "avatar_ok": true,
+        "gloss": "be-somewhere",
+        "valid": true
+      }
+    },
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [],
+    "degraded": false
+  }
+}

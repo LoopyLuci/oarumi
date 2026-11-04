@@ -1,0 +1,45 @@
+{
+  "request": {
+    "text": "من فضلك",
+    "lang": "ar",
+    "modality": "signed"
+  },
+  "expected": {
+    "input": {
+      "text": "من فضلك",
+      "lang": "ar",
+      "modality": "signed"
+    },
+    "pivot": {
+      "text": "please",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [],
+      "combinators": [],
+      "valid": false
+    },
+    "surface": {
+      "phonemes": [],
+      "clitics": [],
+      "mood": "DECL",
+      "modality": "signed"
+    },
+    "modalities": {},
+    "trace": [
+      {
+        "step": "pivot",
+        "path": "deterministic",
+        "reason": "phrasebook-hit"
+      }
+    ],
+    "failover_events": [
+      {
+        "component": "nsm_decompose",
+        "trigger": "validation"
+      }
+    ],
+    "degraded": true
+  }
+}

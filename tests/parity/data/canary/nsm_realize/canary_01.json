@@ -1,0 +1,8 @@
+{
+  "input": {
+    "text": "no",
+    "lang": "es",
+    "modality": "tactile"
+  },
+  "expected": {}
+}

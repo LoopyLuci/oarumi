@@ -1,0 +1,49 @@
+# Per-component parity contracts. Changing a threshold is a high-risk change
+# (AGENT.md § 4). The values here are enforced by tests/parity/conftest.py.
+
+version: 1
+
+components:
+  pivot:
+    coverage_floor: 0.60
+    latency_ceiling_p95_ms: 800
+    validity_required: true
+
+  nsm_decompose:
+    coverage_floor: 0.60
+    validity_required: true
+    latency_ceiling_p95_ms: 400
+
+  nsm_realize:
+    coverage_floor: 1.00
+    validity_required: true
+    latency_ceiling_p95_ms: 100
+
+  tts:
+    phoneme_accuracy_floor: 1.00
+    intelligibility_floor: 0.60
+    latency_ceiling_p95_ms: 2000
+
+  sign:
+    coverage_floor: 1.00
+    latency_ceiling_p95_ms: 500
+
+  tactile:
+    validity_required: true
+    latency_ceiling_p95_ms: 50
+
+# Cross-platform equality (ADR-0007). Any diff on the deterministic path
+# is a hard failure regardless of the strictness flag.
+cross_platform:
+  python_vs_kotlin: strict
+  python_vs_android: strict
+  kotlin_vs_android: strict
+
+# Fault-injection matrix. Each (component, trigger) pair must be exercised
+# by tests/fault/test_*.py.
+fault_triggers:
+  - disable_neural
+  - corrupt_model
+  - inject_latency
+  - starve_memory
+  - adversarial_input

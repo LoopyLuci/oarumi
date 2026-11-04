@@ -1,0 +1,45 @@
+{
+  "request": {
+    "text": "me llamo ana",
+    "lang": "es",
+    "modality": "tactile"
+  },
+  "expected": {
+    "input": {
+      "text": "me llamo ana",
+      "lang": "es",
+      "modality": "tactile"
+    },
+    "pivot": {
+      "text": "",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [],
+      "combinators": [],
+      "valid": false
+    },
+    "surface": {
+      "phonemes": [],
+      "clitics": [],
+      "mood": "DECL",
+      "modality": "tactile"
+    },
+    "modalities": {},
+    "trace": [
+      {
+        "step": "intent",
+        "path": "deterministic",
+        "reason": "no_pivot_path"
+      }
+    ],
+    "failover_events": [
+      {
+        "component": "intent_router",
+        "trigger": "no_pivot_path"
+      }
+    ],
+    "degraded": true
+  }
+}

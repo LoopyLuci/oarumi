@@ -1,0 +1,24 @@
+{
+  "version": "0.1.0",
+  "purpose": "Tiny stand-ins for real model weights so devs and CI can run offline.",
+  "stubs": [
+    {
+      "id": "nsm-decomposer-tier-b",
+      "filename": "nsm-tier-b.stub",
+      "sha256": "a434e5eb03962e7007609e7da96b029ff4774dd82370a713616ef21318c6117d",
+      "content": "{\"kind\":\"stub\",\"model\":\"nsm-decomposer-tier-b\",\"params\":0,\"note\":\"deterministic fallback in use\"}"
+    },
+    {
+      "id": "pivot-translator",
+      "filename": "pivot.stub",
+      "sha256": "92b218d0b6dab6704c42be7c620808f865cfec1164c6a3fc53d92c8fe680ed70",
+      "content": "{\"kind\":\"stub\",\"model\":\"pivot-translator\",\"params\":0,\"note\":\"phrasebook + Argos are the runtime paths\"}"
+    },
+    {
+      "id": "tts-backbone",
+      "filename": "tts.stub",
+      "sha256": "6d9dcb9fd774da9519f731177a7ac60abdfaeca737f245519e078a404afffdf0",
+      "content": "{\"kind\":\"stub\",\"model\":\"tts\",\"params\":0,\"note\":\"espeak or asset backend in use\"}"
+    }
+  ]
+}

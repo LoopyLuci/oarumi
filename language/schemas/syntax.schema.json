@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Oarumi syntax (structural, generated from the YAML baseline)",
+  "type": "object",
+  "properties": {
+    "basic_order": {
+      "type": "string"
+    },
+    "clitics": {
+      "type": "object",
+      "properties": {
+        "topic": {
+          "type": "object",
+          "properties": {
+            "form": {
+              "type": "string"
+            },
+            "position": {
+              "type": "string"
+            },
+            "gloss": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "form",
+            "position",
+            "gloss"
+          ]
+        },
+        "focus": {
+          "type": "object",
+          "properties": {
+            "form": {
+              "type": "string"
+            },
+            "position": {
+              "type": "string"
+            },
+            "gloss": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "form",
+            "position",
+            "gloss"
+          ]
+        },
+        "evidential": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "form": {
+                "type": "string"
+              },
+              "position": {
+                "type": "string"
+              },
+              "gloss": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "form",
+              "position",
+              "gloss"
+            ]
+          }
+        },
+        "mood": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "form": {
+                "type": "string"
+              },
+              "position": {
+                "type": "string"
+              },
+              "gloss": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "form",
+              "position",
+              "gloss"
+            ]
+          }
+        },
+        "epistemic": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "form": {
+                "type": "string"
+              },
+              "position": {
+                "type": "string"
+              },
+              "gloss": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "form",
+              "position",
+              "gloss"
+            ]
+          }
+        }
+      },
+      "required": [
+        "topic",
+        "focus",
+        "evidential",
+        "mood",
+        "epistemic"
+      ]
+    },
+    "subordination": {
+      "type": "object",
+      "properties": {
+        "relative": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "string"
+            },
+            "relativizer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "position",
+            "relativizer"
+          ]
+        },
+        "complement": {
+          "type": "object",
+          "properties": {
+            "marker": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "marker"
+          ]
+        },
+        "adverbial": {
+          "type": "object",
+          "properties": {
+            "conjunctions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "form": {
+                    "type": "string"
+                  },
+                  "gloss": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "form",
+                  "gloss"
+                ]
+              }
+            }
+          },
+          "required": [
+            "conjunctions"
+          ]
+        }
+      },
+      "required": [
+        "relative",
+        "complement",
+        "adverbial"
+      ]
+    },
+    "questions": {
+      "type": "object",
+      "properties": {
+        "yes_no": {
+          "type": "object",
+          "properties": {
+            "mood_clitic": {
+              "type": "string"
+            },
+            "prosody": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "mood_clitic",
+            "prosody"
+          ]
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "pro_forms": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "form": {
+                    "type": "string"
+                  },
+                  "gloss": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "form",
+                  "gloss"
+                ]
+              }
+            },
+            "position": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "pro_forms",
+            "position"
+          ]
+        }
+      },
+      "required": [
+        "yes_no",
+        "content"
+      ]
+    }
+  },
+  "required": [
+    "basic_order",
+    "clitics",
+    "subordination",
+    "questions"
+  ]
+}

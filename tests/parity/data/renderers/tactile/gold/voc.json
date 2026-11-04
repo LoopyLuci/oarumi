@@ -1,0 +1,13 @@
+{
+  "modality": "tactile",
+  "protocol": {
+    "construction_id": "T003",
+    "conveyer_hand": "both",
+    "receiver_location": "chest",
+    "movement": "tap",
+    "contact": "light",
+    "referent_id": "rbb0347a4",
+    "gloss": "self_reference"
+  },
+  "valid": true
+}

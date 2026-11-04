@@ -1,0 +1,45 @@
+{
+  "request": {
+    "text": "   ",
+    "lang": "es",
+    "modality": "spoken"
+  },
+  "expected": {
+    "input": {
+      "text": "   ",
+      "lang": "es",
+      "modality": "spoken"
+    },
+    "pivot": {
+      "text": "",
+      "lang": "en",
+      "source": "phrasebook"
+    },
+    "nsm": {
+      "primes": [],
+      "combinators": [],
+      "valid": false
+    },
+    "surface": {
+      "phonemes": [],
+      "clitics": [],
+      "mood": "DECL",
+      "modality": "spoken"
+    },
+    "modalities": {},
+    "trace": [
+      {
+        "step": "intent",
+        "path": "deterministic",
+        "reason": "empty_input"
+      }
+    ],
+    "failover_events": [
+      {
+        "component": "intent_router",
+        "trigger": "empty_input"
+      }
+    ],
+    "degraded": true
+  }
+}

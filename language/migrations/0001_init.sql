@@ -1,0 +1,2 @@
+-- 0001_init — baseline schema. Identical to language/schema.sql.
+-- Applied by tools/migrate.py; recorded in schema_migrations.

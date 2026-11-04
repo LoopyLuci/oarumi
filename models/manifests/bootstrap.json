@@ -1,0 +1,43 @@
+{
+  "version": "0.1.0",
+  "purpose": "Runtime bootstrap assets: Argos language packs and TTS voices.",
+  "assets": [
+    {
+      "id": "argos-es-en",
+      "kind": "argos-pack",
+      "language_pair": ["es", "en"],
+      "size_bytes": 31457280,
+      "url": "https://example.invalid/argos/es-en.argosmodel",
+      "sha256": "",
+      "optional": true
+    },
+    {
+      "id": "argos-fr-en",
+      "kind": "argos-pack",
+      "language_pair": ["fr", "en"],
+      "size_bytes": 31457280,
+      "url": "https://example.invalid/argos/fr-en.argosmodel",
+      "sha256": "",
+      "optional": true
+    },
+    {
+      "id": "argos-de-en",
+      "kind": "argos-pack",
+      "language_pair": ["de", "en"],
+      "size_bytes": 31457280,
+      "url": "https://example.invalid/argos/de-en.argosmodel",
+      "sha256": "",
+      "optional": true
+    },
+    {
+      "id": "tts-voice-en",
+      "kind": "tts-voice",
+      "language": "en",
+      "size_bytes": 20971520,
+      "url": "https://example.invalid/voices/en.voice",
+      "sha256": "",
+      "optional": true
+    }
+  ],
+  "manifest_verified": false
+}

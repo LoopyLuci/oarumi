@@ -1,0 +1,44 @@
+# Oarumi syntax. Normative (LANGUAGE_SPEC § 4).
+
+basic_order: SVO
+
+clitics:
+  topic:          { form: "=sa", position: post_subject,    gloss: "as for X" }
+  focus:          { form: "=ko", position: post_constituent, gloss: "it is X that..." }
+  evidential:
+    - { form: "=ti", position: clause_initial, gloss: direct_perception }
+    - { form: "=me", position: clause_initial, gloss: reported }
+    - { form: "=pe", position: clause_initial, gloss: inferred }
+  mood:
+    - { form: "=ha", position: clause_final, gloss: declarative }
+    - { form: "=hu", position: clause_final, gloss: interrogative }
+    - { form: "=hi", position: clause_final, gloss: imperative }
+    - { form: "=ho", position: clause_final, gloss: promissive }
+    - { form: "=he", position: clause_final, gloss: expressive }
+  epistemic:
+    - { form: "=ha?", position: after_mood, gloss: uncertain }
+
+subordination:
+  relative:
+    position: postnominal
+    relativizer: "hu-"
+  complement:
+    marker: "ke"
+  adverbial:
+    conjunctions:
+      - { form: pira, gloss: before }
+      - { form: pora, gloss: after }
+      - { form: kasa, gloss: because }
+      - { form: tisa, gloss: if }
+
+questions:
+  yes_no: { mood_clitic: "=hu", prosody: rising_hum }
+  content:
+    pro_forms:
+      - { form: manu, gloss: who }
+      - { form: tinu, gloss: what }
+      - { form: lonu, gloss: where }
+      - { form: kinu, gloss: when }
+      - { form: sonu, gloss: how_many }
+      - { form: hinu, gloss: how }
+    position: in_situ
