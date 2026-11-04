@@ -82,6 +82,8 @@ exclude = ["models/dev-stubs", "android"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "engine/python/tests", "desktop/tests", "tools/tests", "tools/parity_web/tests"]
+# Tests import shared helpers as `tests.parity.conftest`, so the repo root must be importable.
+pythonpath = ["."]
 addopts = "-ra --strict-markers"
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
