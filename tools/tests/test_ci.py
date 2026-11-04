@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -280,7 +281,7 @@ def test_install_hooks_points_git_at_scripts_hooks(monkeypatch: pytest.MonkeyPat
 def test_android_step_skips_without_wrapper_or_jdk(monkeypatch: pytest.MonkeyPatch) -> None:
     assert ci._android_missing(None) == "android/gradlew not found"
     monkeypatch.delenv("JAVA_HOME", raising=False)
-    monkeypatch.setattr(ci.shutil, "which", lambda name: None)
+    monkeypatch.setattr(shutil, "which", lambda name: None)
     assert "no JDK" in str(ci._android_missing(["gradlew"]))
     monkeypatch.setenv("JAVA_HOME", "/opt/jdk")
     assert ci._android_missing(["gradlew"]) is None
