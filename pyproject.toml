@@ -8,7 +8,7 @@ version = "0.1.0a3"
 description = "Oarumi — a universal interlingua with a deterministic, offline, tri-modal engine"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "Apache-2.0" }
+license = { text = "MIT OR Apache-2.0" }
 authors = [{ name = "The Oarumi Authors" }]
 keywords = ["conlang", "interlingua", "nsm", "accessibility", "offline"]
 

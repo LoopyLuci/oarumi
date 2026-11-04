@@ -15,7 +15,7 @@ Agents have additional requirements in [AGENT.md](AGENT.md).
 ## Development setup
 
 ```bash
-git clone https://github.com/<org>/oarumi.git
+git clone https://github.com/LoopyLuci/oarumi.git
 cd oarumi
 ./scripts/bootstrap.sh
 ```
@@ -102,4 +102,6 @@ Example: `lang(primes): add DO-combinator for instrument role`
 
 ## License
 
-By contributing, you agree your contribution is licensed under Apache 2.0.
+By contributing, you agree your contribution is licensed under the same terms as
+the project: dual-licensed under the MIT and Apache-2.0 licenses (see
+[LICENSE](LICENSE)), without any additional terms or conditions.

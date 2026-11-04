@@ -43,7 +43,7 @@ Oarumi is three things in one repository:
 ### Desktop (Python 3.11+)
 
 ```bash
-git clone https://github.com/<org>/oarumi.git
+git clone https://github.com/LoopyLuci/oarumi.git
 cd oarumi
 ./scripts/bootstrap.sh          # venv, deps, language DB, audio assets, dev stubs
 python -m desktop.app           # launches the GUI
@@ -83,3 +83,25 @@ French and Chinese. Phrases outside it come back `degraded` with the reason.
 
 ## Architecture at a glance
 
+```
+text ──► pivot (phrasebook → English) ──► NSM decomposer ──► NSM realiser
+                                                              │
+                                          NSM validator ◄─────┘
+                                                │
+                                  OarumiSurface ├──► spoken   (audio assets, TTS)
+                                                ├──► signed   (HamNoSys → SiGML)
+                                                └──► tactile  (protocol cells)
+```
+
+Every neural step has a deterministic counterpart. The reliability layer
+(`oarumi/reliability`) runs each neural component behind a symbolic shield with
+a parity contract, a watchdog and a recovery state machine, and records every
+failover in an audit log. The full design is in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+---
+
+## License
+
+Oarumi is dual-licensed under either of [Apache License 2.0](LICENSE-APACHE)
+or [MIT License](LICENSE-MIT), at your option. See [LICENSE](LICENSE).
