@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,7 +8,8 @@ version = "0.1.0a3"
 description = "Oarumi — a universal interlingua with a deterministic, offline, tri-modal engine"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT OR Apache-2.0" }
+license = "MIT OR Apache-2.0"
+license-files = ["LICENSE", "LICENSE-APACHE", "LICENSE-MIT"]
 authors = [{ name = "The Oarumi Authors" }]
 keywords = ["conlang", "interlingua", "nsm", "accessibility", "offline"]
 
