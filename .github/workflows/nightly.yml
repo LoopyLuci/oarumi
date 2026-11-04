@@ -92,7 +92,8 @@ jobs:
 
   android-instrumented:
     name: android instrumented
-    runs-on: macos-latest
+    # KVM acceleration (udev rule below) exists on Ubuntu runners, not macOS.
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
