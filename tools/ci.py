@@ -21,6 +21,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -508,10 +509,19 @@ def _catalogue(android_dir: Path | None) -> list[Step]:
             needs=("preflight-tools",),
             cmd=gradle,
             cwd=android_dir or ROOT / "android",
-            precondition=lambda: None if gradle else "android/gradlew not found",
+            precondition=lambda: _android_missing(gradle),
             cacheable=False,
         ),
     ]
+
+
+def _android_missing(gradle: list[str] | None) -> str | None:
+    """Return why the Android step cannot run here, or None when it can."""
+    if gradle is None:
+        return "android/gradlew not found"
+    if not os.environ.get("JAVA_HOME") and shutil.which("java") is None:
+        return "no JDK found (set JAVA_HOME); the android CI job still runs it"
+    return None
 
 
 def _gradle_cmd(android_dir: Path | None) -> list[str] | None:

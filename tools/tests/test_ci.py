@@ -275,3 +275,12 @@ def test_install_hooks_points_git_at_scripts_hooks(monkeypatch: pytest.MonkeyPat
     monkeypatch.setattr(subprocess, "run", fake_run)
     assert ci.install_hooks() == 0
     assert calls == [["git", "config", "core.hooksPath", "scripts/hooks"]]
+
+
+def test_android_step_skips_without_wrapper_or_jdk(monkeypatch: pytest.MonkeyPatch) -> None:
+    assert ci._android_missing(None) == "android/gradlew not found"
+    monkeypatch.delenv("JAVA_HOME", raising=False)
+    monkeypatch.setattr(ci.shutil, "which", lambda name: None)
+    assert "no JDK" in str(ci._android_missing(["gradlew"]))
+    monkeypatch.setenv("JAVA_HOME", "/opt/jdk")
+    assert ci._android_missing(["gradlew"]) is None
