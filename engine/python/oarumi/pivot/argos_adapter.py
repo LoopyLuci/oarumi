@@ -13,7 +13,7 @@ class ArgosAdapter:
 
     def _import(self) -> object:
         try:
-            import argostranslate.translate  # type: ignore[import-not-found]
+            import argostranslate.translate
         except ImportError as exc:
             raise CapabilityMissingError(
                 "argostranslate is not installed", capability="argos"
