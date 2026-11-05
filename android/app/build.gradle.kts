@@ -38,8 +38,8 @@ android {
         applicationId = "com.oarumi.app"
         minSdk = 26
         targetSdk = 34
-        versionCode = 3
-        versionName = "0.1.0-alpha.3"
+        versionCode = 5
+        versionName = "0.1.0-alpha.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
