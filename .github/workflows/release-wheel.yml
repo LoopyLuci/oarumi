@@ -25,7 +25,7 @@ jobs:
           python -m venv "$RUNNER_TEMP/whl"
           "$RUNNER_TEMP/whl/bin/pip" install dist/*.whl
           "$RUNNER_TEMP/whl/bin/python" -c "import oarumi, desktop; print(oarumi.__version__)"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: oarumi-wheel
           path: dist/
