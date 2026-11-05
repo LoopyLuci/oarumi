@@ -5,7 +5,9 @@ import oarumi.errors.ValidationException
 import oarumi.types.NsmStructure
 
 class NSMDecomposerTierA(private val db: LanguageStore) {
-    private val known: Set<String> = db.allPrimes().map { it.id }.toSet()
+    // Lazy: reading the database here would run in the constructor, which
+    // Android builds on the main thread at launch.
+    private val known: Set<String> by lazy { db.allPrimes().map { it.id }.toSet() }
 
     fun decompose(pivot: String): NsmStructure {
         val text = pivot.trim()
