@@ -32,6 +32,10 @@ class Entry:
     is_set: bool
     overridden_by_shell: bool
     value: str | None = None  # always None for a secret
+    # Where the running value comes from: "shell", "saved" or "default".
+    source: str = "default"
+    # The value Oarumi actually uses. Always None for a secret.
+    effective: str | None = None
 
 
 @dataclass(frozen=True)
@@ -52,6 +56,17 @@ class EnvManager:
         self._secrets = secrets
         self._file = file
         self._environ: MutableMapping[str, str] = os.environ if environ is None else environ
+        # Names set before apply() ran. Anything loaded later is a saved value,
+        # not a shell override, so it must not be reported as one.
+        self._shell_names = frozenset(self._environ)
+
+    @property
+    def settings_path(self) -> Path:
+        return self._file.path
+
+    def secret_backend_name(self) -> str | None:
+        """Name of the usable OS keychain, or None when secrets cannot be stored."""
+        return self._secrets.backend_name()
 
     # --- writes -------------------------------------------------------------
 
@@ -99,6 +114,21 @@ class EnvManager:
             var = variable_for(name)
             secret = var.secret or name in data.secrets
             is_set = name in data.secrets or name in data.values
+            shell = name in self._shell_names and name in self._environ
+            if shell:
+                source = "shell"
+            elif is_set:
+                source = "saved"
+            else:
+                source = "default"
+            effective: str | None = None
+            if not secret:
+                if shell:
+                    effective = self._environ[name]
+                elif name in data.values:
+                    effective = data.values[name]
+                else:
+                    effective = var.default or None
             rows.append(
                 Entry(
                     name=name,
@@ -106,8 +136,10 @@ class EnvManager:
                     description=var.description,
                     secret=secret,
                     is_set=is_set,
-                    overridden_by_shell=name in self._environ,
+                    overridden_by_shell=name in self._shell_names,
                     value=None if secret else data.values.get(name),
+                    source=source,
+                    effective=effective,
                 )
             )
         return rows

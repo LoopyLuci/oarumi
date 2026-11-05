@@ -77,7 +77,7 @@ python -m tools.cli validate                  # run schema and prime validators
 ```
 
 Settings (including secrets, which are kept in your OS keychain) are managed from
-**Settings → Environment variables** in the app, or with `python -m desktop.settings`.
+the **Settings** tab in the app (Ctrl+5), or with `python -m desktop.settings list`.
 See [docs/SETTINGS.md](docs/SETTINGS.md).
 
 Translation currently covers a seed phrasebook for Arabic, German, Spanish,

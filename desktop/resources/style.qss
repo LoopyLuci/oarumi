@@ -100,3 +100,138 @@ QStatusBar {
     background: #17181b;
     border-top: 1px solid #2c2e33;
 }
+
+/* --- Settings tab ------------------------------------------------------ */
+
+QComboBox, QSpinBox {
+    background: #17181b;
+    color: #e6e7ea;
+    border: 1px solid #2c2e33;
+    border-radius: 6px;
+    padding: 6px 8px;
+    min-height: 22px;
+}
+
+QComboBox QAbstractItemView {
+    background: #17181b;
+    color: #e6e7ea;
+    selection-background-color: #3b6cff;
+}
+
+QCheckBox {
+    spacing: 8px;
+}
+
+QScrollArea, QScrollArea > QWidget > QWidget {
+    background: transparent;
+    border: none;
+}
+
+QListWidget#settingsCategories {
+    padding: 6px;
+}
+
+QListWidget#settingsCategories::item {
+    padding: 8px 10px;
+    border-radius: 6px;
+}
+
+QListWidget#settingsCategories::item:selected {
+    background: #26282c;
+    color: #ffffff;
+}
+
+QLabel#settingsHeading {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+QFrame#settingRow, QFrame#addForm {
+    background: #202124;
+    border: 1px solid #2c2e33;
+    border-radius: 8px;
+}
+
+QLabel#settingTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+QLabel#settingName {
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    font-size: 11px;
+    color: #8f939b;
+}
+
+QLabel#settingDesc {
+    color: #b3b6bd;
+}
+
+QLabel#settingMeta {
+    color: #8f939b;
+    font-size: 12px;
+}
+
+QLabel#settingNote {
+    color: #93c5fd;
+    font-size: 12px;
+}
+
+QLabel#settingError {
+    color: #fca5a5;
+    font-size: 12px;
+}
+
+QLabel#settingRevealed {
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    background: #17181b;
+    border: 1px solid #b45309;
+    border-radius: 6px;
+    padding: 6px 8px;
+    color: #fde68a;
+}
+
+QLabel#settingBadge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #26282c;
+    color: #9ca3af;
+}
+
+QLabel#settingBadge[state="unsaved"] { background: #4a3513; color: #fcd34d; }
+QLabel#settingBadge[state="shell"]   { background: #22303f; color: #93c5fd; }
+QLabel#settingBadge[state="saved"]   { background: #21422f; color: #8ce5ae; }
+QLabel#settingBadge[state="locked"]  { background: #3a3d44; color: #d5d7dc; }
+
+QFrame#restartBanner {
+    background: #22303f;
+    border: 1px solid #1e40af;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+QPushButton#secondaryButton {
+    background: #2b2e36;
+    color: #e6e7ea;
+}
+
+QPushButton#secondaryButton:disabled {
+    background: #22242a;
+    color: #5c5f66;
+}
+
+QHeaderView::section {
+    background: #26282c;
+    color: #d5d7dc;
+    border: none;
+    border-right: 1px solid #2c2e33;
+    padding: 6px 8px;
+}
+
+QTreeWidget::item {
+    padding: 2px 0;
+}

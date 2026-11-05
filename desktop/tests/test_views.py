@@ -16,13 +16,28 @@ from desktop.widgets.trace_view import TraceView
 
 def test_main_window_constructs(state: AppState) -> None:
     window = MainWindow(state)
-    assert window.tabs.count() == 4
-    assert [window.tabs.tabText(i) for i in range(4)] == [
+    assert window.tabs.count() == 5
+    assert [window.tabs.tabText(i) for i in range(5)] == [
         "Translate",
         "Sign",
         "Learn",
         "Dictionary",
+        "Settings",
     ]
+
+
+def test_settings_tab_is_reachable_from_the_menu_and_shortcut(state: AppState) -> None:
+    window = MainWindow(state)
+    window.select_tab("Translate")
+    window.show_settings()
+    assert window.tabs.currentWidget() is window.settings_view
+    window.select_tab("Learn")
+    assert window.tabs.currentWidget() is window.learn_view
+
+
+def test_unsaved_settings_are_offered_before_closing(state: AppState) -> None:
+    window = MainWindow(state)
+    assert window._resolve_unsaved_settings() is True  # nothing pending, no prompt
 
 
 def test_translate_view_produces_output(state: AppState) -> None:

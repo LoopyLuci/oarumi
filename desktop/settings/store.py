@@ -36,12 +36,34 @@ class SecretStore(Protocol):
 
     def delete(self, name: str) -> None: ...
 
+    def backend_name(self) -> str | None: ...
+
+
+# Keyring backend class names, mapped to the names people recognise.
+_BACKEND_LABELS = (
+    ("winvault", "Windows Credential Manager"),
+    ("macos", "macOS Keychain"),
+    ("secretservice", "Secret Service (GNOME Keyring)"),
+    ("kwallet", "KWallet (KDE)"),
+)
+
 
 class KeyringSecretStore:
     """Secrets in the OS keychain, under the service name ``oarumi``."""
 
     def __init__(self, service: str = SERVICE) -> None:
         self._service = service
+
+    def backend_name(self) -> str | None:
+        """Human name of the usable keychain, or None when there is none."""
+        backend = keyring.get_keyring()
+        if isinstance(backend, (fail.Keyring, null.Keyring)):
+            return None
+        label = f"{type(backend).__module__}.{type(backend).__name__}".lower()
+        for needle, name in _BACKEND_LABELS:
+            if needle in label:
+                return name
+        return type(backend).__name__
 
     def _ensure_backend(self) -> None:
         backend = keyring.get_keyring()

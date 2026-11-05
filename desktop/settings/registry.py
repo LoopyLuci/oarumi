@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Literal
 
 NAME_RE = re.compile(r"^OARUMI_[A-Z][A-Z0-9_]{0,63}$")
@@ -16,6 +17,28 @@ SECRET_NAME_HINT = re.compile(r"(TOKEN|SECRET|PASSWORD|PASSWD|CREDENTIAL|KEY)")
 MAX_VALUE_LENGTH = 4096
 
 Kind = Literal["str", "bool", "int", "choice", "path", "secret"]
+# When a changed value takes effect: at once, after Oarumi restarts, or the next
+# time the tool that reads it starts.
+Apply = Literal["now", "restart", "next run"]
+
+ENGINE_GROUP = "Engine & data"
+LOGGING_GROUP = "Logging"
+INTERFACE_GROUP = "Interface"
+PARITY_GROUP = "Parity tool"
+ADVANCED_GROUP = "Advanced"
+SECRETS_GROUP = "Secrets"
+CUSTOM_GROUP = "Custom"
+
+# Sidebar order in the Settings tab. Secrets and custom variables come last.
+GROUPS: tuple[str, ...] = (
+    ENGINE_GROUP,
+    LOGGING_GROUP,
+    INTERFACE_GROUP,
+    PARITY_GROUP,
+    ADVANCED_GROUP,
+    SECRETS_GROUP,
+    CUSTOM_GROUP,
+)
 
 
 @dataclass(frozen=True)
@@ -28,10 +51,17 @@ class Variable:
     minimum: int | None = None
     maximum: int | None = None
     shell_only: bool = False
+    title: str = ""
+    group: str = CUSTOM_GROUP
+    apply: Apply = "restart"
 
     @property
     def secret(self) -> bool:
         return self.kind == "secret" or is_secret_name(self.name)
+
+    @property
+    def label(self) -> str:
+        return self.title or self.name
 
 
 def is_secret_name(name: str) -> bool:
@@ -44,58 +74,81 @@ REGISTRY: dict[str, Variable] = {
         Variable(
             "OARUMI_HOME",
             "path",
-            "Data root that holds the language DB and models. Defaults to the repo.",
+            "Folder that holds the language database and models. "
+            "Leave unset to use the Oarumi project folder.",
+            title="Data folder",
+            group=ENGINE_GROUP,
+        ),
+        Variable(
+            "OARUMI_DEV_MODELS",
+            "bool",
+            "Use lightweight development stubs instead of the full model weights.",
+            default="1",
+            title="Development model stubs",
+            group=ENGINE_GROUP,
         ),
         Variable(
             "OARUMI_STRICT_PARITY",
             "bool",
             "Treat any parity divergence as a test failure.",
             default="0",
-        ),
-        Variable(
-            "OARUMI_DEV_MODELS",
-            "bool",
-            "Use development model stubs instead of full weights.",
-            default="1",
-        ),
-        Variable(
-            "OARUMI_LOG_LEVEL",
-            "choice",
-            "Logging verbosity.",
-            default="INFO",
-            choices=("DEBUG", "INFO", "WARNING", "ERROR"),
+            title="Strict parity",
+            group=ENGINE_GROUP,
         ),
         Variable(
             "OARUMI_OFFLINE",
             "bool",
-            "Disable every network call (used by the offline test suite).",
+            "Block every network call. The status bar shows the mode Oarumi started in.",
             default="0",
+            title="Offline mode",
+            group=ENGINE_GROUP,
         ),
         Variable(
-            "OARUMI_PARITY_HOST",
-            "str",
-            "Bind address for the parity web GUI.",
-            default="127.0.0.1",
-        ),
-        Variable(
-            "OARUMI_PARITY_PORT",
-            "int",
-            "Port for the parity web GUI.",
-            default="8090",
-            minimum=1,
-            maximum=65535,
+            "OARUMI_LOG_LEVEL",
+            "choice",
+            "How much Oarumi writes to its log.",
+            default="INFO",
+            choices=("DEBUG", "INFO", "WARNING", "ERROR"),
+            title="Log level",
+            group=LOGGING_GROUP,
+            apply="now",
         ),
         Variable(
             "OARUMI_DISABLE_AVATAR",
             "bool",
-            "Hide the desktop avatar widget.",
+            "Hide the 3D avatar on the Sign tab. Useful on machines without WebEngine.",
             default="0",
+            title="Hide 3D avatar",
+            group=INTERFACE_GROUP,
+        ),
+        Variable(
+            "OARUMI_PARITY_HOST",
+            "str",
+            "Address the parity web GUI listens on. Keep 127.0.0.1 unless you need more.",
+            default="127.0.0.1",
+            title="Parity web host",
+            group=PARITY_GROUP,
+            apply="next run",
+        ),
+        Variable(
+            "OARUMI_PARITY_PORT",
+            "int",
+            "Port the parity web GUI listens on.",
+            default="8090",
+            minimum=1,
+            maximum=65535,
+            title="Parity web port",
+            group=PARITY_GROUP,
+            apply="next run",
         ),
         Variable(
             "OARUMI_CONFIG_DIR",
             "path",
-            "Where settings.json is kept. Read from the shell only, never stored.",
+            "Folder that holds settings.json. Read from the shell only, so it cannot be "
+            "saved here.",
             shell_only=True,
+            title="Settings folder",
+            group=ADVANCED_GROUP,
         ),
     )
 }
@@ -106,8 +159,9 @@ def variable_for(name: str) -> Variable:
     known = REGISTRY.get(name)
     if known is not None:
         return known
-    kind: Kind = "secret" if is_secret_name(name) else "str"
-    return Variable(name, kind, "Custom variable.")
+    if is_secret_name(name):
+        return Variable(name, "secret", "Custom secret.", group=SECRETS_GROUP)
+    return Variable(name, "str", "Custom variable.")
 
 
 def validate_value(var: Variable, value: str) -> str:
@@ -137,4 +191,6 @@ def validate_value(var: Variable, value: str) -> str:
             raise ValueError(f"{var.name}: must be at most {var.maximum}")
     if var.kind == "choice" and value not in var.choices:
         raise ValueError(f"{var.name}: must be one of {', '.join(var.choices)}")
+    if var.kind == "path" and not Path(value).expanduser().is_dir():
+        raise ValueError(f"{var.name}: folder does not exist")
     return value
