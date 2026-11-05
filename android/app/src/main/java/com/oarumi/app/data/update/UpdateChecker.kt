@@ -1,6 +1,7 @@
 package com.oarumi.app.data.update
 
 import com.oarumi.app.data.net.HttpFetch
+import com.oarumi.app.data.net.HttpStatusException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,10 +22,18 @@ class UpdateChecker
             flavor: String,
         ): UpdateStatus =
             withContext(Dispatchers.IO) {
-                decideUpdate(fetch(RELEASES_LATEST_URL), installedVersion, flavor)
+                val json =
+                    try {
+                        fetch(RELEASES_LATEST_URL)
+                    } catch (e: HttpStatusException) {
+                        if (e.code == HTTP_NOT_FOUND) return@withContext UpdateStatus.NoRelease
+                        throw e
+                    }
+                decideUpdate(json, installedVersion, flavor)
             }
 
         companion object {
             const val RELEASES_LATEST_URL = "https://api.github.com/repos/LoopyLuci/oarumi/releases/latest"
+            private const val HTTP_NOT_FOUND = 404
         }
     }

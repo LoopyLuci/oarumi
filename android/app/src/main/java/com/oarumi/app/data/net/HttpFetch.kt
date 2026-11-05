@@ -5,6 +5,12 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.security.MessageDigest
 
+/** A non-2xx answer. [code] lets callers tell "not found" from "try again later". */
+class HttpStatusException(
+    val code: Int,
+    url: String,
+) : IOException("HTTP $code from $url")
+
 /** Plain HTTPS GET used for language packs and release metadata. */
 object HttpFetch {
     private const val TIMEOUT_MS = 20_000
@@ -23,7 +29,7 @@ object HttpFetch {
             }
         try {
             val code = connection.responseCode
-            if (code !in 200..299) throw IOException("HTTP $code from $url")
+            if (code !in 200..299) throw HttpStatusException(code, url)
             return connection.inputStream.use { it.readBytes() }
         } finally {
             connection.disconnect()

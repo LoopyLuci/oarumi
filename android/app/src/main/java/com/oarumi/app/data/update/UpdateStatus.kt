@@ -16,6 +16,9 @@ sealed interface UpdateStatus {
         val release: Release,
         val apk: ReleaseAsset?,
     ) : UpdateStatus
+
+    /** GitHub answers 404 for "latest release" until the first release is published. */
+    data object NoRelease : UpdateStatus
 }
 
 /** The version this build reports, without the debug and flavor suffixes added by Gradle. */

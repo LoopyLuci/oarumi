@@ -153,6 +153,7 @@ class SettingsViewModel
         private fun describe(status: UpdateStatus): String =
             when (status) {
                 is UpdateStatus.UpToDate -> "You have the latest release (${status.latest})."
+                UpdateStatus.NoRelease -> "No release published yet."
                 is UpdateStatus.Available ->
                     if (status.apk == null) {
                         "Version ${status.release.tag} is out, but it has no APK for this build."
