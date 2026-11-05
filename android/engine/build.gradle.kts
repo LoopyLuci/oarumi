@@ -16,7 +16,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation("org.yaml:snakeyaml:2.2")
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.24")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:2.4.21")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     // LanguageDb (JVM) opens the DB through this driver. The app reads it through Room,
     // so the driver stays out of the APK.
