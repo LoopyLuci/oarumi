@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Certificate pins for the hosts the app downloads from: release metadata, the
+  APK, and language packs. Each pin is the SHA-256 of a public key in the served
+  chain, with the leaf certificate left out, because a leaf pin breaks at each
+  renewal.
+
+  The pins expire on the date below. After that date Android stops enforcing
+  them, so they must be refreshed before then. A pin that no longer matches
+  blocks these downloads until a build with new pins is installed.
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">github.com</domain>
+        <domain includeSubdomains="true">githubusercontent.com</domain>
+        <pin-set expiration="2027-11-05">
+            <!-- Sectigo Public Server Authentication CA DV E36 -->
+            <pin digest="SHA-256">ZSagvDzjltLkewXEBuDxIzpW/dpVw1Juvvmd0hhkzdY=</pin>
+            <!-- Sectigo Public Server Authentication Root E46 -->
+            <pin digest="SHA-256">sLVjNUaFYfW7n6EtgBeEpjOlcnBdNPMrZDRF36iwBdE=</pin>
+            <!-- Let's Encrypt YR1 -->
+            <pin digest="SHA-256">LoMHBotttiDko50Gi13uXW71eIy7LAttI+rYT8wXF4w=</pin>
+            <!-- ISRG Root YR -->
+            <pin digest="SHA-256">fk6IOKit1ild5647BH06ujSIq5XbCgqlbYl6ANhhi88=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
