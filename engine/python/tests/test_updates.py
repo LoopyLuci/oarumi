@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import operator
+from collections.abc import Callable
 from typing import Any
 
 import pytest
@@ -30,15 +32,26 @@ def test_equal_versions_are_not_newer() -> None:
     assert not is_newer("v0.1.0-alpha.4", "0.1.0-alpha.4")
 
 
-def test_all_ordering_operators_are_defined() -> None:
-    older = parse_version("0.1.0-alpha.4")
-    newer = parse_version("0.1.0")
-    assert older < newer
-    assert older <= newer
-    assert newer > older
-    assert newer >= older
-    assert older <= parse_version("v0.1.0-alpha.4")
-    assert not newer <= older
+@pytest.mark.parametrize(
+    ("op", "left", "right", "expected"),
+    [
+        (operator.lt, "0.1.0-alpha.4", "0.1.0", True),
+        (operator.le, "0.1.0-alpha.4", "0.1.0", True),
+        (operator.gt, "0.1.0-alpha.4", "0.1.0", False),
+        (operator.ge, "0.1.0-alpha.4", "0.1.0", False),
+        (operator.lt, "v0.1.0-alpha.4", "0.1.0-alpha.4", False),
+        (operator.le, "v0.1.0-alpha.4", "0.1.0-alpha.4", True),
+        (operator.gt, "v0.1.0-alpha.4", "0.1.0-alpha.4", False),
+        (operator.ge, "v0.1.0-alpha.4", "0.1.0-alpha.4", True),
+    ],
+)
+def test_every_ordering_operator_is_defined(
+    op: Callable[[Any, Any], bool],
+    left: str,
+    right: str,
+    expected: bool,
+) -> None:
+    assert op(parse_version(left), parse_version(right)) == expected
 
 
 def test_leading_v_and_build_metadata_are_ignored() -> None:
