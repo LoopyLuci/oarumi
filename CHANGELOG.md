@@ -31,6 +31,10 @@ Versioning: [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
+- Secure environment settings: a Settings window (Settings → Environment
+  variables) and `python -m desktop.settings` CLI. Secrets go to the OS keychain
+  and are masked in the UI and logs; other values go to a JSON file outside the
+  repo. See `docs/SETTINGS.md`.
 - `docs/NAME.md` — name clearance record and re-verification procedure.
 - ADR-0005 — the name "Oarumi" and the no-rebrand rule.
 

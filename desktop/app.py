@@ -6,6 +6,7 @@ oarumi-desktop
 
 from __future__ import annotations
 
+import logging
 import os
 import sys
 import traceback
@@ -14,7 +15,35 @@ from pathlib import Path
 from PySide6.QtWidgets import QApplication, QMessageBox
 
 from desktop.main_window import MainWindow
+from desktop.settings import (
+    EnvManager,
+    SettingsError,
+    default_manager,
+    install_redaction,
+    secrets_from_environ,
+)
 from desktop.state import AppState
+
+
+def load_settings() -> EnvManager:
+    """Load stored settings into the environment and install log redaction.
+
+    Redaction is installed first, so nothing logged after this point can leak a
+    stored secret. A bad settings file is reported and skipped, not fatal.
+    """
+    manager = default_manager()
+    secrets = secrets_from_environ(os.environ)
+    try:
+        report = manager.apply()
+        if report.skipped_secret:
+            logging.getLogger(__name__).warning(
+                "secure storage unavailable; skipped: %s", ", ".join(report.skipped_secret)
+            )
+        secrets += manager.secret_values()
+    except SettingsError as exc:
+        logging.getLogger(__name__).warning("settings not loaded: %s", exc)
+    install_redaction(secrets)
+    return manager
 
 
 def _find_repo_root() -> Path:
@@ -40,6 +69,8 @@ def main(argv: list[str] | None = None) -> int:
     if qss.exists():
         app.setStyleSheet(qss.read_text(encoding="utf-8"))
 
+    env_manager = load_settings()
+
     try:
         state = build_state()
     except Exception as exc:
@@ -52,7 +83,7 @@ def main(argv: list[str] | None = None) -> int:
         traceback.print_exc()
         return 1
 
-    window = MainWindow(state)
+    window = MainWindow(state, env_manager=env_manager)
     window.show()
     return app.exec()
 

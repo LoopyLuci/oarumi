@@ -76,6 +76,10 @@ python -m tools.cli decompose "hello"         # NSM structure for an English piv
 python -m tools.cli validate                  # run schema and prime validators
 ```
 
+Settings (including secrets, which are kept in your OS keychain) are managed from
+**Settings → Environment variables** in the app, or with `python -m desktop.settings`.
+See [docs/SETTINGS.md](docs/SETTINGS.md).
+
 Translation currently covers a seed phrasebook for Arabic, German, Spanish,
 French and Chinese. Phrases outside it come back `degraded` with the reason.
 

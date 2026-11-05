@@ -15,6 +15,7 @@ keywords = ["conlang", "interlingua", "nsm", "accessibility", "offline"]
 
 dependencies = [
   "pyside6>=6.6,<7",
+  "keyring>=25",
   "argostranslate>=1.9",
   "pyttsx3>=2.90",
   "fastapi>=0.110",
