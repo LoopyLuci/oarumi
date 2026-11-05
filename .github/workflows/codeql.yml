@@ -28,11 +28,13 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
+      # build-mode none extracts sources without running Gradle. Autobuild ran a
+      # full release build (R8), which fails on the sqlite-jdbc and slf4j classes.
       - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           queries: security-and-quality
-      - uses: github/codeql-action/autobuild@v3
+          build-mode: none
       - uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
