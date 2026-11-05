@@ -14,11 +14,13 @@ kotlin {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    implementation("org.xerial:sqlite-jdbc:3.45.2.0")
     implementation("org.yaml:snakeyaml:2.2")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.24")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    // LanguageDb (JVM) opens the DB through this driver. The app reads it through Room,
+    // so the driver stays out of the APK.
+    testImplementation("org.xerial:sqlite-jdbc:3.45.2.0")
 }
 
 tasks.test {

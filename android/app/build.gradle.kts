@@ -229,6 +229,8 @@ dependencies {
     testImplementation("androidx.room:room-testing:2.6.1")
     testImplementation("androidx.work:work-testing:2.9.0")
     testImplementation("org.robolectric:robolectric:4.12.2")
+    // ParityWithJvmTest reads the same DB through the JVM LanguageDb.
+    testImplementation("org.xerial:sqlite-jdbc:3.45.2.0")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test:runner:1.5.2")
