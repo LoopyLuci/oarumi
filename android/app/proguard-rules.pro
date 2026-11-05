@@ -33,3 +33,8 @@
 
 # Bootstrap manager / state
 -keep class com.oarumi.app.bootstrap.** { *; }
+
+# sqlite-jdbc and slf4j refer to classes that Android does not ship. Those code
+# paths never run on a device, so R8 only needs to stop failing on them.
+-dontwarn java.sql.JDBCType
+-dontwarn org.slf4j.impl.StaticLoggerBinder
