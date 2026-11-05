@@ -173,3 +173,52 @@ def test_corrupt_file_surfaces_as_settings_error(tmp_path: Path) -> None:
 
 def _raise_unavailable(self: KeyringSecretStore, name: str) -> str | None:
     raise SecretBackendUnavailable("unavailable")
+
+
+def test_entries_report_where_each_value_comes_from(
+    tmp_path: Path, memory_keyring: MemoryKeyring
+) -> None:
+    mgr = _manager(tmp_path, {"OARUMI_LOG_LEVEL": "ERROR"})
+    mgr.set("OARUMI_OFFLINE", "1")
+    rows = {e.name: e for e in mgr.entries()}
+    assert rows["OARUMI_LOG_LEVEL"].source == "shell"
+    assert rows["OARUMI_LOG_LEVEL"].effective == "ERROR"
+    assert rows["OARUMI_OFFLINE"].source == "saved"
+    assert rows["OARUMI_OFFLINE"].effective == "1"
+    assert rows["OARUMI_DEV_MODELS"].source == "default"
+    assert rows["OARUMI_DEV_MODELS"].effective == "1"
+
+
+def test_values_loaded_at_startup_are_not_reported_as_shell_overrides(
+    tmp_path: Path, memory_keyring: MemoryKeyring
+) -> None:
+    environ: dict[str, str] = {}
+    mgr = _manager(tmp_path, environ)
+    mgr.set("OARUMI_OFFLINE", "1")
+    mgr.apply()  # copies the saved value into the environment
+    row = next(e for e in mgr.entries() if e.name == "OARUMI_OFFLINE")
+    assert not row.overridden_by_shell
+    assert row.source == "saved"
+
+
+def test_secret_entries_expose_source_but_never_the_value(
+    tmp_path: Path, memory_keyring: MemoryKeyring
+) -> None:
+    mgr = _manager(tmp_path)
+    mgr.set("OARUMI_API_TOKEN", SECRET)
+    row = next(e for e in mgr.entries() if e.name == "OARUMI_API_TOKEN")
+    assert row.source == "saved"
+    assert row.effective is None
+
+
+def test_backend_name_is_none_when_no_keychain_is_usable(tmp_path: Path) -> None:
+    previous = keyring.get_keyring()
+    keyring.set_keyring(unusable_backend("fail"))
+    try:
+        assert KeyringSecretStore().backend_name() is None
+    finally:
+        keyring.set_keyring(previous)
+
+
+def test_backend_name_is_reported_when_a_keychain_is_usable(memory_keyring: MemoryKeyring) -> None:
+    assert KeyringSecretStore().backend_name()

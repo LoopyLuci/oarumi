@@ -1,4 +1,4 @@
-"""``python -m desktop.settings``: CLI when given arguments, otherwise the GUI."""
+"""``python -m desktop.settings``: CLI when given arguments, otherwise the app on the Settings tab."""
 
 from __future__ import annotations
 
@@ -6,16 +6,9 @@ import sys
 
 
 def _gui() -> int:
-    from PySide6.QtWidgets import QApplication
+    from desktop.app import main
 
-    from desktop.settings.dialog import SettingsDialog
-    from desktop.settings.manager import default_manager
-
-    app = QApplication.instance() or QApplication(sys.argv)
-    app.setApplicationName("Oarumi")
-    dialog = SettingsDialog(default_manager())
-    dialog.exec()
-    return 0
+    return main(["oarumi"], start_tab="Settings")
 
 
 if __name__ == "__main__":

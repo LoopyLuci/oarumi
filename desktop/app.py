@@ -59,7 +59,7 @@ def build_state() -> AppState:
     return AppState.from_env(repo_root=root)
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv: list[str] | None = None, *, start_tab: str | None = None) -> int:
     app = QApplication.instance() or QApplication(argv or sys.argv)
     assert isinstance(app, QApplication)
     app.setApplicationName("Oarumi")
@@ -84,6 +84,8 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     window = MainWindow(state, env_manager=env_manager)
+    if start_tab is not None:
+        window.select_tab(start_tab)
     window.show()
     return app.exec()
 

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from desktop.settings.registry import (
@@ -94,3 +96,16 @@ def test_error_messages_never_echo_the_value() -> None:
     with pytest.raises(ValueError) as excinfo:
         validate_value(variable_for("OARUMI_API_TOKEN"), secret)
     assert "SUPERSECRET" not in str(excinfo.value)
+
+
+def test_folder_values_must_exist(tmp_path: Path) -> None:
+    var = variable_for("OARUMI_HOME")
+    assert validate_value(var, str(tmp_path)) == str(tmp_path)
+    with pytest.raises(ValueError, match="folder does not exist"):
+        validate_value(var, str(tmp_path / "missing"))
+
+
+def test_every_setting_belongs_to_a_sidebar_group() -> None:
+    from desktop.settings.registry import GROUPS
+
+    assert all(var.group in GROUPS for var in REGISTRY.values())

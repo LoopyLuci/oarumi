@@ -11,11 +11,27 @@ app does (and does not do) with them.
 
 ## 1. Quick start
 
-**GUI.** Start the app and choose **Settings → Environment variables…** (Ctrl+,).
-Use **Add…** to create a variable, **Change…** to edit one, and **Reveal secret**
-to view a secret for ten seconds.
+**GUI.** Start the app and open the **Settings** tab (Ctrl+5, or Ctrl+, from
+anywhere). The left-hand list groups every setting. Each setting has a control
+for its type, the value Oarumi is using right now, its default, and when a change
+takes effect.
 
-Or run the settings window on its own:
+1. Change one or more settings. They stay pending, marked as unsaved, until you
+   press **Save changes**. Nothing is written while you type.
+2. **Save changes** checks every pending value first. If any is invalid, nothing
+   is saved and the problem is shown next to the field.
+3. Settings that apply after a restart show a banner with **Restart Oarumi now**.
+   Log level applies at once.
+4. **Revert** throws away unsaved edits. Closing the window or restarting asks
+   what to do with unsaved edits first.
+
+Use the search box to filter settings by name or description. **Secrets** has
+its own page: type a value to store it in the keychain, **Reveal** shows a saved
+secret for ten seconds, and **Remove** deletes it. **Custom** adds any other
+`OARUMI_*` name. **File → Open settings folder** opens where `settings.json`
+lives.
+
+To open the app straight on this tab, run:
 
 ```bash
 python -m desktop.settings
@@ -71,9 +87,10 @@ Oarumi aims to make a secret leak hard, not just unlikely:
 4. **Errors never echo a value.** A rejected value produces a message such as
    `OARUMI_LOG_LEVEL: must be one of DEBUG, INFO, WARNING, ERROR`, with the input
    left out.
-5. **Masking everywhere in the UI.** Secret cells show `••••••••`, get no
-   tooltip, and are never copied to the clipboard. **Reveal** is an explicit
-   click, lasts ten seconds, and is cleared when the window closes.
+5. **Masking everywhere in the UI.** Saved secrets are never displayed. The
+   new-value box is a password field, and nothing is copied to the clipboard.
+   **Reveal** is an explicit click, lasts ten seconds, and is cleared when you
+   leave the Settings tab, save, revert or close the window.
 6. **Log redaction.** At startup the app installs a filter that replaces every
    known secret value with `[REDACTED]` in log messages, arguments and
    tracebacks. Values shorter than four characters are not redacted, because
@@ -101,17 +118,21 @@ Oarumi aims to make a secret leak hard, not just unlikely:
 Run `python -m desktop.settings list` for the live list with each variable's
 status. The registry is `desktop/settings/registry.py`.
 
-| Variable | Default | Meaning |
-|---|---|---|
-| `OARUMI_HOME` | repo root | Data root that holds the language DB and models. |
-| `OARUMI_STRICT_PARITY` | `0` | `1` makes any parity divergence a test failure. |
-| `OARUMI_DEV_MODELS` | `1` | `1` uses development model stubs. |
-| `OARUMI_LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING` or `ERROR`. |
-| `OARUMI_OFFLINE` | `0` | `1` disables every network call. |
-| `OARUMI_PARITY_HOST` | `127.0.0.1` | Bind address for the parity web GUI. |
-| `OARUMI_PARITY_PORT` | `8090` | Port for the parity web GUI (1–65535). |
-| `OARUMI_DISABLE_AVATAR` | `0` | `1` hides the avatar widget. |
-| `OARUMI_CONFIG_DIR` | per OS | Shell-only. Where `settings.json` lives. Cannot be stored. |
+| Variable | Default | Applies | Meaning |
+|---|---|---|---|
+| `OARUMI_HOME` | repo root | restart | Data root that holds the language DB and models. Must be an existing folder. |
+| `OARUMI_STRICT_PARITY` | `0` | restart | `1` makes any parity divergence a test failure. |
+| `OARUMI_DEV_MODELS` | `1` | restart | `1` uses development model stubs. |
+| `OARUMI_LOG_LEVEL` | `INFO` | now | `DEBUG`, `INFO`, `WARNING` or `ERROR`. |
+| `OARUMI_OFFLINE` | `0` | restart | `1` disables every network call. The status bar shows the mode Oarumi started in. |
+| `OARUMI_PARITY_HOST` | `127.0.0.1` | next run | Bind address for the parity web GUI. |
+| `OARUMI_PARITY_PORT` | `8090` | next run | Port for the parity web GUI (1–65535). |
+| `OARUMI_DISABLE_AVATAR` | `0` | restart | `1` hides the avatar widget. |
+| `OARUMI_CONFIG_DIR` | per OS | shell only | Where `settings.json` lives. Cannot be stored. |
+
+"Now" means the change takes effect when you save. "Restart" means it takes
+effect when Oarumi next starts. "Next run" means it takes effect when the tool
+that reads it next starts, such as the parity web GUI.
 
 Custom `OARUMI_*` names are accepted too. They are stored as text unless the
 name looks secret.
@@ -120,8 +141,11 @@ name looks secret.
 
 ## 5. For contributors
 
-- `desktop/settings/registry.py` defines names, kinds and validation. Add a
-  variable there, and add it to `.env.example` and the table above.
+- `desktop/settings/registry.py` defines names, kinds, validation, the sidebar
+  group, and when a change applies. Add a variable there, and add it to
+  `.env.example` and the table above.
+- `desktop/views/settings.py` is the Settings tab. It only edits pending values;
+  `save()` validates everything before writing anything.
 - `desktop/settings/manager.py` is the only code that reads or writes stored
   values. The GUI, CLI and startup all go through `EnvManager`.
 - `desktop/settings/store.py` holds the keychain adapter and the atomic file.
@@ -130,7 +154,8 @@ name looks secret.
   `load_settings()` before anything else runs.
 - Tests use an in-memory keyring (`desktop/tests/keyring_fake.py`), so they never
   touch the real keychain. Every test file for this feature is named
-  `desktop/tests/test_settings_*.py`.
+  `desktop/tests/test_settings_*.py`, and the tab is tested in
+  `desktop/tests/test_settings_view.py`.
 
 Do not log, print, or include in an exception message any value from
 `EnvManager`. If you need to show a status, show the name and whether it is set.
