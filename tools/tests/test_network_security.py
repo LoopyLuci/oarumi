@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import binascii
+import datetime as dt
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -12,6 +13,8 @@ APP = ROOT / "android" / "app" / "src" / "main"
 CONFIG = APP / "res" / "xml" / "network_security_config.xml"
 MANIFEST = APP / "AndroidManifest.xml"
 ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
+# Fail this long before expiry, so the pins are refreshed before Android stops enforcing them.
+REFRESH_WINDOW = dt.timedelta(days=60)
 
 
 def _domain_config() -> ET.Element:
@@ -49,3 +52,12 @@ def test_pins_are_sha256_digests_and_expire() -> None:
         except binascii.Error:
             raise AssertionError(f"pin is not base64: {pin.text!r}") from None
         assert len(digest) == 32
+
+
+def test_pins_are_refreshed_before_they_expire() -> None:
+    pin_set = _domain_config().find("pin-set")
+    assert pin_set is not None
+    expiration = pin_set.get("expiration")
+    assert expiration, "pins must expire so they get reviewed"
+    refresh_by = dt.date.fromisoformat(expiration) - REFRESH_WINDOW
+    assert dt.date.today() < refresh_by, f"pins expire {expiration}; re-pin and move the date"
