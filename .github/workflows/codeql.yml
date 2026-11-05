@@ -28,13 +28,17 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-      # build-mode none extracts sources without running Gradle. Autobuild ran a
-      # full release build (R8), which fails on the sqlite-jdbc and slf4j classes.
+      # Autobuild ran a full release build (R8), which fails on the sqlite-jdbc and
+      # slf4j classes. Kotlin is compiled by hand instead; Python needs no build.
       - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           queries: security-and-quality
-          build-mode: none
+          build-mode: ${{ matrix.language == 'kotlin' && 'manual' || 'none' }}
+      - if: matrix.language == 'kotlin'
+        run: |
+          cd android
+          ./gradlew --no-daemon :engine:classes :app:compileMlkitDebugKotlin
       - uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
