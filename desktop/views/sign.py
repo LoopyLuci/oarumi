@@ -27,9 +27,17 @@ class SignView(QWidget):
 
     def _build_ui(self) -> None:
         outer = QVBoxLayout(self)
-        outer.setContentsMargins(12, 12, 12, 12)
+        outer.setContentsMargins(24, 20, 24, 12)
+        outer.setSpacing(14)
 
-        self._hint = QLabel("Run a translation with target modality = signed, then press Play.")
+        title = QLabel("Sign")
+        title.setObjectName("pageTitle")
+        outer.addWidget(title)
+
+        self._hint = QLabel(
+            "On the Translate tab, choose Signed as the target modality and translate. Then press Play."
+        )
+        self._hint.setObjectName("pageSubtitle")
         outer.addWidget(self._hint)
 
         splitter = QSplitter(Qt.Orientation.Vertical)

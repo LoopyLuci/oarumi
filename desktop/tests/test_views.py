@@ -40,6 +40,14 @@ def test_unsaved_settings_are_offered_before_closing(state: AppState) -> None:
     assert window._resolve_unsaved_settings() is True  # nothing pending, no prompt
 
 
+def test_translate_view_shows_full_language_names(state: AppState) -> None:
+    view = TranslateView(state)
+    view.set_language("es")
+    assert view._lang.currentText() == "Spanish"
+    assert view._lang.currentData() == "es"
+    assert view._modality.currentText() == "Spoken"
+
+
 def test_translate_view_produces_output(state: AppState) -> None:
     view = TranslateView(state)
     view.set_language("es")

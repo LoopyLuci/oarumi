@@ -30,10 +30,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.oarumi.app.ui.common.languageName
 import com.oarumi.app.ui.theme.AccentGreen
 import com.oarumi.app.ui.theme.BadgeOkFg
 import com.oarumi.app.ui.theme.BadgeWarnFg
@@ -78,9 +78,13 @@ fun BootstrapWizard(
         )
 
         Text(
-            text = "Build: ${state.flavor}",
-            style = MaterialTheme.typography.labelSmall,
-            fontFamily = FontFamily.Monospace,
+            text =
+                if (state.flavor == "mlkit") {
+                    "Translation engine: ML Kit, on this device"
+                } else {
+                    "Translation engine: built-in phrasebook"
+                },
+            style = MaterialTheme.typography.bodySmall,
             color = TextMuted,
         )
 
@@ -158,6 +162,14 @@ fun BootstrapWizard(
     }
 }
 
+private fun languageStatusText(status: LanguageStatus): String =
+    when (status.state) {
+        AssetState.READY -> "Installed. Works offline."
+        AssetState.DOWNLOADING -> "Downloading…"
+        AssetState.FAILED -> "Download failed. Start setup to try again."
+        AssetState.NOT_STARTED -> "Not downloaded yet. About 30 MB."
+    }
+
 @Composable
 private fun LanguageRow(
     status: LanguageStatus,
@@ -199,14 +211,13 @@ private fun LanguageRow(
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = status.code,
+                text = languageName(status.code),
                 style = MaterialTheme.typography.titleMedium,
                 color = TextPrimary,
             )
             Text(
-                text = status.kind,
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = FontFamily.Monospace,
+                text = languageStatusText(status),
+                style = MaterialTheme.typography.bodySmall,
                 color = TextMuted,
             )
         }
@@ -263,8 +274,7 @@ private fun TtsRow(
                         AssetState.DOWNLOADING -> "Checking…"
                         AssetState.NOT_STARTED -> "Will be checked during setup"
                     },
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = FontFamily.Monospace,
+                style = MaterialTheme.typography.bodySmall,
                 color = TextMuted,
             )
         }
