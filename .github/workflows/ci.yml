@@ -87,7 +87,7 @@ jobs:
             --cov-report=term-missing \
             --cov-report=xml \
             --cov-fail-under=85
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: coverage-py${{ matrix.python }}
@@ -110,7 +110,7 @@ jobs:
           OARUMI_STRICT_PARITY=1 pytest tests/parity -q \
             --parity-corpus=parity-basic \
             --timeout=60
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: parity-py-failure
@@ -174,7 +174,7 @@ jobs:
             :engine:test \
             :app:testMlkitDebugUnitTest \
             :app:testArgosDebugUnitTest
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: android-test-results

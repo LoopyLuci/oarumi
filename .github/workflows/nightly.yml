@@ -31,7 +31,7 @@ jobs:
           OARUMI_STRICT_PARITY=1 pytest tests/parity -q \
             --parity-corpus=parity-complex \
             --timeout=120
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: parity-complex-results
@@ -52,7 +52,7 @@ jobs:
       - run: |
           source .venv/bin/activate
           pytest tests/chaos -q --timeout=300 -p no:cacheprovider
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: chaos-failure-artifacts
@@ -84,7 +84,7 @@ jobs:
             --current bench-report.json \
             --baseline tests/bench/baseline.json \
             --tolerance 1.20
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: bench-report
           path: bench-report.json
@@ -122,7 +122,7 @@ jobs:
           script: |
             cd android
             ./gradlew --no-daemon :app:connectedMlkitDebugAndroidTest
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: android-instrumented-reports
