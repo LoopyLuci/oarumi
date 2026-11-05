@@ -20,7 +20,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     // LanguageDb (JVM) opens the DB through this driver. The app reads it through Room,
     // so the driver stays out of the APK.
-    testImplementation("org.xerial:sqlite-jdbc:3.45.2.0")
+    testImplementation("org.xerial:sqlite-jdbc:3.54.1.0")
 }
 
 tasks.test {
