@@ -30,6 +30,17 @@ def test_equal_versions_are_not_newer() -> None:
     assert not is_newer("v0.1.0-alpha.4", "0.1.0-alpha.4")
 
 
+def test_all_ordering_operators_are_defined() -> None:
+    older = parse_version("0.1.0-alpha.4")
+    newer = parse_version("0.1.0")
+    assert older < newer
+    assert older <= newer
+    assert newer > older
+    assert newer >= older
+    assert older <= parse_version("v0.1.0-alpha.4")
+    assert not newer <= older
+
+
 def test_leading_v_and_build_metadata_are_ignored() -> None:
     assert parse_version("v1.2.3+build.7") == parse_version("1.2.3")
 

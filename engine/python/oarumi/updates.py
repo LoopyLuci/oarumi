@@ -7,6 +7,7 @@ Kotlin port is android/app/src/main/java/com/oarumi/app/data/update/ReleaseParse
 
 from __future__ import annotations
 
+import functools
 import json
 import re
 import urllib.request
@@ -18,6 +19,7 @@ RELEASES_LATEST_URL = "https://api.github.com/repos/LoopyLuci/oarumi/releases/la
 REQUEST_TIMEOUT_SECONDS = 15
 
 
+@functools.total_ordering
 @dataclass(frozen=True, slots=True)
 class Version:
     core: tuple[int, int, int]
