@@ -5,6 +5,8 @@ import androidx.test.core.app.ApplicationProvider
 import com.oarumi.app.data.audio.AndroidAudioSource
 import com.oarumi.app.data.db.AndroidLanguageStore
 import com.oarumi.app.data.db.AppDatabase
+import com.oarumi.app.data.packs.DirectoryBundledPacks
+import com.oarumi.app.data.packs.PackRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -88,7 +90,7 @@ class TranslateViewModelTest {
     @Test
     fun `translate success populates result`() =
         runTest(dispatcher) {
-            val vm = TranslateViewModel(pipeline, audit)
+            val vm = TranslateViewModel(pipeline, audit, testPackRepository())
             vm.onInputChange("hola")
             vm.translate()
             val state = vm.state.first { !it.isTranslating }
@@ -101,7 +103,7 @@ class TranslateViewModelTest {
     @Test
     fun `unknown language degrades`() =
         runTest(dispatcher) {
-            val vm = TranslateViewModel(pipeline, audit)
+            val vm = TranslateViewModel(pipeline, audit, testPackRepository())
             vm.selectLanguage("xx")
             vm.onInputChange("hola")
             vm.translate()
@@ -114,7 +116,7 @@ class TranslateViewModelTest {
     @Test
     fun `blank input does not translate`() =
         runTest(dispatcher) {
-            val vm = TranslateViewModel(pipeline, audit)
+            val vm = TranslateViewModel(pipeline, audit, testPackRepository())
             vm.onInputChange("   ")
             vm.translate()
             advanceUntilIdle()
@@ -122,3 +124,9 @@ class TranslateViewModelTest {
             assertTrue(vm.state.value.statusMessage.contains("Enter some text"))
         }
 }
+
+private fun testPackRepository(): PackRepository =
+    PackRepository(
+        java.nio.file.Files.createTempDirectory("packs-vm").toFile(),
+        DirectoryBundledPacks(java.io.File("../../language/packs")),
+    )

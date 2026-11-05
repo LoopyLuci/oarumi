@@ -90,7 +90,7 @@ fun TranslateScreen(
                     label = "Source language",
                     options = state.availableLanguages,
                     selected = state.sourceLanguage,
-                    display = ::languageName,
+                    display = { code -> if (code == AUTO_LANGUAGE) "Detect language" else languageName(code) },
                     onSelect = viewModel::selectLanguage,
                     modifier = Modifier.weight(1f),
                 )
@@ -118,6 +118,18 @@ fun TranslateScreen(
                         viewModel.translate()
                     }),
             )
+
+            if (state.spellHints.isNotEmpty()) {
+                Text(
+                    text =
+                        "Spelling: " +
+                            state.spellHints.joinToString("   ·   ") { hint ->
+                                "${hint.word} → ${hint.suggestions.joinToString(", ").ifEmpty { "no suggestion" }}"
+                            },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = BadgeWarnFg,
+                )
+            }
 
             Button(
                 onClick = {

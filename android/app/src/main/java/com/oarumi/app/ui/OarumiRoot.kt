@@ -28,6 +28,7 @@ import com.oarumi.app.ui.common.OarumiStatusBar
 import com.oarumi.app.ui.dictionary.DictionaryScreen
 import com.oarumi.app.ui.learn.LearnScreen
 import com.oarumi.app.ui.nav.Route
+import com.oarumi.app.ui.settings.SettingsScreen
 import com.oarumi.app.ui.sign.SignScreen
 import com.oarumi.app.ui.theme.SurfaceDark
 import com.oarumi.app.ui.translate.TranslateScreen
@@ -110,6 +111,9 @@ fun OarumiRoot(
                 }
                 composable(Route.Dictionary.path) {
                     DictionaryScreen()
+                }
+                composable(Route.Settings.path) {
+                    SettingsScreen()
                 }
             }
 

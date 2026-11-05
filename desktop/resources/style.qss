@@ -189,6 +189,15 @@ QLabel#surfaceText {
     color: #ffffff;
 }
 
+QLabel#spellHint {
+    font-size: 12px;
+    color: #fcd34d;
+    background: #2d2611;
+    border: 1px solid #5c4a14;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
 QLabel#metaKey {
     font-size: 10px;
     font-weight: 600;

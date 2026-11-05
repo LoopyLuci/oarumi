@@ -106,7 +106,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
-    buildFeatures { compose = true }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
     composeOptions { kotlinCompilerExtensionVersion = "1.5.14" }
 
     packaging {
@@ -151,12 +154,37 @@ val stageAudioAssets by tasks.registering(Copy::class) {
     }
 }
 
+/**
+ * Base language packs ship inside the APK. Extra packs are downloaded on demand,
+ * so only the packs the index marks as base are copied here.
+ */
+val stageLanguagePacks by tasks.registering(Copy::class) {
+    val packsDir = repoRoot.resolve("language/packs")
+    val index = groovy.json.JsonSlurper().parseText(packsDir.resolve("index.json").readText()) as Map<*, *>
+    val basePacks =
+        (index["packs"] as List<*>)
+            .map { it as Map<*, *> }
+            .filter { it["base"] == true }
+            .map { it["file"] as String }
+    from(packsDir) {
+        include("index.json")
+        include(basePacks)
+        into("packs")
+    }
+    into(layout.buildDirectory.dir("generated/assets"))
+}
+
 android.sourceSets["main"].assets.srcDir(
     layout.buildDirectory.dir("generated/assets"),
 )
 
 tasks.named("preBuild").configure {
-    dependsOn(stageLanguageDb, stageAudioAssets)
+    dependsOn(stageLanguageDb, stageAudioAssets, stageLanguagePacks)
+}
+
+// Merging assets must wait for staging, or the merged APK can miss generated files.
+tasks.matching { it.name.matches(Regex("merge.*Assets")) }.configureEach {
+    dependsOn(stageLanguageDb, stageAudioAssets, stageLanguagePacks)
 }
 
 // --- Dependencies ---------------------------------------------------------------

@@ -5,6 +5,7 @@
     <string name="nav_sign">Sign</string>
     <string name="nav_learn">Learn</string>
     <string name="nav_dictionary">Dictionary</string>
+    <string name="nav_settings">Settings</string>
     <string name="badge_offline">Offline</string>
     <string name="badge_online">Online</string>
     <string name="badge_degraded">Degraded</string>

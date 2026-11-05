@@ -13,6 +13,7 @@ from desktop.settings import EnvManager, default_manager
 from desktop.state import AppState
 from desktop.views.dictionary import DictionaryView
 from desktop.views.learn import LearnView
+from desktop.views.packs import PacksView
 from desktop.views.settings import SettingsView
 from desktop.views.sign import SignView
 from desktop.views.translate import TranslateView
@@ -33,12 +34,14 @@ class MainWindow(QMainWindow):
         self.sign_view = SignView(state)
         self.learn_view = LearnView(state)
         self.dictionary_view = DictionaryView(state)
+        self.packs_view = PacksView(state.packs)
         self.settings_view = SettingsView(self._env_manager)
 
         self.tabs.addTab(self.translate_view, "Translate")
         self.tabs.addTab(self.sign_view, "Sign")
         self.tabs.addTab(self.learn_view, "Learn")
         self.tabs.addTab(self.dictionary_view, "Dictionary")
+        self.tabs.addTab(self.packs_view, "Packs")
         self.tabs.addTab(self.settings_view, "Settings")
         self.setCentralWidget(self.tabs)
 
@@ -52,6 +55,8 @@ class MainWindow(QMainWindow):
         self.translate_view.result_ready.connect(self._on_result)
         self.translate_view.status_message.connect(self._show_message)
         self.settings_view.status_message.connect(self._show_message)
+        self.packs_view.status_message.connect(self._show_message)
+        self.packs_view.packs_changed.connect(self.translate_view.refresh_language_support)
         self.settings_view.restart_requested.connect(self._restart)
         self.tabs.currentChanged.connect(self._on_tab_changed)
 

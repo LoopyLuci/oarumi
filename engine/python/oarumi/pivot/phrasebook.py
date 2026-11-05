@@ -103,3 +103,8 @@ def lookup(lang: str, text: str) -> str | None:
 
 def supported_languages() -> tuple[str, ...]:
     return tuple(sorted(_PHRASEBOOK.keys()))
+
+
+def phrases(lang: str) -> tuple[str, ...]:
+    """Source-language phrases the phrasebook knows for `lang`."""
+    return tuple(_PHRASEBOOK.get(lang, {}).keys())

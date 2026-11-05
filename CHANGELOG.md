@@ -4,6 +4,27 @@ All notable changes to this project are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning: [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Spelling checker on desktop and Android. It suggests corrections from a
+  per-language frequency dictionary, using edit distance.
+- Language detection on the Translate screen. Choose "Detect language" as the
+  source; when the answer is unsure, the chosen language is kept.
+- Language packs: 6 base packs ship in the app, and 12 extra packs download on
+  request. Every download is checked against `language/packs/index.json`.
+  Build with `tools/build_language_packs.py`.
+- Desktop Packs tab, and an Android Settings screen, to install and remove packs.
+- App update check against the latest GitHub release, on desktop and Android.
+  Android can download updates in the background (off by default) and asks the
+  user to confirm the install.
+- Android: save the APK to a chosen location, or share it, from Settings.
+
+### Notes
+- Pack licences and data provenance are under review; see
+  `language/packs/NOTICE.md`.
+- Optional network use is recorded in ADR-0008 and `docs/OFFLINE.md` § 6.
+
 ## [0.1.0-alpha.4] - 2026-11-04
 
 ### Added

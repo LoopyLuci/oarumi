@@ -27,7 +27,11 @@ tasks.test {
     inputs.dir(rootProject.file("../tests/parity/data"))
     inputs.dir(rootProject.file("../assets/audio"))
     // Parity tests read from the shared corpus at the repo root.
+    inputs.dir(rootProject.file("../language/packs"))
+    inputs.file(rootProject.file("../tests/parity/lang/cases.json"))
     systemProperty("oarumi.parity.data", rootProject.file("../tests/parity/data").absolutePath)
+    systemProperty("oarumi.packs.dir", rootProject.file("../language/packs").absolutePath)
+    systemProperty("oarumi.lang.cases", rootProject.file("../tests/parity/lang/cases.json").absolutePath)
     systemProperty("oarumi.db", rootProject.file("../language/oarumi.db").absolutePath)
     systemProperty(
         "oarumi.parity.report",

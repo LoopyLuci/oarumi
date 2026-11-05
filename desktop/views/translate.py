@@ -6,7 +6,7 @@ import json
 
 from oarumi.pivot import phrasebook
 from oarumi.types import TranslationRequest, TranslationResult
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtWidgets import (
     QComboBox,
     QFrame,
@@ -27,6 +27,9 @@ from desktop.widgets.trace_view import TraceView
 
 _SUPPORTED_LANGS = ("en", *phrasebook.supported_languages())
 _MODALITIES = ("spoken", "signed", "tactile")
+_AUTO = "auto"
+_MAX_SPELL_HINTS = 4
+_SPELL_DEBOUNCE_MS = 350
 
 
 class TranslateView(QWidget):
@@ -36,6 +39,7 @@ class TranslateView(QWidget):
     def __init__(self, state: AppState) -> None:
         super().__init__()
         self._state = state
+        self._detected_note = ""
         self._build_ui()
         self._wire()
 
@@ -71,6 +75,7 @@ class TranslateView(QWidget):
         grid.setVerticalSpacing(8)
 
         self._lang = QComboBox()
+        self._lang.addItem("Detect language", _AUTO)
         for code in _SUPPORTED_LANGS:
             self._lang.addItem(language_name(code), code)
         _select_data(self._lang, "es")
@@ -85,6 +90,14 @@ class TranslateView(QWidget):
         self._input.setText("hola")
         self._input.setClearButtonEnabled(True)
 
+        self._spell_hint = QLabel()
+        self._spell_hint.setObjectName("spellHint")
+        self._spell_hint.setWordWrap(True)
+        self._spell_hint.setVisible(False)
+        self._spell_timer = QTimer(self)
+        self._spell_timer.setSingleShot(True)
+        self._spell_timer.setInterval(_SPELL_DEBOUNCE_MS)
+
         self._translate_btn = QPushButton("Translate to Oarumi")
         self._translate_btn.setObjectName("translate_btn")
         self._translate_btn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -95,7 +108,8 @@ class TranslateView(QWidget):
         grid.addWidget(self._modality, 1, 1)
         grid.addWidget(_field_label("Phrase"), 2, 0, 1, 2)
         grid.addWidget(self._input, 3, 0, 1, 2)
-        grid.addWidget(self._translate_btn, 4, 0, 1, 2)
+        grid.addWidget(self._spell_hint, 4, 0, 1, 2)
+        grid.addWidget(self._translate_btn, 5, 0, 1, 2)
         return card
 
     def _build_result_card(self) -> QFrame:
@@ -152,6 +166,9 @@ class TranslateView(QWidget):
     def _wire(self) -> None:
         self._translate_btn.clicked.connect(self._on_translate)
         self._input.returnPressed.connect(self._on_translate)
+        self._input.textChanged.connect(lambda _: self._spell_timer.start())
+        self._lang.currentIndexChanged.connect(lambda _: self._spell_timer.start())
+        self._spell_timer.timeout.connect(self._update_spell_hint)
 
     # --- slots ----------------------------------------------------------
 
@@ -161,9 +178,21 @@ class TranslateView(QWidget):
             self.status_message.emit("Enter some text first.")
             return
 
+        lang = _data(self._lang)
+        self._detected_note = ""
+        if lang == _AUTO:
+            detection = self._state.packs.detector().detect(text)
+            if detection.code is None:
+                message = "Could not tell the language. Choose a source language."
+                self._status.setText(message)
+                self.status_message.emit(message)
+                return
+            lang = detection.code
+            self._detected_note = f"Detected {language_name(lang)} ({detection.confidence:.0%}). "
+
         req = TranslationRequest(
             text=text,
-            lang=_data(self._lang),
+            lang=lang,
             modality=_data(self._modality),  # type: ignore[arg-type]
         )
 
@@ -193,7 +222,30 @@ class TranslateView(QWidget):
         self._degraded.setVisible(result.degraded)
         self._result_status.setText("Translated with fallback" if result.degraded else "Translated")
         _restyle(self._result_status, "warn" if result.degraded else "ok")
-        self._status.setText("Translated." if not result.degraded else "Translated (degraded).")
+        outcome = "Translated (degraded)." if result.degraded else "Translated."
+        self._status.setText(self._detected_note + outcome)
+
+    def _update_spell_hint(self) -> None:
+        lang = _data(self._lang)
+        text = self._input.text()
+        checker = (
+            None if lang == _AUTO or not text.strip() else self._state.packs.spell_checker(lang)
+        )
+        problems = checker.check(text)[:_MAX_SPELL_HINTS] if checker is not None else []
+        if not problems:
+            self._spell_hint.clear()
+            self._spell_hint.setVisible(False)
+            return
+        parts = [
+            f"{problem.word} → {', '.join(problem.suggestions) or 'no suggestion'}"
+            for problem in problems
+        ]
+        self._spell_hint.setText("Spelling: " + "   ·   ".join(parts))
+        self._spell_hint.setVisible(True)
+
+    def refresh_language_support(self) -> None:
+        """Called after packs change: re-check spelling against what is installed now."""
+        self._update_spell_hint()
 
     # --- test hooks -----------------------------------------------------
 

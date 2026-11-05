@@ -8,6 +8,7 @@ from desktop.main_window import MainWindow
 from desktop.state import AppState
 from desktop.views.dictionary import DictionaryView
 from desktop.views.learn import LearnView
+from desktop.views.packs import PacksView
 from desktop.views.sign import SignView
 from desktop.views.translate import TranslateView
 from desktop.widgets.status_bar import StatusBarWidget
@@ -16,12 +17,13 @@ from desktop.widgets.trace_view import TraceView
 
 def test_main_window_constructs(state: AppState) -> None:
     window = MainWindow(state)
-    assert window.tabs.count() == 5
-    assert [window.tabs.tabText(i) for i in range(5)] == [
+    assert window.tabs.count() == 6
+    assert [window.tabs.tabText(i) for i in range(6)] == [
         "Translate",
         "Sign",
         "Learn",
         "Dictionary",
+        "Packs",
         "Settings",
     ]
 
@@ -46,6 +48,24 @@ def test_translate_view_shows_full_language_names(state: AppState) -> None:
     assert view._lang.currentText() == "Spanish"
     assert view._lang.currentData() == "es"
     assert view._modality.currentText() == "Spoken"
+
+
+def test_translate_view_detects_the_language_when_asked(state: AppState) -> None:
+    view = TranslateView(state)
+    view.set_language("auto")
+    view.set_input("buenos días")
+    view.click_translate()
+    assert "Detected Spanish" in view._status.text()
+    assert state.last_result is not None and state.last_result.degraded is False
+
+
+def test_translate_view_suggests_spelling_fixes(state: AppState) -> None:
+    view = TranslateView(state)
+    view.set_language("es")
+    view.set_input("holla")
+    view._update_spell_hint()
+    assert view._spell_hint.isVisibleTo(view) or view._spell_hint.text()
+    assert "hola" in view._spell_hint.text()
 
 
 def test_translate_view_produces_output(state: AppState) -> None:
@@ -122,6 +142,21 @@ def test_trace_view_renders_result(state: AppState) -> None:
     top1 = tv.tree.topLevelItem(1)
     assert top0 is not None and top0.text(0) == "trace"
     assert top1 is not None and top1.text(0) == "failovers"
+
+
+def test_packs_view_lists_every_pack_with_its_status(state: AppState) -> None:
+    view = PacksView(state.packs)
+    entries = state.packs.entries()
+    assert view._table.rowCount() == len(entries)
+
+    def cell(row: int, column: int) -> str:
+        item = view._table.item(row, column)
+        assert item is not None
+        return item.text()
+
+    statuses = {cell(row, 1): cell(row, 3) for row in range(view._table.rowCount())}
+    assert statuses["es"] == "Built in"
+    assert statuses["pt"] == "Not installed"
 
 
 def test_avatar_placeholder_in_offscreen() -> None:
