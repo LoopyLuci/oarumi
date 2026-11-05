@@ -33,3 +33,7 @@
 
 # Bootstrap manager / state
 -keep class com.oarumi.app.bootstrap.** { *; }
+
+# slf4j-api looks for a binder class that Android does not ship. That code path
+# never runs on a device, so R8 only needs to stop failing on it.
+-dontwarn org.slf4j.impl.StaticLoggerBinder
