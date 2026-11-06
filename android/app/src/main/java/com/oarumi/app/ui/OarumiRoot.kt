@@ -19,15 +19,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.oarumi.app.data.avatar.CwasaController
 import com.oarumi.app.ui.common.OarumiStatusBar
+import com.oarumi.app.ui.dictionary.DictionaryEntryScreen
 import com.oarumi.app.ui.dictionary.DictionaryScreen
 import com.oarumi.app.ui.learn.LearnScreen
+import com.oarumi.app.ui.nav.DictionaryEntryRoute
 import com.oarumi.app.ui.nav.Route
+import com.oarumi.app.ui.settings.SettingsScreen
 import com.oarumi.app.ui.sign.SignScreen
 import com.oarumi.app.ui.theme.SurfaceDark
 import com.oarumi.app.ui.translate.TranslateScreen
@@ -56,7 +61,7 @@ fun OarumiRoot(
         bottomBar = {
             NavigationBar {
                 Route.entries.forEach { route ->
-                    val selected = currentDest?.hierarchy?.any { it.route == route.path } == true
+                    val selected = currentDest?.hierarchy?.any { it.route?.substringBefore('/') == route.path } == true
                     NavigationBarItem(
                         selected = selected,
                         onClick = {
@@ -109,7 +114,18 @@ fun OarumiRoot(
                     LearnScreen()
                 }
                 composable(Route.Dictionary.path) {
-                    DictionaryScreen()
+                    DictionaryScreen(
+                        onOpenEntry = { lexemeId -> navController.navigate(DictionaryEntryRoute.path(lexemeId)) },
+                    )
+                }
+                composable(
+                    DictionaryEntryRoute.PATTERN,
+                    arguments = listOf(navArgument(DictionaryEntryRoute.ARG) { type = NavType.IntType }),
+                ) {
+                    DictionaryEntryScreen(onBack = { navController.popBackStack() })
+                }
+                composable(Route.Settings.path) {
+                    SettingsScreen()
                 }
             }
 

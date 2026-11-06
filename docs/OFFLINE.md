@@ -55,3 +55,22 @@ No silent degradation. See `docs/RELIABILITY.md` § 6.
 | ML Kit language models | ~30 MB each | Downloaded (user selects) |
 | Argos language packs | ~30 MB each | Downloaded (user selects) |
 | TTS voice data | ~20 MB per voice | Downloaded if absent |
+| Language packs, base (6 languages) | 27–631 KB each | Bundled |
+| Language packs, extra (12 languages) | 23–635 KB each | Downloaded (user selects) |
+
+## 6. Optional network use
+
+Three actions reach the network. Each runs only when the user starts it. The
+translation and detection pipeline never does.
+
+| Action | Request | Kept |
+|---|---|---|
+| Download an extra language pack | `raw.githubusercontent.com` pack file | Yes, after its size and SHA-256 match `language/packs/index.json` |
+| Check for an app update | `api.github.com` latest release | No |
+| Download an Android APK update | GitHub release APK asset | Yes, after its SHA-256 digest matches; kept until installed |
+
+Background update checks are off by default. Turning on "Download updates in
+the background" on Android checks at most every 12 hours, on a connected
+network. It downloads only when a newer release has a digest. Installing always
+asks the user to confirm. Requests send only `User-Agent` and `Accept` headers.
+See [ADR-0008](adr/0008-optional-network-for-packs-and-updates.md).

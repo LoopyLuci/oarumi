@@ -30,13 +30,17 @@ class SecretBackendUnavailable(RuntimeError):
 
 
 class SecretStore(Protocol):
-    def get(self, name: str) -> str | None: ...
+    def get(self, name: str) -> str | None:
+        """The stored value, or None when the name is not set."""
 
-    def set(self, name: str, value: str) -> None: ...
+    def set(self, name: str, value: str) -> None:
+        """Store the value under the name, replacing any earlier one."""
 
-    def delete(self, name: str) -> None: ...
+    def delete(self, name: str) -> None:
+        """Remove the value. Removing a name that is not set is not an error."""
 
-    def backend_name(self) -> str | None: ...
+    def backend_name(self) -> str | None:
+        """Human name of the usable keychain, or None when there is none."""
 
 
 # Keyring backend class names, mapped to the names people recognise.

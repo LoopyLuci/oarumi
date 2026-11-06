@@ -10,6 +10,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.shadows.ShadowLooper
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -33,9 +34,20 @@ class LearnViewModelTest {
     @After
     fun tearDown() = db.close()
 
+    /** The primes load on a background thread, so wait for them before the test reads state. */
+    private fun loadedViewModel(): LearnViewModel {
+        val vm = LearnViewModel(AndroidLanguageStore(db))
+        val deadline = System.currentTimeMillis() + 10_000
+        while (vm.state.value.primes.isEmpty() && System.currentTimeMillis() < deadline) {
+            ShadowLooper.idleMainLooper()
+            Thread.sleep(10)
+        }
+        return vm
+    }
+
     @Test
     fun `next wraps around`() {
-        val vm = LearnViewModel(AndroidLanguageStore(db))
+        val vm = loadedViewModel()
         val size = vm.state.value.primes.size
         assertTrue(size > 0)
         repeat(size) { vm.next() }
@@ -44,14 +56,14 @@ class LearnViewModelTest {
 
     @Test
     fun `previous wraps around`() {
-        val vm = LearnViewModel(AndroidLanguageStore(db))
+        val vm = loadedViewModel()
         vm.previous()
         assertEquals(vm.state.value.primes.size - 1, vm.state.value.index)
     }
 
     @Test
     fun `current is populated`() {
-        val vm = LearnViewModel(AndroidLanguageStore(db))
+        val vm = loadedViewModel()
         assertNotNull(vm.state.value.current)
     }
 }

@@ -15,6 +15,8 @@ class TraceView(QWidget):
         self.tree.setHeaderLabels(["Component / step", "Path / trigger", "Reason / time"])
         self.tree.setRootIsDecorated(True)
         self.tree.setAlternatingRowColors(True)
+        self.tree.setColumnWidth(0, 240)
+        self.tree.setColumnWidth(1, 180)
         layout.addWidget(self.tree)
 
     def clear(self) -> None:
@@ -23,7 +25,10 @@ class TraceView(QWidget):
     def show_result(self, result: TranslationResult) -> None:
         self.tree.clear()
 
-        trace_root = QTreeWidgetItem(["trace", "", f"{len(result.trace)} entries"])
+        trace_count = len(result.trace)
+        trace_root = QTreeWidgetItem(
+            ["trace", "", f"{trace_count} {'entry' if trace_count == 1 else 'entries'}"]
+        )
         for entry in result.trace:
             QTreeWidgetItem(
                 trace_root,

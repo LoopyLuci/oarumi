@@ -41,7 +41,7 @@ class EndToEndSmokeTest {
 
             val config =
                 EngineConfig(
-                    home = java.nio.file.Path.of(ctx.filesDir.absolutePath),
+                    home = java.nio.file.Paths.get(ctx.filesDir.absolutePath),
                     strictParity = false,
                     devModels = false,
                     offline = true,

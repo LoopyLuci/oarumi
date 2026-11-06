@@ -82,6 +82,55 @@ class ParityWithJvmTest {
         }
     }
 
+    @Test
+    fun `browse and root class counts are identical`() {
+        assertEquals(jvm.browseLexemes(limit = 500), android.browseLexemes(limit = 500))
+        assertEquals(jvm.rootClassCounts(), android.rootClassCounts())
+        for (rootClass in jvm.rootClassCounts().keys) {
+            assertEquals(
+                jvm.browseLexemes(rootClass, limit = 500),
+                android.browseLexemes(rootClass, limit = 500),
+                "browse '$rootClass'",
+            )
+        }
+    }
+
+    @Test
+    fun `search within a root class is identical`() {
+        for (q in listOf("who", "interrogative", "%", "")) {
+            val j = jvm.searchLexemes(q, limit = 50, rootClass = "particle")
+            val a = android.searchLexemes(q, limit = 50, rootClass = "particle")
+            assertEquals(j, a, "search '$q' in particles")
+        }
+    }
+
+    @Test
+    fun `search ignores surrounding space identically`() {
+        assertEquals(jvm.searchLexemes("  who ", limit = 50), android.searchLexemes("  who ", limit = 50))
+    }
+
+    @Test
+    fun `lexeme detail is identical`() {
+        for (lx in jvm.browseLexemes(limit = 500)) {
+            assertEquals(jvm.getLexeme(lx.id), android.getLexeme(lx.id), "lexeme ${lx.id}")
+            assertEquals(jvm.sensesFor(lx.id), android.sensesFor(lx.id), "senses ${lx.id}")
+            assertEquals(jvm.signsFor(lx.id), android.signsFor(lx.id), "signs ${lx.id}")
+        }
+    }
+
+    @Test
+    fun `form status is identical for primes`() {
+        val jvmPrimes = jvm.allPrimes().associateBy { it.id }
+        val androidPrimes = android.allPrimes().associateBy { it.id }
+        for (id in jvmPrimes.keys) {
+            assertEquals(
+                jvmPrimes.getValue(id).formStatus,
+                androidPrimes.getValue(id).formStatus,
+                "form_status for $id",
+            )
+        }
+    }
+
     @Suppress("unused")
     private val json = OarumiJson
 }

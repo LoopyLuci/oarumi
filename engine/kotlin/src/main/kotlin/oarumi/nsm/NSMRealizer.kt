@@ -7,7 +7,10 @@ import oarumi.types.NsmStructure
 import oarumi.types.OarumiSurface
 
 class NSMRealizer(db: LanguageStore) {
-    private val forms: Map<String, String> = db.allPrimes().associate { it.id to it.spokenForm }
+    // Lazy: see NSMDecomposerTierA. The constructor must not read the database.
+    private val forms: Map<String, String> by lazy {
+        db.allPrimes().associate { it.id to it.spokenForm }
+    }
 
     private val moodToClitic: Map<String, Clitic> =
         mapOf(

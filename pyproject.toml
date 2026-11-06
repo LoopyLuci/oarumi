@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "oarumi"
-version = "0.1.0a3"
+version = "0.1.0a5"
 description = "Oarumi — a universal interlingua with a deterministic, offline, tri-modal engine"
 readme = "README.md"
 requires-python = ">=3.11"

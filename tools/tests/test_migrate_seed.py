@@ -21,7 +21,6 @@ def mini_repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
         "CREATE TABLE gadgets (id INTEGER PRIMARY KEY NOT NULL);\n", encoding="utf-8"
     )
     monkeypatch.setattr(migrate, "MIGRATIONS", migrations)
-    monkeypatch.setattr(migrate, "SCHEMA", schema)
     return tmp_path
 
 
@@ -89,3 +88,107 @@ def test_seed_populates_primes_lexicon_and_tactile(tmp_path: Path) -> None:
         assert senses == lexemes
     finally:
         conn.close()
+
+
+def _migrated(tmp_path: Path) -> Path:
+    db = tmp_path / "migrated.sqlite"
+    conn = sqlite3.connect(db)
+    try:
+        migrate.apply(conn)
+    finally:
+        conn.close()
+    return db
+
+
+def _mini_lang(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, lexicon: str) -> None:
+    lang = tmp_path / "language"
+    lang.mkdir()
+    (lang / "primes.yaml").write_text(
+        "nsm_version: test\n"
+        "primes:\n"
+        "  - { id: SOMEONE, category: substantives, gloss: someone, combinators: [substance] }\n"
+        "  - { id: DO, category: mental, gloss: do, combinators: [predicate] }\n",
+        encoding="utf-8",
+    )
+    (lang / "lexicon.csv").write_text(lexicon, encoding="utf-8")
+    monkeypatch.setattr(seed_db, "LANG", lang)
+
+
+_HEADER = "id,phon_form,click,tone,gloss,root_class,frequency,sense_gloss,sense_no,primes\n"
+
+
+def test_seed_rejects_unknown_root_class(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _mini_lang(tmp_path, monkeypatch, _HEADER + "1,xo,,,thing,verbish,1,thing,1,\n")
+    with pytest.raises(ValueError, match="root_class"):
+        seed_db.main(["--db", str(_migrated(tmp_path))])
+
+
+def test_seed_rejects_unknown_prime_in_decomposition(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _mini_lang(tmp_path, monkeypatch, _HEADER + "1,xo,,,thing,noun,1,thing,1,NOPE\n")
+    with pytest.raises(ValueError, match="unknown prime"):
+        seed_db.main(["--db", str(_migrated(tmp_path))])
+
+
+def test_seed_adds_senses_once_and_keeps_decomposition(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _mini_lang(
+        tmp_path,
+        monkeypatch,
+        _HEADER
+        + "1,xo,,,thing,noun,1,thing,1,SOMEONE\n"
+        + "1,xo,,,thing,noun,1,a second meaning,2,DO\n",
+    )
+    db = _migrated(tmp_path)
+    assert seed_db.main(["--db", str(db)]) == 0
+    assert seed_db.main(["--db", str(db)]) == 0
+
+    conn = sqlite3.connect(db)
+    try:
+        rows = conn.execute(
+            "SELECT sense_no, prime_decomp, decomp_status FROM senses ORDER BY sense_no"
+        ).fetchall()
+    finally:
+        conn.close()
+    assert rows == [
+        (1, '{"primes": ["SOMEONE"], "combinators": []}', "placeholder"),
+        (2, '{"primes": ["DO"], "combinators": []}', "placeholder"),
+    ]
+
+
+def _shape(conn: sqlite3.Connection) -> dict[str, object]:
+    """Tables, columns and named indexes, independent of column order."""
+    shape: dict[str, object] = {}
+    tables = [
+        r[0]
+        for r in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+        )
+    ]
+    for table in tables:
+        columns = {
+            r[1]: (r[2], r[3], r[4], r[5]) for r in conn.execute(f"PRAGMA table_info({table})")
+        }
+        indexes = {}
+        for r in conn.execute(f"PRAGMA index_list({table})"):
+            if r[1].startswith("sqlite_autoindex"):
+                continue
+            indexes[r[1]] = (
+                bool(r[2]),
+                tuple(c[2] for c in conn.execute(f"PRAGMA index_info({r[1]})")),
+            )
+        shape[table] = (columns, indexes)
+    return shape
+
+
+def test_migrations_build_the_schema_in_schema_sql(tmp_path: Path) -> None:
+    migrated = sqlite3.connect(_migrated(tmp_path))
+    fresh = sqlite3.connect(tmp_path / "fresh.sqlite")
+    try:
+        fresh.executescript((migrate.ROOT / "language" / "schema.sql").read_text(encoding="utf-8"))
+        assert _shape(migrated) == _shape(fresh)
+    finally:
+        migrated.close()
+        fresh.close()

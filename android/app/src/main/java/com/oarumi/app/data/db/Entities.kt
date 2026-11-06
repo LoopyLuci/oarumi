@@ -21,9 +21,13 @@ data class PrimeEntity(
     @ColumnInfo(name = "signed_form") val signedForm: String,
     @ColumnInfo(name = "tactile_form") val tactileForm: String,
     @ColumnInfo(name = "nsm_version") val nsmVersion: String,
+    @ColumnInfo(name = "form_status") val formStatus: String,
 )
 
-@Entity(tableName = "lexemes")
+@Entity(
+    tableName = "lexemes",
+    indices = [Index(value = ["root_class", "frequency"], name = "idx_lexemes_root_class")],
+)
 data class LexemeEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "phon_form") val phonForm: String,
@@ -32,6 +36,7 @@ data class LexemeEntity(
     @ColumnInfo(name = "gloss") val gloss: String,
     @ColumnInfo(name = "root_class") val rootClass: String,
     @ColumnInfo(name = "frequency") val frequency: Int,
+    @ColumnInfo(name = "form_status") val formStatus: String,
 )
 
 @Entity(
@@ -44,12 +49,17 @@ data class LexemeEntity(
             onDelete = ForeignKey.CASCADE,
         ),
     ],
-    indices = [Index(value = ["lexeme_id"], name = "idx_senses_lexeme")],
+    indices = [
+        Index(value = ["lexeme_id"], name = "idx_senses_lexeme"),
+        Index(value = ["lexeme_id", "sense_no"], name = "idx_senses_lexeme_no", unique = true),
+    ],
 )
 data class SenseEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "lexeme_id") val lexemeId: Int,
+    @ColumnInfo(name = "sense_no") val senseNo: Int,
     @ColumnInfo(name = "prime_decomp") val primeDecomp: String,
+    @ColumnInfo(name = "decomp_status") val decompStatus: String,
     @ColumnInfo(name = "gloss") val gloss: String,
 )
 
@@ -70,6 +80,7 @@ data class SignEntity(
     @ColumnInfo(name = "lexeme_id") val lexemeId: Int,
     @ColumnInfo(name = "hamnosys") val hamnosys: String,
     @ColumnInfo(name = "nonmanual") val nonmanual: String,
+    @ColumnInfo(name = "form_status") val formStatus: String,
 )
 
 @Entity(

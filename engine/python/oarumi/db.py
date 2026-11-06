@@ -1,4 +1,9 @@
-"""Read-only access to the canonical language SQLite database."""
+"""Read-only access to the canonical language SQLite database.
+
+Entry model and status vocabulary: docs/DICTIONARY.md. The Kotlin JVM layer
+(engine/kotlin LanguageDb) and the Room layer (android data/db) mirror these
+methods; docs/PARITY_API.md lists them.
+"""
 
 from __future__ import annotations
 
@@ -19,6 +24,7 @@ class Prime:
     signed_form: str
     tactile_form: str
     nsm_version: str
+    form_status: str = "placeholder"
 
 
 @dataclass(slots=True, frozen=True)
@@ -30,6 +36,17 @@ class Lexeme:
     gloss: str
     root_class: str
     frequency: int
+    form_status: str = "provisional"
+
+
+@dataclass(slots=True, frozen=True)
+class Sense:
+    id: int
+    lexeme_id: int
+    sense_no: int
+    gloss: str
+    primes: tuple[str, ...]
+    decomp_status: str
 
 
 @dataclass(slots=True, frozen=True)
@@ -38,6 +55,7 @@ class Sign:
     lexeme_id: int
     hamnosys: str
     nonmanual: dict[str, object]
+    form_status: str = "placeholder"
 
 
 @dataclass(slots=True, frozen=True)
@@ -45,6 +63,15 @@ class TactileConstruction:
     id: int
     sign_id: int
     protocol: dict[str, object]
+
+
+_LEXEME_COLUMNS = "id, phon_form, click, tone, gloss, root_class, frequency, form_status"
+
+
+def _like_pattern(text: str) -> str:
+    """Substring pattern for LIKE ... ESCAPE '\\', with % and _ taken literally."""
+    escaped = text.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+    return f"%{escaped}%"
 
 
 class LanguageDb:
@@ -76,7 +103,7 @@ class LanguageDb:
     def get_prime(self, pid: str) -> Prime | None:
         row = self._conn.execute(
             """SELECT id, gloss, category, combinators, spoken_form, signed_form,
-                      tactile_form, nsm_version
+                      tactile_form, nsm_version, form_status
                FROM primes WHERE id = ?""",
             (pid,),
         ).fetchone()
@@ -85,7 +112,7 @@ class LanguageDb:
     def all_primes(self) -> list[Prime]:
         rows = self._conn.execute(
             """SELECT id, gloss, category, combinators, spoken_form, signed_form,
-                      tactile_form, nsm_version FROM primes ORDER BY id"""
+                      tactile_form, nsm_version, form_status FROM primes ORDER BY id"""
         ).fetchall()
         return [self._row_to_prime(r) for r in rows]
 
@@ -100,41 +127,68 @@ class LanguageDb:
             signed_form=str(row["signed_form"]),
             tactile_form=str(row["tactile_form"]),
             nsm_version=str(row["nsm_version"]),
+            form_status=str(row["form_status"]),
         )
 
     # --- lexemes --------------------------------------------------------
 
-    def search_lexemes(self, query: str, limit: int = 20) -> list[Lexeme]:
-        like = f"%{query}%"
+    def search_lexemes(
+        self, query: str, limit: int = 20, root_class: str | None = None
+    ) -> list[Lexeme]:
+        """Match phon_form, the lexeme gloss, or any sense gloss.
+
+        Exact matches (case-insensitive) rank first, then frequency, then id.
+        Surrounding whitespace is ignored.
+        """
+        query = query.strip()
+        like = _like_pattern(query)
         rows = self._conn.execute(
-            """SELECT id, phon_form, click, tone, gloss, root_class, frequency
-               FROM lexemes
-               WHERE phon_form LIKE ? OR gloss LIKE ?
-               ORDER BY frequency DESC, id ASC
-               LIMIT ?""",
-            (like, like, limit),
+            r"""SELECT id, phon_form, click, tone, gloss, root_class, frequency, form_status
+                FROM lexemes
+                WHERE (phon_form LIKE ? ESCAPE '\' OR gloss LIKE ? ESCAPE '\'
+                       OR id IN (SELECT lexeme_id FROM senses WHERE gloss LIKE ? ESCAPE '\'))
+                  AND (? IS NULL OR root_class = ?)
+                ORDER BY CASE WHEN LOWER(phon_form) = LOWER(?) OR LOWER(gloss) = LOWER(?)
+                              THEN 0 ELSE 1 END,
+                         frequency DESC, id ASC
+                LIMIT ?""",
+            (like, like, like, root_class, root_class, query, query, limit),
         ).fetchall()
-        return [
-            Lexeme(
-                id=int(r["id"]),
-                phon_form=str(r["phon_form"]),
-                click=r["click"],
-                tone=r["tone"],
-                gloss=str(r["gloss"]),
-                root_class=str(r["root_class"]),
-                frequency=int(r["frequency"]),
-            )
-            for r in rows
-        ]
+        return [self._row_to_lexeme(r) for r in rows]
 
     def get_lexeme_by_phon(self, phon: str) -> Lexeme | None:
         row = self._conn.execute(
-            """SELECT id, phon_form, click, tone, gloss, root_class, frequency
-               FROM lexemes WHERE phon_form = ?""",
+            f"SELECT {_LEXEME_COLUMNS} FROM lexemes WHERE phon_form = ?",
             (phon,),
         ).fetchone()
-        if row is None:
-            return None
+        return self._row_to_lexeme(row) if row is not None else None
+
+    def get_lexeme(self, lexeme_id: int) -> Lexeme | None:
+        row = self._conn.execute(
+            f"SELECT {_LEXEME_COLUMNS} FROM lexemes WHERE id = ?",
+            (lexeme_id,),
+        ).fetchone()
+        return self._row_to_lexeme(row) if row is not None else None
+
+    def browse_lexemes(self, root_class: str | None = None, limit: int = 200) -> list[Lexeme]:
+        """Lexemes of one root class, or of every class when root_class is None."""
+        rows = self._conn.execute(
+            f"""SELECT {_LEXEME_COLUMNS} FROM lexemes
+                WHERE (? IS NULL OR root_class = ?)
+                ORDER BY frequency DESC, id ASC
+                LIMIT ?""",
+            (root_class, root_class, limit),
+        ).fetchall()
+        return [self._row_to_lexeme(r) for r in rows]
+
+    def root_class_counts(self) -> dict[str, int]:
+        rows = self._conn.execute(
+            "SELECT root_class, COUNT(*) AS n FROM lexemes GROUP BY root_class ORDER BY root_class"
+        ).fetchall()
+        return {str(r["root_class"]): int(r["n"]) for r in rows}
+
+    @staticmethod
+    def _row_to_lexeme(row: sqlite3.Row) -> Lexeme:
         return Lexeme(
             id=int(row["id"]),
             phon_form=str(row["phon_form"]),
@@ -143,22 +197,56 @@ class LanguageDb:
             gloss=str(row["gloss"]),
             root_class=str(row["root_class"]),
             frequency=int(row["frequency"]),
+            form_status=str(row["form_status"]),
         )
+
+    # --- senses ---------------------------------------------------------
+
+    def senses_for(self, lexeme_id: int) -> list[Sense]:
+        rows = self._conn.execute(
+            """SELECT id, lexeme_id, sense_no, gloss, prime_decomp, decomp_status
+               FROM senses WHERE lexeme_id = ? ORDER BY sense_no, id""",
+            (lexeme_id,),
+        ).fetchall()
+        return [
+            Sense(
+                id=int(r["id"]),
+                lexeme_id=int(r["lexeme_id"]),
+                sense_no=int(r["sense_no"]),
+                gloss=str(r["gloss"]),
+                # A decomposition without a "primes" array reads as empty, not as an error.
+                primes=tuple(json.loads(r["prime_decomp"]).get("primes", [])),
+                decomp_status=str(r["decomp_status"]),
+            )
+            for r in rows
+        ]
 
     # --- signs / tactile ------------------------------------------------
 
     def get_sign(self, lexeme_id: int) -> Sign | None:
         row = self._conn.execute(
-            "SELECT id, lexeme_id, hamnosys, nonmanual FROM signs WHERE lexeme_id = ?",
+            "SELECT id, lexeme_id, hamnosys, nonmanual, form_status FROM signs "
+            "WHERE lexeme_id = ? ORDER BY id LIMIT 1",
             (lexeme_id,),
         ).fetchone()
-        if row is None:
-            return None
+        return self._row_to_sign(row) if row is not None else None
+
+    def signs_for(self, lexeme_id: int) -> list[Sign]:
+        rows = self._conn.execute(
+            "SELECT id, lexeme_id, hamnosys, nonmanual, form_status FROM signs "
+            "WHERE lexeme_id = ? ORDER BY id",
+            (lexeme_id,),
+        ).fetchall()
+        return [self._row_to_sign(r) for r in rows]
+
+    @staticmethod
+    def _row_to_sign(row: sqlite3.Row) -> Sign:
         return Sign(
             id=int(row["id"]),
             lexeme_id=int(row["lexeme_id"]),
             hamnosys=str(row["hamnosys"]),
             nonmanual=json.loads(row["nonmanual"]),
+            form_status=str(row["form_status"]),
         )
 
     def tactile_for_sign(self, sign_id: int) -> list[TactileConstruction]:

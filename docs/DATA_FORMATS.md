@@ -10,16 +10,17 @@ applied by `tools/migrate.py`. Database file: **`language/oarumi.db`**.
 | Table | Purpose | Key columns |
 |---|---|---|
 | `primes` | NSM primes + combinators | `id`, `name`, `gloss`, `combinator` |
-| `lexemes` | Conventionalized roots | `id`, `phon_form`, `click`, `tone` |
-| `senses` | Meanings attached to lexemes | `id`, `lexeme_id`, `prime_decomp` |
-| `signs` | HamNoSys annotations | `id`, `lexeme_id`, `hamnosys`, `nonmanual` |
+| `lexemes` | Conventionalized roots | `id`, `phon_form`, `click`, `tone`, `gloss`, `root_class`, `frequency`, `form_status` |
+| `senses` | Meanings attached to lexemes | `id`, `lexeme_id`, `sense_no`, `prime_decomp`, `decomp_status` |
+| `signs` | HamNoSys annotations | `id`, `lexeme_id`, `hamnosys`, `nonmanual`, `form_status` |
 | `tactile` | Protactile constructions | `id`, `sign_id`, `protocol_json` |
 | `parity_gold` | Frozen expected outputs | `id`, `component`, `input_hash`, `output_json` |
 | `schema_migrations` | Applied migration log | `id`, `applied_at`, `checksum` |
 
 ### Migrations
 
-1. Numbered: `0001_init.sql`, `0002_add_signs.sql`.
+1. Numbered: `0001_init.sql` (frozen baseline), `0002_dictionary_entries.sql`.
+   Entry model and status values: `docs/DICTIONARY.md`.
 2. Forward-only; idempotent where possible.
 3. `tools/migrate.py` applies pending migrations in order and records them.
 

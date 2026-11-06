@@ -1,11 +1,13 @@
 package com.oarumi.app.ui
 
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oarumi.app.MainActivity
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,10 +17,25 @@ class TranslateFlowTest {
     @get:Rule
     val rule = createAndroidComposeRule<MainActivity>()
 
+    /** A fresh install opens the setup wizard first. Finish it so each test starts on the main screen. */
+    @Before
+    fun finishSetupIfNeeded() {
+        rule.waitUntil(timeoutMillis = 10_000) {
+            rule.onAllNodes(hasText("Phrase")).fetchSemanticsNodes().isNotEmpty() ||
+                rule.onAllNodes(hasText("Start setup")).fetchSemanticsNodes().isNotEmpty()
+        }
+        if (rule.onAllNodes(hasText("Start setup")).fetchSemanticsNodes().isNotEmpty()) {
+            rule.onNodeWithText("Start setup").performClick()
+            rule.waitUntil(timeoutMillis = 30_000) {
+                rule.onAllNodes(hasText("Phrase")).fetchSemanticsNodes().isNotEmpty()
+            }
+        }
+    }
+
     @Test
     fun translate_hola_shows_output() {
         rule.waitForIdle()
-        rule.onNodeWithText("Input").performTextInput("hola")
+        rule.onNodeWithText("Phrase").performTextInput("hola")
         rule.onNodeWithText("Translate to Oarumi").performClick()
         rule.waitUntil(timeoutMillis = 5_000) {
             rule.onAllNodes(androidx.compose.ui.test.hasText("Surface:", substring = true))

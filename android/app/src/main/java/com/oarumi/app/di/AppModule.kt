@@ -44,7 +44,8 @@ object AppModule {
     fun provideHome(
         @ApplicationContext ctx: Context,
     ): java.nio.file.Path {
-        val dir = java.nio.file.Path.of(ctx.filesDir.absolutePath, "oarumi")
+        // Paths.get, not Path.of: Path.of is not in the Android runtime before API 33.
+        val dir = java.nio.file.Paths.get(ctx.filesDir.absolutePath, "oarumi")
         Files.createDirectories(dir)
         return dir
     }

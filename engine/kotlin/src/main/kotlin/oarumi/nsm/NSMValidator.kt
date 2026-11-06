@@ -5,7 +5,8 @@ import oarumi.types.NsmStructure
 import oarumi.types.ValidationOutcome
 
 class NSMValidator(db: LanguageStore) {
-    private val known: Set<String> = db.allPrimes().map { it.id }.toSet()
+    // Lazy: see NSMDecomposerTierA. The constructor must not read the database.
+    private val known: Set<String> by lazy { db.allPrimes().map { it.id }.toSet() }
 
     fun validate(nsm: NsmStructure): ValidationOutcome {
         val errors = mutableListOf<String>()

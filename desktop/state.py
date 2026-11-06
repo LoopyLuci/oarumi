@@ -18,6 +18,8 @@ from oarumi.renderers.tactile import TactileRenderer
 from oarumi.renderers.tts import TtsRenderer
 from oarumi.types import OarumiSurface, TranslationResult
 
+from desktop.packs import PackManager
+
 
 @dataclass
 class AppState:
@@ -31,6 +33,7 @@ class AppState:
     tactile: TactileRenderer
     last_result: TranslationResult | None = None
     _listeners: list[Callable[[TranslationResult], None]] = field(default_factory=list)
+    packs: PackManager = field(default_factory=PackManager)
 
     @classmethod
     def from_env(cls, repo_root: Path) -> AppState:

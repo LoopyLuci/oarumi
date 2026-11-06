@@ -1,0 +1,145 @@
+{
+  "description": "Shared language-detection and spell cases. Python and Kotlin must agree on every entry.",
+  "detect": [
+    {
+      "text": "¿dónde está la estación de tren?",
+      "code": "es"
+    },
+    {
+      "text": "je ne sais pas où est la gare",
+      "code": "fr"
+    },
+    {
+      "text": "ich habe heute keine Zeit",
+      "code": "de"
+    },
+    {
+      "text": "I would like a cup of coffee please",
+      "code": "en"
+    },
+    {
+      "text": "eu gostaria de um copo de água",
+      "code": "pt"
+    },
+    {
+      "text": "vorrei un bicchiere d acqua",
+      "code": "it"
+    },
+    {
+      "text": "ik wil graag een kopje koffie",
+      "code": "nl"
+    },
+    {
+      "text": "я хочу выпить чашку чая",
+      "code": "ru"
+    },
+    {
+      "text": "أين محطة القطار؟",
+      "code": "ar"
+    },
+    {
+      "text": "我想喝一杯水",
+      "code": "zh"
+    },
+    {
+      "text": "bugün çok yorgunum",
+      "code": "tr"
+    },
+    {
+      "text": "gdzie jest dworzec kolejowy",
+      "code": "pl"
+    },
+    {
+      "text": "ciao, come va?",
+      "code": "it"
+    },
+    {
+      "text": "안녕하세요 만나서 반갑습니다",
+      "code": "ko"
+    },
+    {
+      "text": "नमस्ते आप कैसे हैं",
+      "code": "hi"
+    },
+    {
+      "text": "こんにちは、お元気ですか",
+      "code": "ja"
+    },
+    {
+      "text": "hola",
+      "code": "es"
+    },
+    {
+      "text": "gracias",
+      "code": "es"
+    },
+    {
+      "text": "bonjour",
+      "code": "fr"
+    },
+    {
+      "text": "ciao",
+      "code": "it"
+    },
+    {
+      "text": "hello",
+      "code": "en"
+    },
+    {
+      "text": "hello how are you today",
+      "code": "en"
+    },
+    {
+      "text": "buenos días, ¿cómo estás?",
+      "code": "es"
+    },
+    {
+      "text": "where is the bathroom",
+      "code": "en"
+    },
+    {
+      "text": "hallo wie geht es dir",
+      "code": "de"
+    },
+    {
+      "text": "hallo",
+      "code": null
+    },
+    {
+      "text": "12345 !!",
+      "code": null
+    }
+  ],
+  "suggest": [
+    {
+      "lang": "es",
+      "word": "holla",
+      "first": "hola"
+    },
+    {
+      "lang": "en",
+      "word": "recieve",
+      "first": "receive"
+    },
+    {
+      "lang": "en",
+      "word": "wrold",
+      "first": "world"
+    },
+    {
+      "lang": "en",
+      "word": "teh",
+      "first": "the"
+    }
+  ],
+  "check": [
+    {
+      "lang": "en",
+      "text": "I recieve the wrold today 2024",
+      "words": [
+        "recieve",
+        "wrold"
+      ]
+    }
+  ]
+}

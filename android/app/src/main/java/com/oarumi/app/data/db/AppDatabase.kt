@@ -15,13 +15,15 @@ import androidx.room.RoomDatabase
         GoldEntity::class,
         MigrationEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun primeDao(): PrimeDao
 
     abstract fun lexemeDao(): LexemeDao
+
+    abstract fun senseDao(): SenseDao
 
     abstract fun signDao(): SignDao
 

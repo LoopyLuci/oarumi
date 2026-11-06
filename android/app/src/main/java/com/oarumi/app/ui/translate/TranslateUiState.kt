@@ -1,12 +1,17 @@
 package com.oarumi.app.ui.translate
 
+import oarumi.lang.Misspelling
 import oarumi.types.TranslationResult
 
+/** Source-language choice that asks the detector to pick the language from the phrase. */
+const val AUTO_LANGUAGE = "auto"
+
 data class TranslateUiState(
-    val availableLanguages: List<String> = listOf("es", "fr", "de", "zh", "ar"),
+    val availableLanguages: List<String> = listOf(AUTO_LANGUAGE, "es", "fr", "de", "zh", "ar"),
     val sourceLanguage: String = "es",
     val targetModality: String = "spoken",
     val inputText: String = "",
+    val spellHints: List<Misspelling> = emptyList(),
     val isTranslating: Boolean = false,
     val result: TranslationResult? = null,
     val statusMessage: String = "Ready.",

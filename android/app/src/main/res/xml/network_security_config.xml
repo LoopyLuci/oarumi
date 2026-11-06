@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Release metadata, the APK, and language packs come from these hosts over TLS,
+  using the system trust store. Certificate pins were dropped on purpose: pack
+  contents are checked against the index bundled in the signed APK, and the APK
+  is checked by the system installer, so a network attacker cannot alter what
+  gets installed. See docs/adr/0009-no-certificate-pinning.md.
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">github.com</domain>
+        <domain includeSubdomains="true">githubusercontent.com</domain>
+    </domain-config>
+</network-security-config>

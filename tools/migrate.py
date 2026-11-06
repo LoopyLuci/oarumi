@@ -10,7 +10,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MIGRATIONS = ROOT / "language" / "migrations"
-SCHEMA = ROOT / "language" / "schema.sql"
 
 
 def _checksum(path: Path) -> str:
@@ -36,10 +35,9 @@ def _ensure_table(conn: sqlite3.Connection) -> None:
     conn.commit()
 
 
-def _sql_for(migration_id: str, path: Path) -> str:
-    # 0001_init is defined by schema.sql to avoid DDL duplication.
-    if migration_id == "0001_init":
-        return SCHEMA.read_text(encoding="utf-8")
+def _sql_for(path: Path) -> str:
+    # Migrations are frozen once applied. schema.sql is the current full schema,
+    # not a migration, so it is never executed here.
     return path.read_text(encoding="utf-8")
 
 
@@ -57,7 +55,7 @@ def apply(conn: sqlite3.Connection) -> int:
         return 0
 
     for mid, path in pending:
-        sql = _sql_for(mid, path)
+        sql = _sql_for(path)
         checksum = _checksum(path)
         print(f"APPLY {mid}")
         conn.executescript(sql)

@@ -22,6 +22,8 @@ from oarumi.config import EngineConfig
 from oarumi.db import LanguageDb
 from oarumi.pipeline import Pipeline
 
+from tools import __version__
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = REPO_ROOT / "language" / "oarumi.db"
 
@@ -222,7 +224,7 @@ def _cmd_audio(args: argparse.Namespace, ctx: _Context) -> int:
 
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="oarumi", description=__doc__)
-    parser.add_argument("--version", action="version", version="oarumi 0.1.0a3")
+    parser.add_argument("--version", action="version", version=f"oarumi {__version__}")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p = sub.add_parser("translate", help="Run the full pipeline")
