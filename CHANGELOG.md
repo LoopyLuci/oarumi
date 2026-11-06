@@ -7,6 +7,11 @@ Versioning: [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
+- Dictionary entry model (`docs/DICTIONARY.md`): every form and decomposition carries
+  a status (`placeholder`, `provisional`, `signed_off`), and senses are numbered.
+  Migration `0002_dictionary_entries`.
+- Dictionary browse by root class and an entry detail screen (senses with prime
+  decompositions, signs) on Android and desktop. Search now also matches sense glosses.
 - Spelling checker on desktop and Android. It suggests corrections from a
   per-language frequency dictionary, using edit distance.
 - Language detection on the Translate screen. Choose "Detect language" as the

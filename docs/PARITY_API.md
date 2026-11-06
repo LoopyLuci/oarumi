@@ -10,8 +10,13 @@
 | Class | Method | Signature |
 |---|---|---|
 | `LanguageDb` | `get_prime` | `(pid: str) -> Prime \| None` |
-| `LanguageDb` | `search_lexemes` | `(query: str, limit: int = 20) -> list[Lexeme]` |
+| `LanguageDb` | `search_lexemes` | `(query: str, limit: int = 20, root_class: str \| None = None) -> list[Lexeme]` |
+| `LanguageDb` | `get_lexeme` | `(lexeme_id: int) -> Lexeme \| None` |
+| `LanguageDb` | `browse_lexemes` | `(root_class: str \| None = None, limit: int = 200) -> list[Lexeme]` |
+| `LanguageDb` | `root_class_counts` | `() -> dict[str, int]` |
+| `LanguageDb` | `senses_for` | `(lexeme_id: int) -> list[Sense]` |
 | `LanguageDb` | `get_sign` | `(lexeme_id: int) -> Sign \| None` |
+| `LanguageDb` | `signs_for` | `(lexeme_id: int) -> list[Sign]` |
 | `PivotTranslator` | `translate` | `(text: str, src: str, dst: str = "en") -> PivotResult` |
 | `NSMDecomposerTierA` | `decompose` | `(pivot: str) -> NSMStructure` |
 | `NSMRealizer` | `realize` | `(nsm: NSMStructure, modality: str) -> OarumiSurface` |
@@ -22,8 +27,12 @@
 | Class | Method | Signature |
 |---|---|---|
 | `LanguageDb` | `getPrime` | `(pid: String): Prime?` |
-| `LanguageDb` | `searchLexemes` | `(query: String, limit: Int = 20): List<Lexeme>` |
-| `LanguageDb` | `getSign` | `(lexemeId: Int): Sign?` |
+| `LanguageDb` | `searchLexemes` | `(query: String, limit: Int = 20, rootClass: String? = null): List<Lexeme>` |
+| `LanguageDb` | `getLexeme` | `(lexemeId: Int): Lexeme?` |
+| `LanguageDb` | `browseLexemes` | `(rootClass: String? = null, limit: Int = 200): List<Lexeme>` |
+| `LanguageDb` | `rootClassCounts` | `(): Map<String, Int>` |
+| `LanguageDb` | `sensesFor` | `(lexemeId: Int): List<Sense>` |
+| `LanguageDb` | `signsFor` | `(lexemeId: Int): List<Sign>` |
 | `PivotTranslator` | `translate` | `(text: String, src: String, dst: String = "en"): PivotResult` |
 | `NSMDecomposerTierA` | `decompose` | `(pivot: String): NsmStructure` |
 | `NSMRealizer` | `realize` | `(nsm: NsmStructure, modality: String): OarumiSurface` |
