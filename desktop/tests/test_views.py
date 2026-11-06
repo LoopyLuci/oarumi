@@ -139,7 +139,8 @@ def test_dictionary_view_root_class_filter(state: AppState) -> None:
     _select_filter(view, "noun")
     ids = _ids(view)
     assert ids
-    assert {state.db.get_lexeme(i).root_class for i in ids} == {"noun"}
+    roots = {lx.root_class for i in ids if (lx := state.db.get_lexeme(i)) is not None}
+    assert roots == {"noun"}
 
 
 def test_dictionary_view_primes_filter_lists_the_inventory(state: AppState) -> None:
@@ -171,7 +172,7 @@ def test_dictionary_view_unknown_entry_says_so(state: AppState) -> None:
 def test_format_entry_marks_placeholders() -> None:
     lexeme = Lexeme(9, "xo", None, None, "thing", "noun", 1, "provisional")
     senses = [Sense(1, 9, 1, "thing", (), "placeholder")]
-    signs = [Sign(1, 9, "", "{}", "placeholder")]
+    signs = [Sign(1, 9, "", {}, "placeholder")]
     text = format_entry(lexeme, senses, signs)
     assert "primes: none yet  ·  pending linguist sign-off" in text
     assert "HamNoSys: not set (placeholder)" in text
@@ -199,7 +200,7 @@ def test_format_entry_lists_senses_in_order_with_their_primes() -> None:
 
 def test_format_entry_shows_a_signed_off_sign() -> None:
     lexeme = Lexeme(9, "xo", None, None, "thing", "noun", 1, "provisional")
-    signs = [Sign(1, 9, "H:A", "{}", "signed_off")]
+    signs = [Sign(1, 9, "H:A", {}, "signed_off")]
     text = format_entry(lexeme, [], signs)
     assert "No senses recorded yet." in text
     assert "  HamNoSys: H:A  ·  signed off" in text
@@ -248,7 +249,9 @@ def test_root_class_filter_narrows_a_search(state: AppState) -> None:
     view = DictionaryView(state)
     _select_filter(view, "noun")
     view._search("who")
-    assert _ids(view) == [state.db.get_lexeme_by_phon("manu").id]
+    manu = state.db.get_lexeme_by_phon("manu")
+    assert manu is not None
+    assert _ids(view) == [manu.id]
     _select_filter(view, "verb")
     view._search("who")
     assert view._results.count() == 1
