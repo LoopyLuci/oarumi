@@ -21,3 +21,14 @@ enum class Route(
     Dictionary("dictionary", R.string.nav_dictionary, Icons.Filled.Book),
     Settings("settings", R.string.nav_settings, Icons.Filled.Settings),
 }
+
+/**
+ * Detail screen for one dictionary entry. It opens from the Dictionary screen, so it is not
+ * a bottom-bar destination and stays out of [Route].
+ */
+object DictionaryEntryRoute {
+    const val ARG = "lexemeId"
+    const val PATTERN = "dictionary/entry/{$ARG}"
+
+    fun path(lexemeId: Int): String = "dictionary/entry/$lexemeId"
+}
