@@ -136,7 +136,7 @@ class DictionaryView(QWidget):
         self._filter.setAccessibleName("Root class filter")
         for label, key in FILTERS:
             self._filter.addItem(label, key)
-        self._filter.currentIndexChanged.connect(lambda _index: self._refresh())
+        self._filter.currentIndexChanged.connect(self._on_filter_changed)
         row.addWidget(self._filter)
 
         self._count = QLabel()
@@ -165,6 +165,9 @@ class DictionaryView(QWidget):
 
     def focus_search(self) -> None:
         self._search_box.setFocus()
+
+    def _on_filter_changed(self, _index: int) -> None:
+        self._refresh()
 
     def _search(self, query: str) -> None:
         self._query = query
